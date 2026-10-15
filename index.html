@@ -2439,31 +2439,44 @@
 
       initMusic() {
         if (!this.musicAudio) {
-          let el = document.getElementById('bg-music-player');
-          if (!el) {
-            el = new Audio('end_credits_music.mp3');
-            el.id = 'bg-music-player';
-            el.loop = true;
-            el.preload = 'auto';
-          }
-          this.musicAudio = el;
-          this.musicAudio.volume = 0.03; // 3% de volumen requerido (suave de fondo)
+          try {
+            this.musicAudio = new Audio('end_credits_music.mp3');
+            this.musicAudio.loop = true;
+            this.musicAudio.volume = 0.03; // 3% de volumen requerido (suave de fondo)
 
-          this.musicAudio.addEventListener('play', () => this.updateMusicBtnUI());
-          this.musicAudio.addEventListener('pause', () => this.updateMusicBtnUI());
+            this.musicAudio.addEventListener('play', () => this.updateMusicBtnUI());
+            this.musicAudio.addEventListener('pause', () => this.updateMusicBtnUI());
+          } catch (e) {
+            console.warn('Audio initialization error:', e);
+          }
+        }
+      },
+
+      getAudioContext() {
+        try {
+          if (!this.ctx) {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (AudioCtx) this.ctx = new AudioCtx();
+          }
+          if (this.ctx && this.ctx.state === 'suspended') {
+            this.ctx.resume().catch(() => {});
+          }
+          return this.ctx;
+        } catch (e) {
+          return null;
         }
       },
 
       playMusic() {
         this.initMusic();
-        if (this.isMusicMuted || this.isMuted) return;
+        if (!this.musicAudio || this.isMusicMuted || this.isMuted) return;
         this.musicAudio.volume = 0.03;
         const playPromise = this.musicAudio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
             this.updateMusicBtnUI();
           }).catch(() => {
-            // Si el navegador bloqueó el autoplay sin interacción, capturar el primer toque
+            // Si el navegador bloqueó el autoplay sin interacción previa, capturar el primer toque
             this.setupAutoplayUnlock();
           });
         }
@@ -2477,18 +2490,16 @@
             this.musicAudio.volume = 0.03;
             this.musicAudio.play().then(() => {
               this.updateMusicBtnUI();
-              window.removeEventListener('click', unlock, true);
-              window.removeEventListener('pointerdown', unlock, true);
-              window.removeEventListener('touchstart', unlock, true);
-              window.removeEventListener('keydown', unlock, true);
+              window.removeEventListener('click', unlock);
+              window.removeEventListener('pointerdown', unlock);
+              window.removeEventListener('keydown', unlock);
               this._unlockAttached = false;
             }).catch(() => {});
           }
         };
-        window.addEventListener('click', unlock, true);
-        window.addEventListener('pointerdown', unlock, true);
-        window.addEventListener('touchstart', unlock, true);
-        window.addEventListener('keydown', unlock, true);
+        window.addEventListener('click', unlock);
+        window.addEventListener('pointerdown', unlock);
+        window.addEventListener('keydown', unlock);
       },
 
       toggleMusic() {
@@ -3333,12 +3344,16 @@
 
       // Desbloqueo suave del AudioContext y arranque de música de fondo en la primera interacción
       const unlockAudio = () => {
-        soundManager.getAudioContext();
-        soundManager.playMusic();
+        try {
+          soundManager.getAudioContext();
+          soundManager.playMusic();
+        } catch (e) {}
         document.removeEventListener('pointerdown', unlockAudio);
+        document.removeEventListener('click', unlockAudio);
         document.removeEventListener('keydown', unlockAudio);
       };
       document.addEventListener('pointerdown', unlockAudio);
+      document.addEventListener('click', unlockAudio);
       document.addEventListener('keydown', unlockAudio);
 
       // 1. En CADA refresh: las preguntas van en orden oficial 1 a 10 y las opciones A, B, C, D se barajan aleatoriamente
