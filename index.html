@@ -2407,7 +2407,7 @@
     ];
 
     /* ============================================================
-       SISTEMA DE AUDIO CON WEB AUDIO API + MÚSICA DE FONDO (10%) + MUTE
+       SISTEMA DE AUDIO CON WEB AUDIO API + MÚSICA DE FONDO (3%) + MUTE
        ============================================================ */
     const soundManager = {
       ctx: null,
@@ -2447,7 +2447,7 @@
             el.preload = 'auto';
           }
           this.musicAudio = el;
-          this.musicAudio.volume = 0.10; // 10% de volumen requerido
+          this.musicAudio.volume = 0.03; // 3% de volumen requerido (suave de fondo)
 
           this.musicAudio.addEventListener('play', () => this.updateMusicBtnUI());
           this.musicAudio.addEventListener('pause', () => this.updateMusicBtnUI());
@@ -2457,7 +2457,7 @@
       playMusic() {
         this.initMusic();
         if (this.isMusicMuted || this.isMuted) return;
-        this.musicAudio.volume = 0.10;
+        this.musicAudio.volume = 0.03;
         const playPromise = this.musicAudio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
@@ -2474,7 +2474,7 @@
         this._unlockAttached = true;
         const unlock = () => {
           if (!this.isMusicMuted && !this.isMuted && this.musicAudio && this.musicAudio.paused) {
-            this.musicAudio.volume = 0.10;
+            this.musicAudio.volume = 0.03;
             this.musicAudio.play().then(() => {
               this.updateMusicBtnUI();
               window.removeEventListener('click', unlock, true);
@@ -2497,7 +2497,7 @@
         // Si la música está pausada o silenciada, activarla y reproducir
         if (this.musicAudio.paused || this.isMusicMuted) {
           this.isMusicMuted = false;
-          this.musicAudio.volume = 0.10;
+          this.musicAudio.volume = 0.03;
           this.musicAudio.play().then(() => {
             this.updateMusicBtnUI();
           }).catch(() => {
@@ -2527,7 +2527,7 @@
           if (this.isMuted) {
             this.musicAudio.pause();
           } else if (!this.isMusicMuted) {
-            this.musicAudio.volume = 0.10;
+            this.musicAudio.volume = 0.03;
             this.musicAudio.play().catch(() => {
               this.setupAutoplayUnlock();
             });
