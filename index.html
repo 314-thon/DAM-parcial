@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DAM Tutor Interactivo - Preparación de Parcial</title>
+  <link rel="icon" type="image/png" href="314-logo.png" />
+  <link rel="shortcut icon" type="image/png" href="314-logo.png" />
+  <link rel="apple-touch-icon" href="314-logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -1005,17 +1008,18 @@
     }
 
     /* ============================================================
-       MÓDULO 3: FLASHCARDS 3D (MENOS ANCHAS Y MÁS LARGAS)
+       MÓDULO 3: FLASHCARDS 3D (ESPACIOSAS Y LEGIBLES)
        ============================================================ */
     .fc-scene {
-      max-width: 480px; /* Menos ancha, proporción vertical elegante */
+      max-width: 680px;
+      width: 100%;
       margin: 0 auto;
       perspective: 1200px;
     }
 
     .fc-card-3d {
       width: 100%;
-      min-height: 520px; /* Más larga */
+      min-height: 480px;
       position: relative;
       transform-style: preserve-3d;
       transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1034,13 +1038,14 @@
       left: 0;
       backface-visibility: hidden;
       border-radius: 24px;
-      padding: 2rem 1.65rem;
+      padding: 2.25rem 2rem;
       background: var(--surface-elevated);
       border: 1.5px solid var(--border);
       box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      box-sizing: border-box;
     }
 
     .fc-front {
@@ -1048,41 +1053,90 @@
       transform: rotateY(0deg);
     }
 
+    .fc-front-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 0.5rem;
+      text-align: center;
+    }
+
+    .fc-front-title {
+      font-size: clamp(1.45rem, 3.2vw, 1.95rem);
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.42;
+      letter-spacing: -0.015em;
+      text-wrap: balance;
+    }
+
     .fc-back {
       transform: rotateY(180deg);
       background: #111a2e;
       border-color: #3b82f6;
       overflow-y: auto;
-      padding: 1.75rem 1.4rem;
+      padding: 2rem 1.85rem;
+    }
+
+    .fc-back-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0.75rem 0;
+    }
+
+    .fc-answer-text {
+      font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+      line-height: 1.75;
+      color: var(--text-main);
+    }
+
+    .fc-answer-text strong {
+      color: #60a5fa;
+      font-weight: 700;
+    }
+
+    .fc-answer-text code {
+      background: rgba(30, 41, 59, 0.85);
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+      color: #34d399;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9em;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .fc-table-comp {
       width: 100%;
       border-collapse: collapse;
-      margin: 1rem 0;
-      font-size: 0.85rem;
-      border-radius: 8px;
+      margin: 0.75rem 0;
+      font-size: clamp(0.85rem, 1.8vw, 0.98rem);
+      border-radius: 10px;
       overflow: hidden;
+      border: 1px solid var(--border);
     }
 
     .fc-table-comp th {
       background: #1e293b;
       color: var(--primary-light);
-      padding: 0.65rem 0.85rem;
+      padding: 0.8rem 1rem;
       text-align: left;
       font-weight: 700;
+      font-size: 0.95em;
       border-bottom: 2px solid var(--border);
     }
 
     .fc-table-comp td {
-      padding: 0.65rem 0.85rem;
+      padding: 0.8rem 1rem;
       border-bottom: 1px solid rgba(51, 65, 85, 0.6);
       color: var(--text-soft);
-      line-height: 1.45;
+      line-height: 1.5;
     }
 
     .fc-table-comp tr:nth-child(even) {
-      background: rgba(15, 23, 42, 0.4);
+      background: rgba(15, 23, 42, 0.45);
     }
 
     /* ============================================================
@@ -1345,6 +1399,7 @@
   <header>
     <div class="header-container">
       <div class="brand">
+        <img src="314-logo.png" alt="314 Logo" style="width:38px; height:38px; border-radius:10px; object-fit:contain; border:1px solid rgba(255,255,255,0.12); box-shadow:0 2px 8px rgba(0,0,0,0.3);" />
         <span class="brand-badge">DAM 2026</span>
         <div>
           <h1>Tutor Interactivo de Parcial</h1>
@@ -1707,14 +1762,14 @@
           <div class="fc-face fc-front">
             <div>
               <span class="badge-tag badge-primary" id="fc-tag-text">Unidad 1</span>
-              <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.5rem;" id="fc-counter-front">Tarjeta 1 de 10</div>
+              <div style="font-size:0.92rem; font-weight:600; color:var(--text-muted); margin-top:0.6rem;" id="fc-counter-front">Tarjeta 1 de 24</div>
             </div>
-            <div style="text-align:center; padding:1.5rem 0;">
-              <h3 style="font-size:1.35rem; font-weight:700; color:#fff; line-height:1.5;" id="fc-front-question">
+            <div class="fc-front-content">
+              <h3 class="fc-front-title" id="fc-front-question">
                 Pregunta
               </h3>
             </div>
-            <div style="text-align:center; font-size:0.82rem; color:var(--text-muted);">
+            <div style="text-align:center; font-size:0.9rem; font-weight:600; color:var(--text-soft);">
               👆 Hacé clic para girar la tarjeta
             </div>
           </div>
@@ -1724,10 +1779,10 @@
             <div>
               <span class="badge-tag badge-accent">Respuesta & Fundamento</span>
             </div>
-            <div style="padding:0.5rem 0;" id="fc-back-content">
+            <div class="fc-back-body" id="fc-back-content">
               <!-- Text or Comparison Table -->
             </div>
-            <div style="text-align:center; font-size:0.82rem; color:var(--primary-light);">
+            <div style="text-align:center; font-size:0.9rem; font-weight:600; color:var(--primary-light);">
               👆 Hacé clic para regresar a la pregunta
             </div>
           </div>
@@ -3583,7 +3638,7 @@
         tableHtml += `</tbody></table>`;
         backContent.innerHTML = tableHtml;
       } else {
-        backContent.innerHTML = `<p style="font-size:0.95rem; line-height:1.7; color:var(--text-soft); padding:1rem 0;">${item.textAnswer}</p>`;
+        backContent.innerHTML = `<div class="fc-answer-text">${item.textAnswer}</div>`;
       }
 
       cardIsFlipped = false;
