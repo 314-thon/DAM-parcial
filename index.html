@@ -1,0 +1,3234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DAM Tutor Interactivo - Preparación de Parcial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Lottie Web Player CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <style>
+    :root {
+      --bg: #090d16;
+      --surface: #0f172a;
+      --surface-elevated: #1e293b;
+      --surface-hover: #27354f;
+      --border: #334155;
+      --border-focus: #3b82f6;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-soft: #cbd5e1;
+      --primary: #3b82f6;
+      --primary-light: #60a5fa;
+      --primary-glow: rgba(59, 130, 246, 0.25);
+      --accent: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.2);
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --purple: #8b5cf6;
+      --card-radius: 16px;
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header & Navigation */
+    header {
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.85rem 1.5rem;
+    }
+
+    .header-container {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: white;
+      font-weight: 800;
+      padding: 0.4rem 0.75rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .brand h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .brand p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    nav.nav-tabs {
+      display: flex;
+      background: #090d16;
+      border: 1px solid var(--border);
+      padding: 4px;
+      border-radius: 12px;
+      gap: 4px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.55rem 1.05rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: var(--surface-elevated);
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .reset-progress-btn {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.5rem 0.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .reset-progress-btn:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    .mute-btn {
+      background: rgba(59, 130, 246, 0.15);
+      border: 1.5px solid rgba(59, 130, 246, 0.4);
+      color: #93c5fd;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.48rem 0.85rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .mute-btn:hover {
+      background: rgba(59, 130, 246, 0.25);
+      border-color: #60a5fa;
+    }
+    .mute-btn.muted {
+      background: rgba(148, 163, 184, 0.12);
+      border-color: rgba(148, 163, 184, 0.3);
+      color: var(--text-muted);
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1360px;
+      margin: 1.75rem auto;
+      padding: 0 1.25rem;
+      flex: 1;
+      width: 100%;
+    }
+
+    .view-section {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    .card h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .badge-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-block;
+    }
+    .badge-primary { background: rgba(59, 130, 246, 0.15); color: var(--primary-light); border: 1px solid rgba(59, 130, 246, 0.35); }
+    .badge-warning { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
+    .badge-accent { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
+    .badge-danger { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
+
+    .code-inline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      background: #020617;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    /* ============================================================
+       MÓDULO 1: CICLO DE VIDA CON TELÉFONO INTERACTIVO
+       ============================================================ */
+    .lifecycle-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem 0.85rem;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+    }
+
+    .lc-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      flex: 1;
+      min-width: 85px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .lc-step:hover {
+      transform: translateY(-2px);
+    }
+
+    .lc-dot {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      transition: var(--transition);
+      z-index: 2;
+    }
+
+    .lc-step.active .lc-dot {
+      background: var(--primary);
+      border-color: #93c5fd;
+      color: #fff;
+      box-shadow: 0 0 16px var(--primary-glow);
+      transform: scale(1.1);
+    }
+
+    .lc-step.active-critical .lc-dot {
+      background: #dc2626;
+      border-color: #fca5a5;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+      transform: scale(1.15);
+      animation: pulseAlert 1.5s infinite;
+    }
+
+    @keyframes pulseAlert {
+      0%, 100% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.4); }
+      50% { box-shadow: 0 0 22px rgba(239, 68, 68, 0.8); }
+    }
+
+    .lc-name {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .lc-step.active .lc-name {
+      color: var(--primary-light);
+      font-weight: 700;
+    }
+    .lc-step.active-critical .lc-name {
+      color: #fca5a5;
+      font-weight: 800;
+    }
+
+    /* Simulador Main Layout: Teléfono + Controles y Capas */
+    .sim-wrapper {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 1.75rem;
+      align-items: start;
+      transition: grid-template-columns 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Cuando el celular está rotado en apaisado (Landscape):
+       El teléfono MANTIENE su forma rectangular alargada (320x600 rotado 90°)
+       y las capas de la derecha SE ACHICAN en ancho y se estiran a lo alto */
+    .sim-wrapper.is-rotated {
+      grid-template-columns: 640px 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 1220px) {
+      .sim-wrapper.is-rotated {
+        grid-template-columns: 1fr;
+      }
+      .sim-wrapper.is-rotated .phone-container {
+        margin: 0 auto 2rem auto;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .sim-wrapper { grid-template-columns: 1fr; }
+    }
+
+    /* Mockup de Teléfono Smartphone */
+    .phone-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+      min-width: 320px;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+
+    .sim-wrapper.is-rotated .phone-container {
+      width: 640px;
+      min-width: 640px;
+      min-height: 420px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .phone-frame {
+      width: 320px;
+      min-width: 320px;
+      max-width: 320px;
+      height: 600px;
+      min-height: 600px;
+      max-height: 600px;
+      flex-shrink: 0; /* IMPIDE que Flexbox lo aplaste a un cuadrado */
+      background: #000;
+      border: 8px solid #1e293b;
+      border-radius: 42px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 0 1px #334155, inset 0 0 4px rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transform-origin: center center;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Rotación 90° pura manteniendo la forma alargada original */
+    .phone-frame.rotated {
+      transform: rotate(90deg);
+      margin: 0;
+    }
+
+    /* Notch / Dynamic Island */
+    .phone-notch {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90px;
+      height: 20px;
+      background: #020617;
+      border-radius: 12px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 12px;
+    }
+    .phone-camera-dot {
+      width: 8px;
+      height: 8px;
+      background: #1e293b;
+      border-radius: 50%;
+    }
+
+    /* Barra de estado */
+    .phone-status-bar {
+      height: 38px;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #94a3b8;
+      z-index: 10;
+    }
+
+    /* Pantalla interna */
+    .phone-screen {
+      flex: 1;
+      background: #090d16;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* App UI inside phone */
+    .app-screen-content {
+      flex: 1;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(180deg, #0f172a 0%, #090d16 100%);
+    }
+
+    .app-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+    }
+    .app-title-text {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .app-score-badge {
+      font-size: 0.72rem;
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: #93c5fd;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    .app-timer-bar-wrap {
+      width: 100%;
+      height: 4px;
+      background: #1e293b;
+      border-radius: 2px;
+      margin: 8px 0;
+      overflow: hidden;
+    }
+    .app-timer-bar-inner {
+      height: 100%;
+      background: #10b981;
+      width: 65%;
+      transition: width 0.3s ease;
+    }
+
+    .app-question-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.82rem;
+      color: #f1f5f9;
+      font-weight: 600;
+      margin: 8px 0;
+    }
+
+    .app-mock-options {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .app-mock-opt {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid #334155;
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Overlays de estado en el teléfono */
+    .phone-overlay {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      z-index: 15;
+      animation: fadeIn 0.25s ease;
+    }
+
+    /* 1. Overlay Llamada Entrante */
+    .overlay-call {
+      background: rgba(10, 15, 26, 0.94);
+      backdrop-filter: blur(10px);
+    }
+    .call-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: #1e293b;
+      border: 3px solid #3b82f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 10px;
+      box-shadow: 0 0 25px var(--primary-glow);
+    }
+    .call-pulse-animation {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .call-actions {
+      display: flex;
+      gap: 30px;
+      margin-top: 35px;
+    }
+    .call-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: white;
+      transition: var(--transition);
+    }
+    .call-btn-reject {
+      background: #ef4444;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+    }
+    .call-btn-accept {
+      background: #10b981;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+    }
+
+    /* 2. Overlay Launcher Home (onStop) */
+    .overlay-home {
+      background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+      justify-content: space-between;
+      padding: 30px 16px 20px 16px;
+    }
+    .launcher-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .launcher-app-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.65rem;
+      color: #94a3b8;
+    }
+    .launcher-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    /* 3. Overlay ANR */
+    .overlay-anr {
+      background: rgba(0, 0, 0, 0.85);
+    }
+    .anr-dialog {
+      background: #1e293b;
+      border: 1px solid #475569;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: left;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+    }
+    .anr-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #f87171;
+      margin-bottom: 6px;
+    }
+    .anr-msg {
+      font-size: 0.75rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+    .anr-btns {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .anr-btn {
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Right Column: Layers Breakdown */
+    .sim-events-and-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* Panel de Disparadores del Sistema (Fijo y Estable arriba del Teléfono) */
+    .sim-triggers-panel {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.1rem 1.35rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .sim-triggers-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .sim-triggers-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #93c5fd;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .sim-triggers-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .events-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.65rem;
+    }
+
+    @media (max-width: 1240px) {
+      .events-picker-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .events-picker-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .sim-event-chip {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      color: var(--text-soft);
+      padding: 0.75rem 0.65rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 700;
+      transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      text-align: center;
+      white-space: nowrap;
+      height: 48px;
+      box-sizing: border-box;
+    }
+
+    .sim-event-chip:hover {
+      border-color: var(--primary);
+      background: var(--surface-hover);
+      color: #fff;
+    }
+
+    .sim-event-chip.active {
+      border-color: var(--primary);
+      background: rgba(59, 130, 246, 0.2);
+      color: #93c5fd;
+      box-shadow: 0 0 14px var(--primary-glow);
+    }
+
+    .sim-event-chip.active-alert {
+      border-color: var(--danger);
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);
+    }
+
+    .layer-card {
+      background: var(--surface-elevated);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem 1.4rem;
+      transition: var(--transition);
+    }
+
+    .layer-card.highlight {
+      border-color: var(--primary);
+      box-shadow: 0 0 18px var(--primary-glow);
+    }
+
+    .layer-card.danger {
+      border-color: var(--danger);
+      box-shadow: 0 0 18px rgba(239, 68, 68, 0.3);
+    }
+
+    .layer-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.65rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .layer-name {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .layer-thread-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      background: #020617;
+      border: 1px solid var(--border);
+    }
+
+    .layer-text-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 1.15rem;
+      line-height: 1.6;
+      font-size: 0.88rem;
+      color: var(--text-soft);
+      min-height: 54px;
+    }
+    .layer-text-box strong { color: #fff; }
+
+    /* ============================================================
+       MÓDULO 2: SIMULACRO ALEATORIO 2x2 (PREGUNTA CENTRADA)
+       ============================================================ */
+    .quiz-header-bar {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(124, 58, 237, 0.15));
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 16px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+    }
+
+    .quiz-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+
+    .quiz-question-centered {
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: 0 auto 1.75rem auto;
+      padding: 0 1rem;
+    }
+
+    .quiz-grid-2x2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      max-width: 950px;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .quiz-grid-2x2 { grid-template-columns: 1fr; }
+    }
+
+    .quiz-option-btn {
+      background: var(--surface-elevated);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 1.15rem 1.25rem;
+      cursor: pointer;
+      text-align: left;
+      font-size: 0.92rem;
+      color: var(--text-soft);
+      line-height: 1.5;
+      transition: var(--transition);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      position: relative;
+    }
+
+    .quiz-option-btn:hover:not(.locked) {
+      border-color: var(--primary);
+      background: var(--surface-hover);
+      transform: translateY(-2px);
+    }
+
+    .quiz-option-btn.preselected {
+      border-color: #60a5fa;
+      background: rgba(59, 130, 246, 0.22);
+      box-shadow: 0 0 18px rgba(96, 165, 250, 0.4);
+      transform: translateY(-2px);
+    }
+    .quiz-option-btn.preselected .opt-letter-box {
+      background: #2563eb;
+      color: #fff;
+      border-color: #93c5fd;
+    }
+
+    .opt-confirm-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #93c5fd;
+      background: rgba(37, 99, 235, 0.35);
+      border: 1px solid rgba(147, 197, 253, 0.4);
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+      margin-top: 0.35rem;
+      animation: pulseAlert 1.2s infinite;
+    }
+
+    .opt-letter-box {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: #0b0f19;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--primary-light);
+      flex-shrink: 0;
+    }
+
+    .quiz-option-btn.correct {
+      border-color: var(--accent);
+      background: rgba(16, 185, 129, 0.15);
+      color: #d1fae5;
+    }
+    .quiz-option-btn.correct .opt-letter-box {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .quiz-option-btn.incorrect {
+      border-color: var(--danger);
+      background: rgba(239, 68, 68, 0.15);
+      color: #fee2e2;
+    }
+    .quiz-option-btn.incorrect .opt-letter-box {
+      background: var(--danger);
+      color: #fff;
+      border-color: var(--danger);
+    }
+
+    .quiz-feedback-box {
+      max-width: 950px;
+      margin: 1.25rem auto 0 auto;
+      padding: 1.15rem 1.35rem;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .quiz-feedback-box.show-correct {
+      display: block;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #d1fae5;
+    }
+
+    .quiz-feedback-box.show-incorrect {
+      display: block;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #fee2e2;
+    }
+
+    /* ============================================================
+       MÓDULO 3: FLASHCARDS 3D (MENOS ANCHAS Y MÁS LARGAS)
+       ============================================================ */
+    .fc-scene {
+      max-width: 480px; /* Menos ancha, proporción vertical elegante */
+      margin: 0 auto;
+      perspective: 1200px;
+    }
+
+    .fc-card-3d {
+      width: 100%;
+      min-height: 520px; /* Más larga */
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .fc-card-3d.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .fc-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      backface-visibility: hidden;
+      border-radius: 24px;
+      padding: 2rem 1.65rem;
+      background: var(--surface-elevated);
+      border: 1.5px solid var(--border);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .fc-front {
+      z-index: 2;
+      transform: rotateY(0deg);
+    }
+
+    .fc-back {
+      transform: rotateY(180deg);
+      background: #111a2e;
+      border-color: #3b82f6;
+      overflow-y: auto;
+      padding: 1.75rem 1.4rem;
+    }
+
+    .fc-table-comp {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .fc-table-comp th {
+      background: #1e293b;
+      color: var(--primary-light);
+      padding: 0.65rem 0.85rem;
+      text-align: left;
+      font-weight: 700;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .fc-table-comp td {
+      padding: 0.65rem 0.85rem;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+      color: var(--text-soft);
+      line-height: 1.45;
+    }
+
+    .fc-table-comp tr:nth-child(even) {
+      background: rgba(15, 23, 42, 0.4);
+    }
+
+    /* ============================================================
+       MÓDULO 4: JUEGO DE CAPAS DINÁMICO (MOVER Y SACAR LIBREMENTE)
+       ============================================================ */
+    .game-zone-wrapper {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 850px) {
+      .game-zone-wrapper { grid-template-columns: 1fr; }
+    }
+
+    .game-drop-box {
+      background: var(--surface-elevated);
+      border: 2px dashed var(--border);
+      border-radius: 14px;
+      padding: 1.25rem;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: var(--transition);
+    }
+
+    .game-drop-box.drag-over {
+      border-color: var(--primary);
+      background: rgba(59, 130, 246, 0.08);
+    }
+
+    .game-box-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+      color: var(--primary-light);
+    }
+
+    .game-item-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 0.9rem;
+      font-size: 0.84rem;
+      cursor: grab;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      transition: var(--transition);
+    }
+
+    .game-item-card:hover {
+      border-color: var(--primary-light);
+      transform: translateY(-2px);
+    }
+
+    .game-item-card:active {
+      cursor: grabbing;
+      opacity: 0.6;
+    }
+
+    .game-item-remove-btn {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      border-radius: 6px;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: none;
+    }
+    .game-item-card.in-zone .game-item-remove-btn {
+      display: inline-block;
+    }
+    .game-item-remove-btn:hover {
+      background: rgba(239, 68, 68, 0.3);
+    }
+
+    .pool-box {
+      background: var(--surface-elevated);
+      border: 2px dashed #475569;
+      border-radius: 14px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .pool-items-tray {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+      min-height: 50px;
+    }
+
+    /* Animación fallback de ondas para la llamada */
+    @keyframes pulseRing {
+      0% { transform: scale(0.9); opacity: 1; }
+      50% { transform: scale(1.15); opacity: 0.5; }
+      100% { transform: scale(0.9); opacity: 1; }
+    }
+    .pulse-ring-circle {
+      animation: pulseRing 1.4s ease-in-out infinite;
+    }
+
+    /* ============================================================
+       MÓDULO 5: ESTILOS DE TARJETAS TEÓRICAS Y FILTRO
+       ============================================================ */
+    .theory-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+      align-items: center;
+    }
+
+    .theory-filter-chip {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+      padding: 0.5rem 0.95rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .theory-filter-chip:hover {
+      background: var(--surface-hover);
+      color: var(--text-main);
+      border-color: var(--border-focus);
+    }
+
+    .theory-filter-chip.active {
+      background: rgba(59, 130, 246, 0.18);
+      color: #93c5fd;
+      border-color: var(--primary);
+      box-shadow: 0 0 16px rgba(59, 130, 246, 0.25);
+    }
+
+    .theory-count-pill {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.1rem 0.45rem;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      color: var(--text-main);
+    }
+
+    .theory-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .theory-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .theory-card-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      padding: 1.5rem 1.6rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .theory-card-item:hover {
+      border-color: rgba(96, 165, 250, 0.45);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .theory-card-item.hidden-by-filter {
+      display: none !important;
+    }
+
+    .theory-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.85rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .theory-card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0;
+    }
+
+    .theory-card-body {
+      font-size: 0.86rem;
+      color: var(--text-soft);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .theory-card-body ul {
+      margin-left: 1.25rem;
+      margin-top: 0.35rem;
+    }
+
+    .theory-card-body li {
+      margin-bottom: 0.5rem;
+    }
+
+    .theory-card-body li:last-child {
+      margin-bottom: 0;
+    }
+
+    .theory-card-body li strong {
+      color: var(--text-main);
+    }
+
+    .theory-card-footer {
+      margin-top: 1.15rem;
+      padding-top: 0.75rem;
+      border-top: 1px dashed rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .theory-tag {
+      font-size: 0.72rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <div class="brand">
+        <span class="brand-badge">DAM 2026</span>
+        <div>
+          <h1>Tutor Interactivo de Parcial</h1>
+          <p>Desarrollo de Aplicaciones Móviles • Repaso Clases 1 a 12</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <nav class="nav-tabs">
+          <button class="tab-btn active" id="tab-btn-simulador" onclick="switchTab('simulador')">📱 Teléfono & Ciclo de Vida</button>
+          <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Simulacro (Aleatorio 2x2)</button>
+          <button class="tab-btn" id="tab-btn-flashcards" onclick="switchTab('flashcards')">🃏 Tarjetas 3D & Tablas</button>
+          <button class="tab-btn" id="tab-btn-minijuego" onclick="switchTab('minijuego')">🎮 Juego de Capas Libre</button>
+          <button class="tab-btn" id="tab-btn-teoria" onclick="switchTab('teoria')">📖 Resumen Oficial</button>
+        </nav>
+        <button class="mute-btn" id="mute-toggle-btn" onclick="soundManager.toggleMute()" title="Activar o silenciar sonidos">
+          🔊 Sonido: ON
+        </button>
+        <button class="reset-progress-btn" onclick="clearAllUserData()" title="Borrar datos guardados en este navegador">
+          🧹 Limpiar Memoria
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+
+    <!-- ============================================================
+         MÓDULO 1: CICLO DE VIDA CON TELÉFONO INTERACTIVO
+         ============================================================ -->
+    <section id="view-simulador" class="view-section active">
+      <div class="card">
+        <span class="badge-tag badge-warning">Simulador Visual en Teléfono</span>
+        <h2>Ciclo de Vida de Android y Desglose por Capas</h2>
+        <p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.25rem;">
+          Observá qué ocurre en la pantalla del smartphone y qué tarea ejecuta cada capa del sistema ante eventos como <strong>onCreate</strong>, <strong>onStart</strong>, <strong>onResume</strong>, <strong>onPause (llamada)</strong> y rotación.
+        </p>
+      </div>
+
+      <!-- Pipeline de Estados -->
+      <div class="lifecycle-stepper">
+        <div class="lc-step" id="step-create" onclick="setScenario('create')">
+          <div class="lc-dot">1</div>
+          <div class="lc-name">onCreate()<br><small>Creación/Inflado</small></div>
+        </div>
+        <div style="color:var(--border);">➔</div>
+        <div class="lc-step" id="step-start" onclick="setScenario('start')">
+          <div class="lc-dot">2</div>
+          <div class="lc-name">onStart()<br><small>Visible</small></div>
+        </div>
+        <div style="color:var(--border);">➔</div>
+        <div class="lc-step active" id="step-resume" onclick="setScenario('resume')">
+          <div class="lc-dot">3</div>
+          <div class="lc-name">onResume()<br><small style="color:#34d399;">Interactiva con foco</small></div>
+        </div>
+        <div style="color:var(--border);">➔</div>
+        <div class="lc-step active-critical" id="step-pause" onclick="setScenario('llamada')">
+          <div class="lc-dot">4</div>
+          <div class="lc-name">onPause()<br><small style="color:#fca5a5;">¡Llamada / Salida!</small></div>
+        </div>
+        <div style="color:var(--border);">➔</div>
+        <div class="lc-step" id="step-stop" onclick="setScenario('home')">
+          <div class="lc-dot">5</div>
+          <div class="lc-name">onStop()<br><small>Oculta al usuario</small></div>
+        </div>
+        <div style="color:var(--border);">➔</div>
+        <div class="lc-step" id="step-destroy" onclick="setScenario('rotacion')">
+          <div class="lc-dot">6</div>
+          <div class="lc-name">onDestroy()<br><small>Destrucción</small></div>
+        </div>
+      </div>
+
+      <!-- Disparadores del Sistema (Arriba del Teléfono - Estables y Fijos) -->
+      <div class="sim-triggers-panel">
+        <div class="sim-triggers-header">
+          <div class="sim-triggers-title">
+            <span>⚡ DISPARAR EVENTOS DEL SISTEMA:</span>
+          </div>
+          <div class="sim-triggers-desc">
+            Tocá cualquier evento para interactuar con el smartphone y observar en tiempo real la acción de cada capa:
+          </div>
+        </div>
+        <div class="events-picker-grid">
+          <button class="sim-event-chip" id="chip-create" onclick="setScenario('create')">
+            <span>🚀</span> <span>1. onCreate()</span>
+          </button>
+          <button class="sim-event-chip" id="chip-start" onclick="setScenario('start')">
+            <span>👁️</span> <span>2. onStart()</span>
+          </button>
+          <button class="sim-event-chip" id="chip-resume" onclick="setScenario('resume')">
+            <span>▶️</span> <span>3. onResume()</span>
+          </button>
+          <button class="sim-event-chip active" id="chip-llamada" onclick="setScenario('llamada')">
+            <span>📞</span> <span>4. onPause() [Llamada]</span>
+          </button>
+          <button class="sim-event-chip" id="chip-home" onclick="setScenario('home')">
+            <span>🏠</span> <span>5. onStop() [Home]</span>
+          </button>
+          <button class="sim-event-chip" id="chip-rotacion" onclick="setScenario('rotacion')">
+            <span>🔄</span> <span>Rotación (Giro)</span>
+          </button>
+          <button class="sim-event-chip" id="chip-anr" onclick="setScenario('anr')">
+            <span>⛔</span> <span>Peligro ANR</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Layout: Teléfono + Capas -->
+      <div class="sim-wrapper" id="sim-wrapper-box">
+
+        <!-- Columna Izquierda: Smartphone Mockup -->
+        <div class="phone-container">
+          <div class="phone-frame" id="phone-mockup">
+            <!-- Notch -->
+            <div class="phone-notch">
+              <div class="phone-camera-dot"></div>
+            </div>
+
+            <!-- Status Bar -->
+            <div class="phone-status-bar">
+              <span>18:30</span>
+              <div style="display:flex; gap:5px; align-items:center;">
+                <span>5G</span>
+                <span>📶</span>
+                <span>🔋 85%</span>
+              </div>
+            </div>
+
+            <!-- Screen Content -->
+            <div class="phone-screen">
+              
+              <!-- App Principal de Trivia -->
+              <div class="app-screen-content" id="app-trivia-ui">
+                <div>
+                  <div class="app-header-bar">
+                    <span class="app-title-text">🎮 Trivia DAM Móvil</span>
+                    <span class="app-score-badge" id="app-score-display">Puntos: 150</span>
+                  </div>
+
+                  <div class="app-timer-bar-wrap">
+                    <div class="app-timer-bar-inner" id="app-timer-bar"></div>
+                  </div>
+
+                  <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:4px;" id="app-stage-indicator">
+                    🟢 Estado: onResume() • Ejecución Activa
+                  </div>
+
+                  <div class="app-question-card" id="app-question-text">
+                    ¿Por qué en Kotlin una clase debe ser 'open' para heredar?
+                  </div>
+
+                  <div class="app-mock-options">
+                    <div class="app-mock-opt"><span>A.</span> Por defecto son final</div>
+                    <div class="app-mock-opt"><span>B.</span> Para sobrecargar memoria</div>
+                    <div class="app-mock-opt"><span>C.</span> Es obligatorio en Java</div>
+                  </div>
+                </div>
+
+                <div style="background:rgba(15, 23, 42, 0.9); padding:8px; border-radius:8px; font-size:0.68rem; color:#94a3b8; text-align:center;">
+                  ViewModel conectado • Conservando estado
+                </div>
+              </div>
+
+              <!-- Overlay 1: Llamada Entrante con Animación (onPause) -->
+              <div class="phone-overlay overlay-call" id="overlay-call">
+                <div class="call-pulse-animation" id="call-anim-box">
+                  <!-- Lottie or Fallback Ring SVG -->
+                  <svg width="70" height="70" viewBox="0 0 100 100" class="pulse-ring-circle">
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="#3b82f6" stroke-width="4" opacity="0.6"/>
+                    <circle cx="50" cy="50" r="32" fill="#1e293b" stroke="#60a5fa" stroke-width="3"/>
+                    <text x="50" y="58" font-size="28" text-anchor="middle" fill="#fff">📞</text>
+                  </svg>
+                </div>
+                <div style="font-size:1.1rem; font-weight:700; color:#fff; margin-bottom:2px;">Mamá</div>
+                <div style="font-size:0.75rem; color:#60a5fa; margin-bottom:12px;">Llamada entrante...</div>
+
+                <div style="background:rgba(239, 68, 68, 0.2); border:1px solid rgba(239, 68, 68, 0.4); padding:6px 10px; border-radius:8px; font-size:0.72rem; color:#fca5a5; max-width:240px; margin-bottom:10px;">
+                  ⚠️ onPause(): La app de Trivia perdió el foco. Guardando borrador en hilo secundario.
+                </div>
+
+                <div class="call-actions">
+                  <button class="call-btn call-btn-reject" onclick="setScenario('resume')" title="Rechazar y volver">✕</button>
+                  <button class="call-btn call-btn-accept" onclick="setScenario('home')" title="Atender y minimizar">✓</button>
+                </div>
+              </div>
+
+              <!-- Overlay 2: Launcher Home de Android (onStop) -->
+              <div class="phone-overlay overlay-home" id="overlay-home">
+                <div style="text-align:center; margin-top:20px;">
+                  <div style="font-size:2.4rem; font-weight:300; color:#fff;">18:30</div>
+                  <div style="font-size:0.8rem; color:#cbd5e1;">Miércoles, 15 de Octubre</div>
+                </div>
+
+                <div class="launcher-grid">
+                  <div class="launcher-app-icon" onclick="setScenario('resume')">
+                    <div class="launcher-icon-box" style="border-color:#3b82f6; background:#1e3a8a;">🎮</div>
+                    <span>Trivia DAM</span>
+                  </div>
+                  <div class="launcher-app-icon">
+                    <div class="launcher-icon-box">💬</div>
+                    <span>Mensajes</span>
+                  </div>
+                  <div class="launcher-app-icon">
+                    <div class="launcher-icon-box">📷</div>
+                    <span>Cámara</span>
+                  </div>
+                  <div class="launcher-app-icon">
+                    <div class="launcher-icon-box">⚙️</div>
+                    <span>Ajustes</span>
+                  </div>
+                </div>
+
+                <div style="background:rgba(15, 23, 42, 0.9); padding:8px 12px; border-radius:10px; font-size:0.72rem; color:#cbd5e1; border:1px solid #334155; margin-bottom:10px;">
+                  🏠 onStop(): La Trivia está oculta en segundo plano. Tocá el ícono 🎮 para volver a primer plano.
+                </div>
+              </div>
+
+              <!-- Overlay 3: Diálogo ANR (Error Main Thread) -->
+              <div class="phone-overlay overlay-anr" id="overlay-anr">
+                <div class="anr-dialog">
+                  <div class="anr-title">⚠️ Error ANR en el dispositivo</div>
+                  <div class="anr-msg">
+                    La aplicación <strong>Trivia DAM</strong> no responde porque intentó acceder a la base de datos dentro del Hilo Principal (Main Thread).
+                  </div>
+                  <div class="anr-btns">
+                    <button class="anr-btn" style="background:#334155; color:#cbd5e1;" onclick="setScenario('resume')">Esperar</button>
+                    <button class="anr-btn" style="background:#ef4444; color:#fff;" onclick="setScenario('resume')">Cerrar App</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div style="font-size:0.78rem; color:var(--text-muted); text-align:center;">
+            Simulador de Smartphone Android • Interactivo
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Desglose de Capas en Tiempo Real -->
+        <div class="sim-events-and-layers">
+          
+          <div style="font-size:0.85rem; font-weight:800; color:var(--text-muted); letter-spacing:0.5px;">
+            DESGLOSE POR CAPAS DE ARQUITECTURA (EN TIEMPO REAL):
+          </div>
+
+          <!-- Capas -->
+          <div class="layer-card highlight" id="sim-layer-ui">
+            <div class="layer-header-row">
+              <span class="layer-name">🖥️ 1. Capa de UI (Activity / Fragment / Jetpack Compose)</span>
+              <span class="layer-thread-badge" style="color:#60a5fa; border-color:#2563eb;">Main / UI Thread</span>
+            </div>
+            <div class="layer-text-box" id="sim-text-ui">
+              <strong>Acción en Pantalla:</strong> La llamada entrante toma el foco. La Activity entra en <code>onPause()</code>, pausa animaciones, cámara y audio, y le avisa de inmediato al ViewModel.
+            </div>
+          </div>
+
+          <div class="layer-card highlight" id="sim-layer-vm">
+            <div class="layer-header-row">
+              <span class="layer-name">🧠 2. Capa de Estado (ViewModel)</span>
+              <span class="layer-thread-badge" style="color:#34d399; border-color:#059669;">Independiente de la UI • Vive en Memoria</span>
+            </div>
+            <div class="layer-text-box" id="sim-text-vm">
+              <strong>Acción de negocio:</strong> Toma el estado actual de la partida en memoria (puntaje 150) y despacha una corrutina en segundo plano (<code>viewModelScope.launch</code>) para delegar la persistencia sin frenar la vista.
+            </div>
+          </div>
+
+          <div class="layer-card highlight" id="sim-layer-data">
+            <div class="layer-header-row">
+              <span class="layer-name">💾 3. Capa de Datos (Repository + SharedPreferences / JSON)</span>
+              <span class="layer-thread-badge" style="color:#fbbf24; border-color:#d97706;">Segundo Plano (Dispatchers.IO)</span>
+            </div>
+            <div class="layer-text-box" id="sim-text-data">
+              <strong>Acción física:</strong> Escribe el borrador en <code>SharedPreferences</code> o archivo JSON en segundo plano (hilo IO) antes de que el proceso pueda ser cerrado por falta de memoria.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         MÓDULO 2: SIMULACRO OFICIAL EN FORMATO 2x2 ALEATORIO
+         ============================================================ -->
+    <section id="view-quiz" class="view-section">
+      <div class="quiz-header-bar">
+        <div>
+          <span class="badge-tag badge-primary" style="margin-bottom:0.35rem;">Simulacro Real de la Cátedra</span>
+          <h2 style="font-size:1.4rem; color:#fff;">Evaluación con Casos Prácticos</h2>
+          <p style="font-size:0.85rem; color:var(--text-soft);">
+            Preguntas 1 a 10 en el <strong>orden oficial de la cátedra</strong>. Las opciones (A, B, C, D) se barajan aleatoriamente en cada recarga para entrenar el razonamiento conceptual.
+          </p>
+        </div>
+        <div style="display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap;">
+          <div>
+            <div style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700;">Calificación Escrita</div>
+            <div style="font-size:1.8rem; font-weight:800; color:var(--primary-light);" id="quiz-score-num">0 / 10</div>
+            <div style="font-size:0.82rem; color:#34d399; font-weight:600;" id="quiz-note-calc">Nota: 0.0 / 5.0 pts</div>
+          </div>
+          <button class="tab-btn active" style="padding:0.75rem 1.25rem;" onclick="shuffleAndResetQuiz(true, true)">
+            🎲 Barajar Respuestas
+          </button>
+        </div>
+      </div>
+
+      <div id="quiz-wrapper">
+        <!-- Rendered dynamically with 2x2 grid -->
+      </div>
+    </section>
+
+    <!-- ============================================================
+         MÓDULO 3: FLASHCARDS 3D CON TABLAS COMPARATIVAS
+         ============================================================ -->
+    <section id="view-flashcards" class="view-section">
+      <div class="card" style="text-align:center; max-width:720px; margin:0 auto 1.5rem auto;">
+        <span class="badge-tag badge-accent">Giro 3D y Tablas</span>
+        <h2 style="justify-content:center; margin-top:0.3rem;">Tarjetas de Repaso Activo</h2>
+        <p style="font-size:0.85rem; color:var(--text-muted);">
+          Tocá la tarjeta para voltearla con animación 3D. Las tarjetas de doble concepto incluyen tablas comparativas.
+        </p>
+      </div>
+
+      <div class="fc-scene">
+        <div class="fc-card-3d" id="flashcard-3d" onclick="toggleCardFlip()">
+          
+          <!-- Front Face -->
+          <div class="fc-face fc-front">
+            <div>
+              <span class="badge-tag badge-primary" id="fc-tag-text">Unidad 1</span>
+              <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.5rem;" id="fc-counter-front">Tarjeta 1 de 10</div>
+            </div>
+            <div style="text-align:center; padding:1.5rem 0;">
+              <h3 style="font-size:1.35rem; font-weight:700; color:#fff; line-height:1.5;" id="fc-front-question">
+                Pregunta
+              </h3>
+            </div>
+            <div style="text-align:center; font-size:0.82rem; color:var(--text-muted);">
+              👆 Hacé clic para girar la tarjeta
+            </div>
+          </div>
+
+          <!-- Back Face -->
+          <div class="fc-face fc-back">
+            <div>
+              <span class="badge-tag badge-accent">Respuesta & Fundamento</span>
+            </div>
+            <div style="padding:0.5rem 0;" id="fc-back-content">
+              <!-- Text or Comparison Table -->
+            </div>
+            <div style="text-align:center; font-size:0.82rem; color:var(--primary-light);">
+              👆 Hacé clic para regresar a la pregunta
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Controls -->
+        <div style="display:flex; justify-content:center; align-items:center; gap:1rem; margin-top:1.5rem;">
+          <button class="tab-btn" style="background:var(--surface); border:1px solid var(--border);" onclick="navCard(-1)">← Anterior</button>
+          <span style="font-weight:700; font-size:0.9rem; color:var(--text-muted);" id="fc-index-label">1 / 10</span>
+          <button class="tab-btn" style="background:var(--surface); border:1px solid var(--border);" onclick="navCard(1)">Siguiente →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         MÓDULO 4: JUEGO DE CAPAS LIBRE (MOVER Y SACAR LIBREMENTE)
+         ============================================================ -->
+    <section id="view-minijuego" class="view-section">
+      <div class="card">
+        <span class="badge-tag badge-primary">Práctica Libre</span>
+        <h2>¿A qué capa pertenece cada acción?</h2>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-top:0.25rem;">
+          Arrastrá cada tarjeta a la capa correspondiente. <strong>Podés moverlas entre capas o devolverlas a la bandeja si tenés dudas</strong>, sin reiniciar todo tu progreso. Tus elecciones se guardan automáticamente.
+        </p>
+      </div>
+
+      <!-- Pool -->
+      <div class="pool-box" ondragover="allowGameDrop(event)" ondrop="handleDropToPool(event)">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:0.85rem; font-weight:700; color:var(--text-muted);">
+            📥 BANDEJA DE ACCIONES (Arrastrá hacia acá para sacarlas de una capa)
+          </span>
+          <button class="tab-btn" style="padding:0.35rem 0.8rem; font-size:0.75rem;" onclick="resetPoolGame()">
+            Reiniciar Todo
+          </button>
+        </div>
+        <div class="pool-items-tray" id="pool-tray">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- 3 Drop Zones -->
+      <div class="game-zone-wrapper">
+        <div class="game-drop-box" id="zone-ui" ondragover="allowGameDrop(event)" ondrop="handleDropToZone(event, 'ui')">
+          <div class="game-box-title">🖥️ 1. Capa de UI (Activity / Compose)</div>
+        </div>
+        <div class="game-drop-box" id="zone-vm" ondragover="allowGameDrop(event)" ondrop="handleDropToZone(event, 'vm')">
+          <div class="game-box-title">🧠 2. Capa ViewModel (Estado)</div>
+        </div>
+        <div class="game-drop-box" id="zone-data" ondragover="allowGameDrop(event)" ondrop="handleDropToZone(event, 'data')">
+          <div class="game-box-title">💾 3. Capa de Datos (Repository)</div>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:1.5rem;">
+        <button class="tab-btn active" style="padding:0.75rem 2rem; margin:0 auto; font-size:0.95rem;" onclick="checkGameAnswers()">
+          ✅ Comprobar Mis Respuestas
+        </button>
+        <div id="game-results-text" style="margin-top:0.75rem; font-weight:700; font-size:1rem;"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         MÓDULO 5: RESUMEN TEÓRICO COMPLETO (LOS 10 TEMAS OFICIALES)
+         ============================================================ -->
+    <section id="view-teoria" class="view-section">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:0.75rem;">
+          <div>
+            <span class="badge-tag badge-primary">Temario Oficial • Clases 1 a 12</span>
+            <h2 style="margin-top:0.4rem;">Compendio Teórico Oficial para el Parcial</h2>
+            <p style="color:var(--text-muted); font-size:0.9rem; margin-top:0.25rem;">
+              Guía exhaustiva alineada a los 10 temas comunicados por la cátedra (Room NO entra en esta evaluación).
+            </p>
+          </div>
+          <div style="font-size:0.8rem; background:rgba(59, 130, 246, 0.1); border:1px solid rgba(59, 130, 246, 0.25); padding:0.45rem 0.85rem; border-radius:10px; color:var(--primary-light); font-weight:600;">
+            📚 10 Temas Fundamentales
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtros por Unidad y Tema -->
+      <div class="theory-filter-bar">
+        <span style="font-size:0.8rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-right:0.25rem;">Filtrar:</span>
+        <button class="theory-filter-chip active" onclick="filterTheoryTopics('all', this)">
+          🌟 Todos <span class="theory-count-pill" id="filter-count-all">10</span>
+        </button>
+        <button class="theory-filter-chip" onclick="filterTheoryTopics('u1-mobile', this)">
+          📱 U1: Móviles & Proyecto <span class="theory-count-pill">2</span>
+        </button>
+        <button class="theory-filter-chip" onclick="filterTheoryTopics('u1-kotlin', this)">
+          ☕ U1: Lenguaje Kotlin <span class="theory-count-pill">3</span>
+        </button>
+        <button class="theory-filter-chip" onclick="filterTheoryTopics('u1-arch', this)">
+          🏛️ U1: Arquitectura Android <span class="theory-count-pill">1</span>
+        </button>
+        <button class="theory-filter-chip" onclick="filterTheoryTopics('u2-ux', this)">
+          🎨 U2: UX/UI & Nielsen <span class="theory-count-pill">1</span>
+        </button>
+        <button class="theory-filter-chip" onclick="filterTheoryTopics('u3-lifecycle', this)">
+          🔄 U3: Ciclo, MVVM & Datos <span class="theory-count-pill">3</span>
+        </button>
+      </div>
+
+      <!-- Contenedor Balanceado de Tarjetas -->
+      <div class="theory-cards-grid" id="theory-cards-container">
+        
+        <!-- 1. Computación Móvil -->
+        <div class="theory-card-item" data-unit="u1-mobile">
+          <div class="theory-card-header">
+            <h3 class="theory-card-title" style="color:#60a5fa;">📱 1. Fundamentos de Computación Móvil</h3>
+            <span class="badge-tag badge-primary">Unidad 1 • Móviles</span>
+          </div>
+          <div class="theory-card-body">
+            <ul>
+              <li><strong>Clasificación de Dispositivos:</strong>
+                <ul>
+                  <li><em>Embebido:</em> Interno, inamovible y autónomo (frenos ABS de un auto).</li>
+                  <li><em>Montado:</em> Integrado parcialmente a un anfitrión del que depende (<strong>Android Auto</strong>).</li>
+                  <li><em>Portátil acompañado:</em> Teléfonos smartphones y tablets personales.</li>
+                  <li><em>Fijo:</em> Estaciones y PCs conectadas a red cableada.</li>
+                </ul>
+              </li>
+              <li><strong>Desafíos Móviles:</strong> Ubicuidad, autonomía de batería, procesadores térmicamente limitados y conectividad intermitente/discontinua.</li>
+              <li><strong>Optimización con 8 GB RAM:</strong> La recomendación técnica del curso es conectar un <strong>dispositivo físico real por USB</strong> con depuración habilitada en lugar de emular en Android Studio.</li>
+            </ul>
+          </div>
+          <div class="theory-card-footer">
+            <span class="theory-tag">Embebido</span>
+            <span class="theory-tag">Montado</span>
+            <span class="theory-tag">8 GB RAM</span>
+            <span class="theory-tag">USB Debug</span>
+          </div>
+        </div>
+
+        <!-- 2. Anatomía de Android -->
+        <div class="theory-card-item" data-unit="u1-mobile">
+          <div class="theory-card-header">
+            <h3 class="theory-card-title" style="color:#38bdf8;">🏗️ 2. Anatomía de un Proyecto Android</h3>
+            <span class="badge-tag badge-primary">Unidad 1 • Estructura</span>
+          </div>
+          <div class="theory-card-body">
+            <ul>
+              <li><code class="code-inline">AndroidManifest.xml</code>: El archivo de registro del sistema. Declara obligatoriamente las Activities, permisos (<code class="code-inline">&lt;uses-permission&gt;</code>), servicios y el <code class="code-inline">intent-filter</code> (MAIN/LAUNCHER) de la pantalla de inicio.</li>
+              <li><strong>Estructura <code class="code-inline">res/</code> (Recursos):</strong>
+                <ul>
+                  <li><code class="code-inline">layout/</code>: Archivos XML con el diseño visual de las vistas.</li>
+                  <li><code class="code-inline">values/strings.xml</code>: Textos centralizados para mantenimiento e internacionalización.</li>
+                  <li><code class="code-inline">values/colors.xml</code> y <code class="code-inline">themes.xml</code>: Paletas y estilos.</li>
+                  <li><code class="code-inline">drawable/</code>: Vectores e imágenes gráficas.</li>
+                  <li><code class="code-inline">mipmap/</code>: Íconos de aplicación adaptativos para diversas densidades.</li>
+                </ul>
+              </li>
+              <li><strong>Gradle (<code class="code-inline">build.gradle.kts</code>):</strong>
+                <ul>
+                  <li><code class="code-inline">compileSdk</code>: Versión del SDK usada para compilar.</li>
+                  <li><code class="code-inline">minSdk</code>: Versión mínima de Android requerida para instalar la app.</li>
+                  <li><code class="code-inline">targetSdk</code>: Versión con la que fue testeada y optimizada la app.</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="theory-card-footer">
+            <span class="theory-tag">AndroidManifest</span>
+            <span class="theory-tag">res/</span>
+            <span class="theory-tag">Gradle</span>
+            <span class="theory-tag">minSdk / targetSdk</span>
+          </div>
+        </div>
+
+        <!-- 3. Kotlin Básico & Null Safety -->
+        <div class="theory-card-item" data-unit="u1-kotlin">
+          <div class="theory-card-header">
+            <h3 class="theory-card-title" style="color:#34d399;">☕ 3. Kotlin: Fundamentos & Null Safety</h3>
+            <span class="badge-tag badge-accent">Unidad 1 • Kotlin</span>
+          </div>
+          <div class="theory-card-body">
+            <ul>
+              <li><strong>Inmutabilidad:</strong> <code class="code-inline">val</code> define variables de solo lectura (inmutables, preferidas por seguridad); <code class="code-inline">var</code> define variables mutables.</li>
+              <li><strong>Inferencia de Tipos y Templates:</strong> Infiere tipos automáticamente y permite interpolación directa: <code class="code-inline">"Puntos: $score"</code> o <code class="code-inline">"${user.name}"</code>.</li>
+              <li><strong>Null Safety (Seguridad ante Nulos):</strong>
+                <ul>
+                  <li>Por defecto los tipos son no-nulos (<code class="code-inline">val s: String = null</code> da error de compilación).</li>
+                  <li>Tipos anulables con signo <code class="code-inline">?</code>: <code class="code-inline">val s: String? = null</code>.</li>
+                  <li><strong>Safe Call (<code class="code-inline">?.</code>):</strong> Ejecuta si no es nulo, o devuelve <code class="code-inline">null</code> sin arrojar excepción.</li>
+                  <li><strong>Operador Elvis (<code class="code-inline">?:</code>):</strong> Provee un valor por defecto si la izquierda es nula: <code class="code-inline">val largo = s?.length ?: 0</code>.</li>
+                  <li><strong>Not-Null Assertion (<code class="code-inline">!!</code>):</strong> Fuerza la desreferencia; si es nulo arroja <code class="code-inline">NullPointerException</code>.</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="theory-card-footer">
+            <span class="theory-tag">val / var</span>
+            <span class="theory-tag">Null Safety</span>
+            <span class="theory-tag">Safe Call ?.</span>
+            <span class="theory-tag">Elvis ?:</span>
+            <span class="theory-tag">!!</span>
+          </div>
+        </div>
+
+        <!-- 4. POO, Métodos y Herencia -->
+        <div class="theory-card-item" data-unit="u1-kotlin">
+          <div class="theory-card-header">
+            <h3 class="theory-card-title" style="color:#a7f3d0;">🧬 4. POO, Métodos y Herencia</h3>
+            <span class="badge-tag badge-accent">Unidad 1 • POO</span>
+          </div>
+          <div class="theory-card-body">
+            <ul>
+              <li><strong>Clases Final por Defecto:</strong> En Kotlin todas las clases son cerradas (<code class="code-inline">final</code>). No se puede heredar de ellas salvo que se declare explícitamente el modificador <code class="code-inline">open</code>.</li>
+              <li><strong>Herencia Sintáctica:</strong> La subclase hereda mediante dos puntos: <code class="code-inline">open class Planta()</code> ➔ <code class="code-inline">class Suculenta : Planta()</code>.</li>
+              <li><strong>Sobrescritura:</strong> Métodos a sobrescribir deben ser <code class="code-inline">open</code> en el padre y llevar <code class="code-inline">override</code> en el hijo.</li>
+              <li><strong>Modificadores de Visibilidad:</strong>
+                <ul>
+                  <li><code class="code-inline">private</code>: Accesible únicamente en la clase o archivo donde se define.</li>
+                  <li><code class="code-inline">protected</code>: Accesible en la clase y en sus <strong>subclases derivadas (herencia)</strong>.</li>
+                  <li><code class="code-inline">internal</code>: Visible en cualquier parte dentro del mismo módulo.</li>
+                  <li><code class="code-inline">public</code> (por defecto): Visible globalmente.</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="theory-card-footer">
+            <span class="theory-tag">open / final</span>
+            <span class="theory-tag">override</span>
+            <span class="theory-tag">protected</span>
+            <span class="theory-tag">internal</span>
+          </div>
+        </div>
+
+        <!-- 5. Arquitectura del Sistema Operativo -->
+        <div class="theory-card-item" data-unit="u1-arch">
+          <div class="theory-card-header">
+            <h3 class="theory-card-title" style="color:#c084fc;">🏛️ 5. Arquitectura del SO Android (Stack de 5 Capas)</h3>
+            <span class="badge-tag" style="background:rgba(192,132,252,0.15); color:#c084fc; border:1px solid rgba(192,132,252,0.35);">Unidad 1 • Stack SO</span>
+          </div>
+          <div class="theory-card-body">
+            <ul>
+              <li><strong>1. Linux Kernel:</strong> Capa inferior. Maneja drivers (pantalla, cámara, audio, WiFi, Bluetooth), gestión de procesos, memoria física, hilos y seguridad.</li>
+              <li><strong>2. HAL (Hardware Abstraction Layer):</strong> Módulos C/C++ que estandarizan el acceso al hardware físico sin importar el fabricante del microchip.</li>
+              <li><strong>3. Runtime (ART) & Librerías Nativas:</strong>
+                <ul>
+                  <li><strong>ART (Android Runtime):</strong> Reemplazó a Dalvik. Compila bytecode DEX usando AOT (*Ahead-Of-Time*) y JIT (*Just-In-Time*), optimizando el uso de batería y CPU.</li>
+                  <li><strong>Librerías Nativas C/C++:</strong> SQLite, WebKit, OpenGL ES, SSL.</li>
+                </ul>
+              </li>
+              <li><strong>4. Java API Framework:</strong> Herramientas para programadores: <code class="code-inline">ActivityManager</code>, <code class="code-inline">WindowManager</code>, <code class="code-inline">ContentProviders</code>, <code class="code-inline">ViewSystem</code>, <code class="code-inline">NotificationManager</code>.</li>
+              <li><strong>5. System Apps & User Apps:</strong> Aplicaciones preinstaladas del sistema (Contactos, Marcador) y aplicaciones de usuario (como tu app DAM).</li>
+            </ul>
+          </div>
+          <div class="theory-card-footer">
+            <span class="theory-tag">Linux Kernel</span>
+            <span class="theory-tag">HAL</span>
+            <span class="theory-tag">ART (AOT+JIT)</span>
+            <span class="theory-tag">Java API</span>
+            <span class="theory-tag">System Apps</span>
+          </div>
+        </div>
+
+        <!-- 6. Tipos de Clases en Kotlin -->
+        <div class="theory-card-item" data-unit="u1-kotlin">
+          <div class="theory-card-header">
+            <h3 class="theory-card-title" style="color:#e879f9;">📦 6. Tipos de Clases en Kotlin</h3>
+            <span class="badge-tag badge-accent">Unidad 1 • Clases</span>
+          </div>
+          <div class="theory-card-body">
+            <ul>
+              <li><code class="code-inline">data class</code>: Para contener datos. El compilador autogenera <code class="code-inline">equals()</code>, <code class="code-inline">hashCode()</code>, <code class="code-inline">toString()</code>, <code class="code-inline">copy()</code> y desestructuración. Ejemplo: modelos JSON.</li>
+              <li><code class="code-inline">sealed class</code>: Jerarquías cerradas y finitas en tiempo de compilación. Esenciales en Android para modelar estados seguros de UI (<code class="code-inline">Loading</code>, <code class="code-inline">Success</code>, <code class="code-inline">Error</code>), logrando que el <code class="code-inline">when</code> sea exhaustivo sin requerir <code class="code-inline">else</code>.</li>
+              <li><code class="code-inline">enum class</code>: Conjunto finito de constantes fijas (ej. <code class="code-inline">enum class Dificultad { FACIL, MEDIO, DIFICIL }</code>).</li>
+              <li><code class="code-inline">abstract class</code>: Molde que no puede instanciarse; define métodos abstractos a implementar por las subclases.</li>
+              <li><code class="code-inline">interface</code>: Contratos de métodos y propiedades que pueden contener implementaciones por defecto.</li>
+              <li><code class="code-inline">object</code> / <code class="code-inline">companion object</code>: <code class="code-inline">object</code> define un Singleton nativo. <code class="code-inline">companion object</code> dentro de una clase aloja miembros estáticos (reemplazo del <code class="code-inline">static</code> de Java).</li>
+            </ul>
+          </div>
+          <div class="theory-card-footer">
+            <span class="theory-tag">data class</span>
+            <span class="theory-tag">sealed class</span>
+            <span class="theory-tag">enum class</span>
+            <span class="theory-tag">companion object</span>
+          </div>
+        </div>
+
+        <!-- 7. UX/UI: Prototipado, Flujos & Heurísticas -->
+        <div class="theory-card-item" data-unit="u2-ux">
+          <div class="theory-card-header">
+            <h3 class="theory-card-title" style="color:#fbbf24;">🎨 7. UX/UI: Prototipado, Flujos y Nielsen</h3>
+            <span class="badge-tag badge-warning">Unidad 2 • UX/UI</span>
+          </div>
+          <div class="theory-card-body">
+            <ul>
+              <li><strong>Por qué Prototipar y Testear:</strong> Permite iterar y validar con usuarios reales antes de programar, reduciendo costos y evitando retrabajos.</li>
+              <li><strong>Escala de Fidelidad:</strong>
+                <ul>
+                  <li><em>Boceto (Sketch):</em> Papel y lápiz, baja fidelidad, lluvia de ideas rápida.</li>
+                  <li><em>Wireframe:</em> Estructura esquemática en escala de grises. Define disposición y jerarquía sin diseño visual ni fotos.</li>
+                  <li><em>Mockup:</em> Representación estática de media/alta fidelidad con paleta de color, tipografía y estilo visual final.</li>
+                  <li><em>Prototipo:</em> Modelo dinámico interactivo y navegable para simular flujos de usuario reales.</li>
+                </ul>
+              </li>
+              <li><strong>Flujos entre Pantallas (User/Screen Flow):</strong> Diagramas que mapean la ruta completa del usuario para cumplir un objetivo (Login ➔ Menú ➔ Pregunta ➔ Victoria), identificando puntos de decisión y errores.</li>
+              <li><strong>Leyes de Nielsen (10 Heurísticas):</strong> Visibilidad del estado del sistema (feedback), correspondencia con el mundo real, control y libertad del usuario (deshacer/cancelar), consistencia y estándares, prevención de errores, reconocimiento antes que recuerdo.</li>
+              <li><strong>Ergonomía:</strong> Ley de Hick (dividir formularios largos), Ley de Fitts y Zona del Pulgar.</li>
+            </ul>
+          </div>
+          <div class="theory-card-footer">
+            <span class="theory-tag">Wireframe</span>
+            <span class="theory-tag">Mockup</span>
+            <span class="theory-tag">Heurísticas de Nielsen</span>
+            <span class="theory-tag">Zona del Pulgar</span>
+          </div>
+        </div>
+
+        <!-- 8. Ciclo de Vida -->
+        <div class="theory-card-item" data-unit="u3-lifecycle">
+          <div class="theory-card-header">
+            <h3 class="theory-card-title" style="color:#f87171;">🔄 8. Ciclo de Vida de Activity y Fragment</h3>
+            <span class="badge-tag badge-danger">Unidad 3 • Ciclo de Vida</span>
+          </div>
+          <div class="theory-card-body">
+            <ul>
+              <li><strong>Estados:</strong> <code class="code-inline">onCreate()</code> (creación/inflado) ➔ <code class="code-inline">onStart()</code> (visible sin foco) ➔ <code class="code-inline">onResume()</code> (interactivo con foco pleno) ➔ <code class="code-inline">onPause()</code> (pérdida de foco) ➔ <code class="code-inline">onStop()</code> (oculta en segundo plano) ➔ <code class="code-inline">onDestroy()</code> (destrucción).</li>
+              <li><strong>Dato Clave de Examen sobre <code class="code-inline">onPause()</code>:</strong> Al entrar una llamada o salir de la app, <code class="code-inline">onPause()</code> es el <strong>último momento seguro garantizado</strong> para persistir borradores, porque ante escasez crítica de RAM el SO puede matar el proceso sin pasar por <code class="code-inline">onStop()</code> ni <code class="code-inline">onDestroy()</code>.</li>
+              <li><strong>Fragment:</strong> Porción modular de UI con ciclo de vida autónomo acoplado a la Activity huésped.</li>
+            </ul>
+          </div>
+          <div class="theory-card-footer">
+            <span class="theory-tag">onCreate()</span>
+            <span class="theory-tag">onPause() (Llamada)</span>
+            <span class="theory-tag">RAM Kill</span>
+            <span class="theory-tag">Fragment</span>
+          </div>
+        </div>
+
+        <!-- 9. MVVM y Concurrencia -->
+        <div class="theory-card-item" data-unit="u3-lifecycle">
+          <div class="theory-card-header">
+            <h3 class="theory-card-title" style="color:#60a5fa;">🧠 9. Arquitectura MVVM y Concurrencia</h3>
+            <span class="badge-tag badge-primary">Unidad 3 • MVVM & Hilos</span>
+          </div>
+          <div class="theory-card-body">
+            <ul>
+              <li><strong>Separación de Capas:</strong>
+                <ul>
+                  <li><em>Vista (Activity / Compose):</em> Dibuja la UI y recibe toques. No procesa lógica pesada.</li>
+                  <li><em>ViewModel:</em> Retiene el estado en memoria RAM. <strong>Sobrevive intacto a la rotación de pantalla</strong> (evita perder puntajes cuando la Activity se recrea).</li>
+                  <li><em>Repositorio / Modelo:</em> Acceso a datos locales o remotos.</li>
+                </ul>
+              </li>
+              <li><strong>Hilo Principal (Main Thread):</strong> Atiende exclusivamente el dibujo e interacción. Tareas pesadas provocan el error <strong>ANR (Application Not Responding)</strong>.</li>
+              <li><strong>Corrutinas:</strong> Hilos ligeros que corren en segundo plano (<code class="code-inline">Dispatchers.IO</code>) para temporizadores, música o almacenamiento sin bloquear la vista.</li>
+            </ul>
+          </div>
+          <div class="theory-card-footer">
+            <span class="theory-tag">ViewModel</span>
+            <span class="theory-tag">Rotación</span>
+            <span class="theory-tag">ANR</span>
+            <span class="theory-tag">Coroutines IO</span>
+          </div>
+        </div>
+
+        <!-- 10. Persistencia de Datos -->
+        <div class="theory-card-item" data-unit="u3-lifecycle">
+          <div class="theory-card-header">
+            <h3 class="theory-card-title" style="color:#fbbf24;">💾 10. Persistencia de Datos</h3>
+            <span class="badge-tag badge-warning">Unidad 3 • Almacenamiento</span>
+          </div>
+          <div class="theory-card-body">
+            <ul>
+              <li><strong>SharedPreferences:</strong> Almacenamiento liviano en formato clave-valor (guarda internamente un XML privado). Ideal para configuraciones simples y flags de estado (ej: <code class="code-inline">isDarkMode = true</code>, volumen, sesión iniciada).</li>
+              <li><strong>Archivos JSON Locales:</strong> Almacenamiento estructurado en disco para colecciones de datos moderadas (ej. banco de preguntas del juego, historial de partidas).</li>
+              <li><strong>Confirmación Oficial:</strong> La librería ORM <strong>Room NO entra en este parcial</strong> (queda para la segunda mitad de la materia).</li>
+            </ul>
+          </div>
+          <div class="theory-card-footer">
+            <span class="theory-tag">SharedPreferences</span>
+            <span class="theory-tag">XML Privado</span>
+            <span class="theory-tag">JSON Local</span>
+            <span class="theory-tag">Room NO entra</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    /* ============================================================
+       LOCALSTORAGE MEMORY SYSTEM (GUARDA TODO EL PROGRESO)
+       ============================================================ */
+    const STORAGE_KEY = 'DAM_TUTOR_STATE_V2';
+
+    function getSavedData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function saveAppData() {
+      try {
+        const state = {
+          activeTab: currentActiveTab,
+          quizAnswers: userSelectedAnswers,
+          quizList: currentQuizList,
+          flashcardIndex: currentFcIdx,
+          gameLocations: gameItemLocations
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        console.warn('No se pudo guardar en localStorage:', e);
+      }
+    }
+
+    function clearAllUserData() {
+      if (confirm('¿Querés reiniciar todo tu progreso guardado (respuestas del simulacro, tarjetas y juego de capas)?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      }
+    }
+
+    let currentActiveTab = 'simulador';
+
+    function switchTab(tabId, playAudio = true) {
+      if (playAudio && currentActiveTab !== tabId) {
+        soundManager.playClick();
+      }
+      currentActiveTab = tabId;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+
+      const btn = document.getElementById('tab-btn-' + tabId);
+      if (btn) btn.classList.add('active');
+
+      const sec = document.getElementById('view-' + tabId);
+      if (sec) sec.classList.add('active');
+
+      saveAppData();
+    }
+
+    /* ============================================================
+       SIMULADOR EN TELÉFONO Y PIPELINE DEL CICLO DE VIDA
+       ============================================================ */
+    function setScenario(scen, playAudio = true) {
+      if (playAudio) {
+        if (scen === 'llamada') {
+          soundManager.playRing();
+        } else if (scen === 'anr') {
+          soundManager.playError();
+        } else {
+          soundManager.playClick();
+        }
+      }
+
+      // Highlight button
+      document.querySelectorAll('.sim-event-chip').forEach(b => b.classList.remove('active', 'active-alert'));
+      const activeChip = document.getElementById('chip-' + scen);
+      if (activeChip) {
+        activeChip.classList.add(scen === 'anr' ? 'active-alert' : 'active');
+      }
+
+      // Stepper references
+      const sCreate = document.getElementById('step-create');
+      const sStart = document.getElementById('step-start');
+      const sResume = document.getElementById('step-resume');
+      const sPause = document.getElementById('step-pause');
+      const sStop = document.getElementById('step-stop');
+      const sDestroy = document.getElementById('step-destroy');
+
+      // Layer cards
+      const cardUi = document.getElementById('sim-layer-ui');
+      const cardVm = document.getElementById('sim-layer-vm');
+      const cardData = document.getElementById('sim-layer-data');
+
+      const txtUi = document.getElementById('sim-text-ui');
+      const txtVm = document.getElementById('sim-text-vm');
+      const txtData = document.getElementById('sim-text-data');
+
+      // Phone elements
+      const phoneMockup = document.getElementById('phone-mockup');
+      const overlayCall = document.getElementById('overlay-call');
+      const overlayHome = document.getElementById('overlay-home');
+      const overlayAnr = document.getElementById('overlay-anr');
+      const stageIndicator = document.getElementById('app-stage-indicator');
+      const timerBar = document.getElementById('app-timer-bar');
+
+      // Reset common phone states
+      const simWrapper = document.getElementById('sim-wrapper-box');
+      if (simWrapper) simWrapper.classList.remove('is-rotated');
+      phoneMockup.classList.remove('rotated');
+      overlayCall.style.display = 'none';
+      overlayHome.style.display = 'none';
+      overlayAnr.style.display = 'none';
+
+      // Reset steps & layer styles
+      [sCreate, sStart, sResume, sPause, sStop, sDestroy].forEach(el => el.className = 'lc-step');
+      [cardUi, cardVm, cardData].forEach(el => el.className = 'layer-card');
+
+      if (scen === 'create') {
+        sCreate.className = 'lc-step active';
+        cardUi.classList.add('highlight');
+        cardVm.classList.add('highlight');
+
+        stageIndicator.innerText = '🟡 Estado: onCreate() • Creando Activity';
+        timerBar.style.width = '100%';
+
+        txtUi.innerHTML = '<strong>onCreate() en la UI:</strong> Se ejecuta una sola vez al nacer la Activity. Se infla el diseño (<code>setContentView(R.layout...)</code> o Compose <code>setContent</code>) y se enlazan vistas con ViewBinding.';
+        txtVm.innerHTML = '<strong>Inicialización del ViewModel:</strong> Se obtiene la instancia del ViewModel asociada a este Scope (<code>by viewModels()</code>) y se preparan los flujos de datos reactivos.';
+        txtData.innerHTML = '<strong>Capa de Datos lista:</strong> El Repository queda instanciado a la espera de peticiones de lectura o escritura.';
+
+      } else if (scen === 'start') {
+        sCreate.className = 'lc-step active';
+        sStart.className = 'lc-step active';
+        cardUi.classList.add('highlight');
+
+        stageIndicator.innerText = '🔵 Estado: onStart() • Pantalla visible sin foco';
+        timerBar.style.width = '90%';
+
+        txtUi.innerHTML = '<strong>onStart() en la UI:</strong> La aplicación se vuelve visible para el usuario en pantalla, pero <em>aún no tiene el foco</em> para responder toques. Se inician componentes que solo deben mostrarse cuando la app es visible.';
+        txtVm.innerHTML = '<strong>Observadores en espera:</strong> El ViewModel ya tiene los datos cargados en memoria listos para dibujar.';
+        txtData.innerHTML = '<strong>Datos listos:</strong> El repositorio provee los datos iniciales al ViewModel.';
+
+      } else if (scen === 'resume') {
+        sResume.className = 'lc-step active';
+        cardUi.classList.add('highlight');
+        cardVm.classList.add('highlight');
+
+        stageIndicator.innerText = '🟢 Estado: onResume() • En ejecución con foco total';
+        timerBar.style.width = '65%';
+
+        txtUi.innerHTML = '<strong>onResume() en la UI:</strong> La aplicación pasa a primer plano absoluto y obtiene el foco interactivo. El usuario puede tocar botones y responder la trivia.';
+        txtVm.innerHTML = '<strong>Lógica activa:</strong> El ViewModel reanuda o lanza la corrutina del temporizador de 20 segundos y expone los cambios de estado a la UI.';
+        txtData.innerHTML = '<strong>Operación normal:</strong> La capa de datos permanece en espera de eventos de guardado o actualización.';
+
+      } else if (scen === 'llamada') {
+        sPause.className = 'lc-step active-critical';
+        cardUi.classList.add('highlight');
+        cardVm.classList.add('highlight');
+        cardData.classList.add('highlight');
+
+        overlayCall.style.display = 'flex';
+        stageIndicator.innerText = '🔴 Estado: onPause() • Pausa obligatoria';
+        timerBar.style.width = '40%';
+
+        txtUi.innerHTML = '<strong>onPause() por llamada entrante:</strong> La pantalla pierde el foco. La Activity detiene de inmediato animaciones, sonido y el temporizador, y <strong>avisa al ViewModel</strong> para persistir.';
+        txtVm.innerHTML = '<strong>Salvar estado en memoria:</strong> El ViewModel toma el puntaje y la pregunta vigente, y despacha una corrutina (<code>viewModelScope.launch</code>) al Repository.';
+        txtData.innerHTML = '<strong>Persistencia Garantizada:</strong> El Repository guarda el borrador en <code>SharedPreferences</code> o JSON en segundo plano (hilo IO), porque si hay escasez de RAM, Android puede matar el proceso sin previo aviso.';
+
+      } else if (scen === 'home') {
+        sPause.className = 'lc-step active';
+        sStop.className = 'lc-step active-critical';
+        cardUi.classList.add('highlight');
+        cardVm.classList.add('highlight');
+
+        overlayHome.style.display = 'flex';
+
+        txtUi.innerHTML = '<strong>onStop() al presionar Home:</strong> La aplicación pasa a estar <strong>completamente oculta</strong> (segundo plano). Se liberan recursos visuales pesados que no se necesitan mientras el usuario no vea la app.';
+        txtVm.innerHTML = '<strong>Estado en espera:</strong> El ViewModel conserva todo en RAM por si el usuario vuelve a abrir la app desde la lista de recientes.';
+        txtData.innerHTML = '<strong>Almacenamiento cerrado:</strong> Se terminan de confirmar las escrituras pendientes en disco local.';
+
+      } else if (scen === 'rotacion') {
+        sPause.className = 'lc-step active';
+        sStop.className = 'lc-step active';
+        sDestroy.className = 'lc-step active-critical';
+
+        if (simWrapper) simWrapper.classList.add('is-rotated');
+        phoneMockup.classList.add('rotated');
+        cardUi.classList.add('danger');
+        cardVm.classList.add('highlight');
+
+        stageIndicator.innerText = '🔄 Rotación: Destrucción ➔ Recreación';
+
+        txtUi.innerHTML = '<strong>Destrucción de la Activity:</strong> Al girar el celular, Android destruye por completo la Activity actual (<code>onDestroy</code>) y crea una nueva (<code>onCreate</code>) para inflar el nuevo diseño horizontal.';
+        txtVm.innerHTML = '<strong>🛡️ ¡El ViewModel NO se destruye!</strong> El ViewModel tiene un ciclo de vida independiente y sobrevive en memoria RAM. Cuando la nueva Activity se levanta, se reconecta al mismo ViewModel y recupera los 150 puntos intactos.';
+        txtData.innerHTML = '<strong>Sin escrituras innecesarias:</strong> No hizo falta escribir en disco porque los datos siguieron seguros en el ViewModel en memoria RAM.';
+
+      } else if (scen === 'anr') {
+        sPause.className = 'lc-step active-critical';
+        cardUi.classList.add('danger');
+        cardData.classList.add('danger');
+
+        overlayAnr.style.display = 'flex';
+
+        txtUi.innerHTML = '<strong>⛔ ERROR GRAVE (ANR):</strong> Se intentó escribir en SQLite/disco adentro del método de ciclo de vida en el Hilo Principal. La pantalla se congela y Android muestra el cartel de "Cerrar app".';
+        txtVm.innerHTML = '<strong>Solución Arquitectónica:</strong> El ViewModel debe usar <code>viewModelScope.launch(Dispatchers.IO)</code> para que la persistencia corra en segundo plano.';
+        txtData.innerHTML = '<strong>Regla de Oro:</strong> La persistencia SIEMPRE debe ser asíncrona mediante corrutinas o hilos secundarios.';
+      }
+    }
+
+    /* ============================================================
+       SIMULACRO 2x2 ALEATORIO CON MEMORIA LOCAL
+       ============================================================ */
+    const originalQuizData = [
+      {
+        id: 1,
+        question: "Un desarrollador trabaja en una computadora portátil con 8 GB de RAM y experimenta lentitud general al intentar ejecutar su aplicación en Android Studio. Según las recomendaciones técnicas del curso, ¿cuál es la opción preferible para optimizar el rendimiento y realizar las pruebas de forma fluida?",
+        options: [
+          { text: "Asignar 4096 MB de memoria RAM adicionales al emulador para forzar la aceleración por hardware.", correct: false },
+          { text: "Ejecutar y probar la aplicación directamente en un dispositivo físico con depuración por USB activa.", correct: true },
+          { text: "Abrir el navegador Google Chrome con múltiples pestañas para consultar la documentación durante la emulación.", correct: false },
+          { text: "Crear un nuevo dispositivo virtual con la versión más reciente de Android sin importar el tamaño de la imagen.", correct: false }
+        ],
+        explanation: "En computadoras con 8 GB de RAM, levantar un emulador (AVD) compite severamente con el IDE. La recomendación técnica del curso es conectar el celular por USB con depuración habilitada."
+      },
+      {
+        id: 2,
+        question: "En el diseño de un formulario de registro para una aplicación móvil se detecta que los usuarios se sienten abrumados por la presencia de 20 campos consecutivos en una sola pantalla. ¿Qué principio de usabilidad explica esta situación y qué solución propone?",
+        options: [
+          { text: "El concepto de invisibilidad tecnológica, que requiere reemplazar todos los formularios por interacción de voz.", correct: false },
+          { text: "La Ley de Hick, la cual indica que el tiempo de decisión aumenta con el número de opciones; recomendando dividir el formulario en etapas cortas.", correct: true },
+          { text: "El ciclo de vida de la Activity, indicando que demasiados campos destruyen la vista en tiempo de ejecución.", correct: false },
+          { text: "La Ley de Fitts, la cual exige situar los campos de entrada obligatoriamente en las esquinas superiores de la pantalla.", correct: false }
+        ],
+        explanation: "La Ley de Hick demuestra que a mayor cantidad de opciones simultáneas, mayor es la carga mental y el tiempo de decisión. En móviles se soluciona dividiendo procesos largos en pasos progresivos."
+      },
+      {
+        id: 3,
+        question: "Se desea definir una clase base 'Planta' en Kotlin para que la clase 'Suculenta' pueda heredar sus atributos. Sin embargo, el compilador marca un error en la declaración 'class Suculenta : Planta()'. ¿Qué modificación es necesaria en la clase padre?",
+        options: [
+          { text: "Utilizar la palabra clave 'extends' en la clase hija como se hace tradicionalmente en Java.", correct: false },
+          { text: "Cambiar la visibilidad de la clase padre a 'private class Planta'.", correct: false },
+          { text: "Declarar la clase hija con la palabra reservada 'internal class Suculenta'.", correct: false },
+          { text: "Agregar el modificador 'open' en la declaración de la clase padre: 'open class Planta'.", correct: true }
+        ],
+        explanation: "En Kotlin todas las clases son 'final' (cerradas) por defecto. Para que otra clase pueda heredar de ella, es obligatorio anteponer la palabra 'open' a la clase padre."
+      },
+      {
+        id: 4,
+        question: "¿Cuál es la diferencia fundamental entre la construcción de interfaces en Android tradicional mediante XML (imperativa) y el paradigma utilizado en Jetpack Compose?",
+        options: [
+          { text: "El enfoque de Jetpack Compose es imperativo, obligando a indicarle a la pantalla paso a paso cómo modificar el texto de un botón mediante findViewById.", correct: false },
+          { text: "Jetpack Compose solo permite crear interfaces estáticas que no pueden reaccionar a flujos de datos.", correct: false },
+          { text: "Jetpack Compose es declarativo, lo que significa que la interfaz se define como un reflejo exacto del estado actual de los datos sin manipular vistas manualmente.", correct: true },
+          { text: "Jetpack Compose requiere definir los diseños en archivos XML e interpretarlos en Kotlin con ViewBinding.", correct: false }
+        ],
+        explanation: "Jetpack Compose es declarativo: describes cómo debe verse la UI según el estado. Cuando el estado cambia, Compose recalcula y recompone la pantalla automáticamente sin manipular vistas a mano."
+      },
+      {
+        id: 5,
+        question: "Un usuario está jugando una trivia en su teléfono móvil y decide rotar la pantalla de modo vertical a apaisado. ¿Por qué el patrón ViewModel evita que el puntaje y la pregunta actual se pierdan durante este cambio?",
+        options: [
+          { text: "Porque el ViewModel permanece en memoria y no se destruye durante la recreación de la Activity por cambios de configuración.", correct: true },
+          { text: "Porque el ViewModel desactiva el ciclo de vida del teléfono mientras la aplicación está en uso.", correct: false },
+          { text: "Porque el ViewModel escribe automáticamente el estado en la base de datos física del teléfono antes de girar la pantalla.", correct: false },
+          { text: "Porque la Activity nunca se destruye ni se vuelve a crear durante la rotación del dispositivo.", correct: false }
+        ],
+        explanation: "La rotación de pantalla destruye y recrea la Activity. El ViewModel posee un ciclo de vida independiente y sobrevive en la memoria RAM, conservando intactos el puntaje y el estado."
+      },
+      {
+        id: 6,
+        question: "Una aplicación de notas necesita guardar el borrador de texto redactado cuando el usuario recibe una llamada entrante que interrumpe la aplicación. ¿Por qué el método onPause() del ciclo de vida es el lugar recomendado para esta tarea?",
+        options: [
+          { text: "Porque onPause() bloquea la llamada entrante hasta que la base de datos confirme la escritura de los datos.", correct: false },
+          { text: "Porque onPause() se ejecuta cuando la actividad pierde el foco y es el último momento seguro antes de que el proceso pueda ser finalizado por el sistema si escasea la memoria.", correct: true },
+          { text: "Porque en onPause() se vuelven a cargar las configuraciones leídas desde la base de datos local.", correct: false },
+          { text: "Porque onStop() siempre se ejecuta de forma obligatoria y garantizada antes de cualquier cierre repentino de la aplicación.", correct: false }
+        ],
+        explanation: "onPause() es el último punto garantizado. Si hay escasez crítica de RAM, el sistema operativo puede liquidar el proceso sin pasar jamás por onStop() ni onDestroy()."
+      },
+      {
+        id: 7,
+        question: "Se requiere guardar de forma persistente la preferencia de un usuario sobre si prefiere utilizar la aplicación con tema oscuro activado o desactivado. ¿Cuál es la herramienta adecuada para este propósito según el temario?",
+        options: [
+          { text: "Una base de datos SQLite integrada mediante el ORM Room.", correct: false },
+          { text: "Un archivo PDF almacenado en la memoria pública del dispositivo.", correct: false },
+          { text: "Una variable global estática definida en la clase MainActivity.", correct: false },
+          { text: "SharedPreferences, por ser un almacenamiento liviano de clave-valor ideal para configuraciones y estados simples.", correct: true }
+        ],
+        explanation: "SharedPreferences es la herramienta nativa óptima para configuraciones simples de clave-valor (guarda internamente un XML privado muy liviano)."
+      },
+      {
+        id: 8,
+        question: "Durante el desarrollo de una interfaz móvil para su uso con una sola mano, ¿por qué es fundamental tener en cuenta el concepto de 'Zona del Pulgar' (Thumb Zone)?",
+        options: [
+          { text: "Porque permite ubicar las acciones de mayor interacción en las áreas de alcance natural, reduciendo la tensión muscular.", correct: true },
+          { text: "Porque la pantalla táctil solo detecta pulsaciones realizadas estrictamente con el dedo pulgar.", correct: false },
+          { text: "Porque exige situar los botones principales en la esquina superior opuesta al pulgar para evitar toques accidentales.", correct: false },
+          { text: "Porque obliga a que la interfaz funcione de manera idéntica en televisores y pantallas fijas.", correct: false }
+        ],
+        explanation: "La ergonomía de la zona del pulgar asegura que los controles frecuentes estén accesibles sin posturas forzadas ni riesgo de que el teléfono se caiga."
+      },
+      {
+        id: 9,
+        question: "En Kotlin, ¿cuál es la diferencia de visibilidad entre los modificadores 'private' y 'protected' aplicados a miembros de una clase?",
+        options: [
+          { text: "El miembro protected se ejecuta únicamente para variables dentro de funciones composables de Jetpack Compose.", correct: false },
+          { text: "No existe ninguna diferencia en Kotlin, ya que ambos términos funcionan exactamente igual que el valor por defecto public.", correct: false },
+          { text: "El miembro private es visible desde cualquier parte del proyecto, mientras que protected se limita a su archivo.", correct: false },
+          { text: "El miembro private es accesible solo en la clase que lo declara, mientras que protected también es visible dentro de sus subclases (clases hijas).", correct: true }
+        ],
+        explanation: "'private' limita la visibilidad estrictamente a la clase o archivo donde se declara. 'protected' la extiende a las clases hijas derivadas mediante herencia."
+      },
+      {
+        id: 10,
+        question: "Según las clasificaciones de movilidad analizadas en la asignatura, ¿cómo se clasifica el sistema Android Auto en un automóvil y qué justifica dicha clasificación?",
+        options: [
+          { text: "Dispositivo fijo tradicional, porque únicamente puede funcionar conectado a redes telefónicas cableadas de un edificio.", correct: false },
+          { text: "Dispositivo portátil acompañado, porque posee ruedas y movimiento físico propio de forma independiente a las personas.", correct: false },
+          { text: "Dispositivo embebido, porque forma parte inamovible e interna de los microcontroladores del motor o los frenos ABS.", correct: false },
+          { text: "Dispositivo montado, porque se integra parcialmente en un sistema anfitrión (el vehículo) y depende de él para operar.", correct: true }
+        ],
+        explanation: "Android Auto es un dispositivo montado porque se acopla a un anfitrión (el coche) del que depende para alimentación, pantalla o altavoces."
+      }
+    ];
+
+    /* ============================================================
+       SISTEMA DE AUDIO CON WEB AUDIO API + MUTE TOGGLE
+       ============================================================ */
+    const soundManager = {
+      ctx: null,
+      isMuted: false,
+
+      init() {
+        try {
+          const saved = localStorage.getItem('dam_audio_muted');
+          if (saved !== null) {
+            this.isMuted = (saved === 'true');
+          }
+        } catch (e) {}
+        this.updateMuteBtnUI();
+      },
+
+      getAudioContext() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+        return this.ctx;
+      },
+
+      toggleMute() {
+        this.isMuted = !this.isMuted;
+        try {
+          localStorage.setItem('dam_audio_muted', this.isMuted);
+        } catch (e) {}
+        this.updateMuteBtnUI();
+        if (!this.isMuted) {
+          this.playClick();
+        }
+      },
+
+      updateMuteBtnUI() {
+        const btn = document.getElementById('mute-toggle-btn');
+        if (btn) {
+          if (this.isMuted) {
+            btn.innerHTML = '🔇 Sonido: OFF';
+            btn.classList.add('muted');
+          } else {
+            btn.innerHTML = '🔊 Sonido: ON';
+            btn.classList.remove('muted');
+          }
+        }
+      },
+
+      playClick() {
+        if (this.isMuted) return;
+        const ctx = this.getAudioContext();
+        if (!ctx) return;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.05);
+        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.05);
+      },
+
+      playSelect() {
+        if (this.isMuted) return;
+        const ctx = this.getAudioContext();
+        if (!ctx) return;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(950, ctx.currentTime);
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.08);
+      },
+
+      playSuccess() {
+        if (this.isMuted) return;
+        const ctx = this.getAudioContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+          gain.gain.setValueAtTime(0.15, now + idx * 0.07);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.22);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + idx * 0.07);
+          osc.stop(now + idx * 0.07 + 0.22);
+        });
+      },
+
+      playError() {
+        if (this.isMuted) return;
+        const ctx = this.getAudioContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc1.type = 'sawtooth';
+        osc2.type = 'sawtooth';
+        osc1.frequency.setValueAtTime(320, now);
+        osc1.frequency.linearRampToValueAtTime(190, now + 0.2);
+        osc2.frequency.setValueAtTime(220, now);
+        osc2.frequency.linearRampToValueAtTime(130, now + 0.2);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(ctx.destination);
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.25);
+        osc2.stop(now + 0.25);
+      },
+
+      playFlip() {
+        if (this.isMuted) return;
+        const ctx = this.getAudioContext();
+        if (!ctx) return;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(380, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(900, ctx.currentTime + 0.12);
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.12);
+      },
+
+      playDrop() {
+        if (this.isMuted) return;
+        const ctx = this.getAudioContext();
+        if (!ctx) return;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(500, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(250, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.08);
+      },
+
+      playRing() {
+        if (this.isMuted) return;
+        const ctx = this.getAudioContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        [0, 0.18, 0.36].forEach(offset => {
+          const o1 = ctx.createOscillator();
+          const o2 = ctx.createOscillator();
+          const g = ctx.createGain();
+          o1.type = 'sine';
+          o2.type = 'sine';
+          o1.frequency.setValueAtTime(853, now + offset);
+          o2.frequency.setValueAtTime(960, now + offset);
+          g.gain.setValueAtTime(0.1, now + offset);
+          g.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.12);
+          o1.connect(g);
+          o2.connect(g);
+          g.connect(ctx.destination);
+          o1.start(now + offset);
+          o2.start(now + offset);
+          o1.stop(now + offset + 0.12);
+          o2.stop(now + offset + 0.12);
+        });
+      }
+    };
+
+    let currentQuizList = [];
+    let userSelectedAnswers = {};
+    let pendingPreselections = {}; // qId -> optIndex
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function shuffleAndResetQuiz(forceNew, playAudio = false) {
+      if (forceNew) {
+        if (playAudio) soundManager.playClick();
+        userSelectedAnswers = {};
+        pendingPreselections = {};
+      }
+      // Preguntas SIEMPRE en el orden oficial del material de la profesora (1 a 10)
+      const orderedQuestions = [...originalQuizData].sort((a, b) => a.id - b.id);
+      
+      // En cada refresh / barajado, las opciones (A, B, C, D) cambian de posición aleatoriamente
+      currentQuizList = orderedQuestions.map(q => {
+        return {
+          ...q,
+          options: shuffleArray(q.options)
+        };
+      });
+
+      renderQuizUI();
+      updateScoreBanner();
+      saveAppData();
+    }
+
+    function renderQuizUI() {
+      const wrapper = document.getElementById('quiz-wrapper');
+      wrapper.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
+
+      currentQuizList.forEach((q, qIndex) => {
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+
+        let optionsGridHtml = '';
+        const savedAnswerIdx = userSelectedAnswers[q.id];
+        const preselectedIdx = pendingPreselections[q.id];
+
+        q.options.forEach((opt, optIndex) => {
+          let btnClass = 'quiz-option-btn';
+          let confirmTagHtml = '';
+
+          if (savedAnswerIdx !== undefined) {
+            btnClass += ' locked';
+            if (opt.correct) {
+              btnClass += ' correct';
+            } else if (optIndex === savedAnswerIdx && !opt.correct) {
+              btnClass += ' incorrect';
+            }
+          } else if (preselectedIdx === optIndex) {
+            btnClass += ' preselected';
+            confirmTagHtml = `<div class="opt-confirm-tag">👉 Volvé a tocar para confirmar</div>`;
+          }
+
+          optionsGridHtml += `
+            <button class="${btnClass}" id="btn_q${q.id}_opt${optIndex}" onclick="chooseOption(${q.id}, ${optIndex})">
+              <span class="opt-letter-box">${letters[optIndex]}</span>
+              <div style="flex:1;">
+                <div>${opt.text}</div>
+                ${confirmTagHtml}
+              </div>
+            </button>
+          `;
+        });
+
+        // Feedback
+        let feedbackHtml = '';
+        if (savedAnswerIdx !== undefined) {
+          const isCorrect = q.options[savedAnswerIdx] && q.options[savedAnswerIdx].correct;
+          if (isCorrect) {
+            feedbackHtml = `<div class="quiz-feedback-box show-correct" style="display:block;">✅ <strong>¡Correcto!</strong> ${q.explanation}</div>`;
+          } else {
+            feedbackHtml = `<div class="quiz-feedback-box show-incorrect" style="display:block;">❌ <strong>Respuesta incorrecta.</strong> ${q.explanation}</div>`;
+          }
+        } else {
+          feedbackHtml = `<div class="quiz-feedback-box" id="feedback_q${q.id}"></div>`;
+        }
+
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; font-size:0.85rem; color:var(--text-muted);">
+            <span>Caso Práctico ${qIndex + 1} de ${currentQuizList.length}</span>
+            <span class="badge-tag badge-primary">Pregunta de Examen</span>
+          </div>
+
+          <div class="quiz-question-centered">
+            ${q.question}
+          </div>
+
+          <div class="quiz-grid-2x2" id="grid_q${q.id}">
+            ${optionsGridHtml}
+          </div>
+
+          ${feedbackHtml}
+        `;
+        wrapper.appendChild(card);
+      });
+    }
+
+    /* ============================================================
+       LÓGICA DE DOS CLICS: 
+       1er Clic: Preseleccionar opción (cambia cuantas veces quieras)
+       2do Clic en la misma opción: Confirmar y evaluar definitivamente
+       ============================================================ */
+    function chooseOption(qId, optIndex) {
+      if (userSelectedAnswers[qId] !== undefined) return; // ya respondida
+
+      const prevPre = pendingPreselections[qId];
+
+      if (prevPre === optIndex) {
+        // SEGUNDO CLIC en la misma opción preseleccionada ➔ CONFIRMACIÓN
+        confirmSelection(qId, optIndex);
+      } else {
+        // PRIMER CLIC en una opción ➔ PRESELECCIÓN
+        pendingPreselections[qId] = optIndex;
+        soundManager.playSelect();
+        updateQuestionOptionsUI(qId);
+      }
+    }
+
+    function updateQuestionOptionsUI(qId) {
+      const q = currentQuizList.find(item => item.id === qId);
+      if (!q) return;
+      const letters = ['A', 'B', 'C', 'D'];
+      const preselectedIdx = pendingPreselections[qId];
+
+      q.options.forEach((opt, optIndex) => {
+        const btn = document.getElementById(`btn_q${qId}_opt${optIndex}`);
+        if (!btn) return;
+
+        if (preselectedIdx === optIndex) {
+          btn.className = 'quiz-option-btn preselected';
+          btn.innerHTML = `
+            <span class="opt-letter-box">${letters[optIndex]}</span>
+            <div style="flex:1;">
+              <div>${opt.text}</div>
+              <div class="opt-confirm-tag">👉 Volvé a tocar para confirmar</div>
+            </div>
+          `;
+        } else {
+          btn.className = 'quiz-option-btn';
+          btn.innerHTML = `
+            <span class="opt-letter-box">${letters[optIndex]}</span>
+            <div style="flex:1;">
+              <div>${opt.text}</div>
+            </div>
+          `;
+        }
+      });
+    }
+
+    function confirmSelection(qId, selectedOptIndex) {
+      userSelectedAnswers[qId] = selectedOptIndex;
+      delete pendingPreselections[qId];
+
+      const q = currentQuizList.find(item => item.id === qId);
+      const isCorrect = q.options[selectedOptIndex].correct;
+
+      if (isCorrect) {
+        soundManager.playSuccess();
+      } else {
+        soundManager.playError();
+      }
+
+      const letters = ['A', 'B', 'C', 'D'];
+      q.options.forEach((opt, idx) => {
+        const btn = document.getElementById(`btn_q${qId}_opt${idx}`);
+        if (!btn) return;
+        btn.classList.add('locked');
+        btn.classList.remove('preselected');
+
+        if (opt.correct) {
+          btn.classList.add('correct');
+        } else if (idx === selectedOptIndex && !isCorrect) {
+          btn.classList.add('incorrect');
+        }
+
+        btn.innerHTML = `
+          <span class="opt-letter-box">${letters[idx]}</span>
+          <div style="flex:1;">
+            <div>${opt.text}</div>
+          </div>
+        `;
+      });
+
+      // Feedback
+      const fBox = document.getElementById(`feedback_q${qId}`);
+      if (fBox) {
+        if (isCorrect) {
+          fBox.className = 'quiz-feedback-box show-correct';
+          fBox.innerHTML = `✅ <strong>¡Correcto!</strong> ${q.explanation}`;
+        } else {
+          fBox.className = 'quiz-feedback-box show-incorrect';
+          fBox.innerHTML = `❌ <strong>Respuesta incorrecta.</strong> ${q.explanation}`;
+        }
+      }
+
+      updateScoreBanner();
+      saveAppData();
+    }
+
+    function updateScoreBanner() {
+      let correctCount = 0;
+      Object.keys(userSelectedAnswers).forEach(qId => {
+        const q = currentQuizList.find(item => item.id == qId);
+        const selIdx = userSelectedAnswers[qId];
+        if (q && q.options[selIdx] && q.options[selIdx].correct) {
+          correctCount++;
+        }
+      });
+
+      document.getElementById('quiz-score-num').innerText = `${correctCount} / ${currentQuizList.length}`;
+      const note = (correctCount / currentQuizList.length) * 5.0;
+      document.getElementById('quiz-note-calc').innerText = `Nota: ${note.toFixed(1)} / 5.0 pts`;
+    }
+
+    /* ============================================================
+       FLASHCARDS 3D CON TABLAS COMPARATIVAS
+       ============================================================ */
+    const flashcardsData = [
+      {
+        tag: "Unidad 1 • Dispositivos",
+        q: "¿Cuál es la diferencia entre un dispositivo embebido y uno montado?",
+        isTable: true,
+        headers: ["Criterio", "Embebido", "Montado (Ej: Android Auto)"],
+        rows: [
+          ["Integración", "Interno e inamovible (placa/chips)", "Se acopla al tablero del vehículo"],
+          ["Dependencia", "Opera de forma autónoma (ABS)", "Depende del anfitrión para operar"],
+          ["Ejemplo", "Microcontrolador de frenos ABS", "Android Auto integrado en el auto"]
+        ]
+      },
+      {
+        tag: "Unidad 1 • Kotlin",
+        q: "¿Cuál es la diferencia de visibilidad entre private y protected?",
+        isTable: true,
+        headers: ["Modificador", "Ámbito en la misma clase", "Ámbito en clases hijas (Herencia)"],
+        rows: [
+          ["private", "✅ Visible únicamente aquí", "❌ Oculto para las subclases"],
+          ["protected", "✅ Visible en la clase", "✅ Visible en todas sus subclases"]
+        ]
+      },
+      {
+        tag: "Unidad 2 • Paradigmas UI",
+        q: "XML (Imperativo) vs. Jetpack Compose (Declarativo)",
+        isTable: true,
+        headers: ["Característica", "XML Tradicional", "Jetpack Compose Moderno"],
+        rows: [
+          ["Paradigma", "Imperativo (instrucción paso a paso)", "Declarativo (reflejo del estado)"],
+          ["Búsqueda de Vistas", "Requiere findViewById o ViewBinding", "No busca vistas, define composables"],
+          ["Actualización", "Manual (ej. setText, setVisibility)", "Automática por recomposición"]
+        ]
+      },
+      {
+        tag: "Unidad 2 • UX en Móviles",
+        q: "Ley de Hick vs. Ley de Fitts",
+        isTable: true,
+        headers: ["Ley", "Principio Central", "Solución en Móviles"],
+        rows: [
+          ["Ley de Hick", "Más opciones = mayor tiempo de decisión", "Dividir formularios largos en etapas cortas"],
+          ["Ley de Fitts", "Tiempo depende del tamaño y distancia", "Botones grandes en la Zona del Pulgar"]
+        ]
+      },
+      {
+        tag: "Unidad 3 • Ciclo de Vida",
+        q: "onPause() vs. onStop()",
+        isTable: true,
+        headers: ["Estado", "Visibilidad de la Pantalla", "Riesgo de Liquidación por el SO"],
+        rows: [
+          ["onPause()", "Pierde el foco (puede verse parcialmente)", "Último momento seguro garantizado"],
+          ["onStop()", "Totalmente oculta (segundo plano)", "El SO puede matarla sin aviso antes"]
+        ]
+      },
+      {
+        tag: "Unidad 3 • Persistencia",
+        q: "SharedPreferences vs. Archivos JSON",
+        isTable: true,
+        headers: ["Mecanismo", "Estructura de Datos", "Caso de Uso Típico"],
+        rows: [
+          ["SharedPreferences", "Clave-Valor (XML privado)", "Ajustes simples (isDarkMode = true)"],
+          ["Archivos JSON", "Colección estructurada de objetos", "Banco de preguntas, historial de partidas"]
+        ]
+      },
+      {
+        tag: "Unidad 1 • Herencia",
+        q: "¿Por qué en Kotlin es obligatorio usar 'open' en la clase padre?",
+        isTable: false,
+        textAnswer: "Por diseño de seguridad del lenguaje, en Kotlin todas las clases son <strong>final por defecto</strong>. Para que otra clase pueda heredar de ella mediante sintaxis de dos puntos (<code>class Suculenta : Planta()</code>), es requisito obligatorio anteponer la palabra <strong>open</strong> en la clase base (<code>open class Planta</code>)."
+      },
+      {
+        tag: "Unidad 3 • Arquitectura",
+        q: "¿Por qué el ViewModel sobrevive a la rotación de pantalla?",
+        isTable: false,
+        textAnswer: "Porque su ciclo de vida está <strong>desacoplado del ciclo de vida de la Activity</strong>. Mientras la Activity se destruye y se recrea por el cambio de configuración (vertical a horizontal), el ViewModel permanece intacto en memoria RAM conservando los puntajes y el estado actual."
+      },
+      {
+        tag: "Unidad 3 • Concurrencia",
+        q: "¿Qué función cumple el Main Thread y por qué usamos Corrutinas?",
+        isTable: false,
+        textAnswer: "El <strong>Main/UI Thread</strong> actúa como el 'mozo del restaurante': solo debe atender los toques y el dibujo de la pantalla. Si se ejecuta una tarea pesada en él, la app se congela y salta el error ANR. Las <strong>Corrutinas</strong> son hilos ligeros que corren en segundo plano (para temporizadores, música o persistencia) sin bloquear la pantalla."
+      },
+      {
+        tag: "Unidad 1 • Entorno",
+        q: "Si disponés de 8 GB de RAM, ¿cuál es la mejor práctica en Android Studio?",
+        isTable: false,
+        textAnswer: "Evitar el uso del emulador virtual (AVD), ya que consume varios gigabytes de memoria compartida con el IDE. La recomendación técnica del curso es conectar un <strong>dispositivo físico real mediante cable USB</strong> con la depuración USB habilitada."
+      },
+      {
+        tag: "Unidad 2 • UX/UI",
+        q: "Niveles de Fidelidad: Boceto vs. Wireframe vs. Mockup vs. Prototipo",
+        isTable: true,
+        headers: ["Nivel", "Fidelidad", "Propósito en el Proceso UX"],
+        rows: [
+          ["Boceto (Sketch)", "Baja (Papel y lápiz)", "Lluvia de ideas e ideación preliminar rápida"],
+          ["Wireframe", "Baja (Estructural / Grises)", "Define jerarquía y disposición funcional sin diseño"],
+          ["Mockup", "Media/Alta (Estático)", "Diseño visual final con tipografía, colores e íconos"],
+          ["Prototipo", "Alta (Interactivo / Clickeable)", "Validación de flujos y navegación con usuarios reales"]
+        ]
+      },
+      {
+        tag: "Unidad 1 • Arquitectura SO",
+        q: "Las 5 Capas de la Arquitectura del SO Android (Stack Oficial)",
+        isTable: true,
+        headers: ["Capa del Stack", "Componentes Principales", "Función Esencial"],
+        rows: [
+          ["5. System Apps", "Teléfono, Contactos, Apps instaladas", "Capa orientada directamente al usuario final"],
+          ["4. Java API Framework", "ActivityManager, ViewSystem, Providers", "APIs de alto nivel utilizadas por los desarrolladores"],
+          ["3. Runtime (ART) & Libs", "ART (bytecode DEX AOT/JIT) + C/C++", "Ejecución optimizada de código y librerías nativas"],
+          ["2. HAL", "Módulos de abstracción de hardware", "Estandariza el acceso a periféricos sin importar el chip"],
+          ["1. Linux Kernel", "Drivers, procesos, memoria y seguridad", "Capa base de gestión física de recursos y energía"]
+        ]
+      },
+      {
+        tag: "Unidad 1 • Kotlin",
+        q: "Tipos de Clases: data class vs. sealed class vs. enum class",
+        isTable: true,
+        headers: ["Tipo de Clase", "Propósito Principal", "Caso de Uso en Android"],
+        rows: [
+          ["data class", "Almacenar datos (autogenera equals, copy, toString)", "Modelos y DTOs (ej. Pregunta, Usuario, Puntaje)"],
+          ["sealed class", "Jerarquía cerrada y finita de subtipos en compilación", "Estados seguros de UI (UiState.Loading, Success, Error)"],
+          ["enum class", "Conjunto fijo y cerrado de constantes tipadas", "Valores estáticos discretos (ej. Dificultad, Rol)"]
+        ]
+      },
+      {
+        tag: "Unidad 2 • Heurísticas UX",
+        q: "Heurísticas de Jakob Nielsen aplicadas a Móviles",
+        isTable: true,
+        headers: ["Heurística", "Principio de Usabilidad", "Ejemplo Práctico en la App"],
+        rows: [
+          ["1. Visibilidad del estado", "Mantener al usuario informado de lo que ocurre", "Spinners de carga, barras de progreso y temporizador"],
+          ["3. Control y libertad", "Permitir deshacer o cancelar fácilmente", "Botón volver, cancelar acción o deshacer respuesta"],
+          ["4. Consistencia", "Mismos patrones e íconos en toda la interfaz", "Mismo color verde para aciertos en toda la app"],
+          ["5. Prevención de errores", "Evitar el error antes de que el usuario lo cometa", "Doble clic para confirmar o deshabilitar botón vacío"]
+        ]
+      },
+      {
+        tag: "Unidad 1 • Anatomía Android",
+        q: "AndroidManifest.xml vs. build.gradle.kts",
+        isTable: true,
+        headers: ["Criterio", "AndroidManifest.xml", "build.gradle.kts"],
+        rows: [
+          ["Rol", "Registro oficial de la aplicación ante el SO", "Gestor de compilación y dependencias externas"],
+          ["Contenido", "Activities, permisos (&lt;uses-permission&gt;), ícono", "minSdk, targetSdk, compileSdk, librerías"],
+          ["Tiempo de uso", "Inspeccionado en instalación y ejecución", "Ejecutado al construir y empaquetar el APK"]
+        ]
+      },
+      {
+        tag: "Unidad 1 • Kotlin",
+        q: "¿Cómo funciona el sistema de Null Safety en Kotlin?",
+        isTable: true,
+        headers: ["Sintaxis", "Denominación", "Efecto en Ejecución"],
+        rows: [
+          ["String vs. String?", "No-Nulo vs. Anulable", "Por defecto no admite null; el signo '?' lo permite"],
+          ["variable?.metodo()", "Llamada Segura (Safe Call)", "Si es null, retorna null sin lanzar NullPointerException"],
+          ["val x = a ?: b", "Operador Elvis", "Si 'a' es null, asigna el valor de respaldo 'b'"],
+          ["variable!!.metodo()", "Not-Null Assertion", "Fuerza el valor; si resulta null arroja NullPointerException"]
+        ]
+      },
+      {
+        tag: "Unidad 1 • Runtime",
+        q: "Android Runtime (ART) vs. Máquina Virtual Dalvik",
+        isTable: true,
+        headers: ["Característica", "Dalvik (Versiones Anteriores)", "ART (Android Moderno)"],
+        rows: [
+          ["Compilación", "JIT (Just-In-Time) cada vez que se abre la app", "AOT (Ahead-Of-Time) en instalación + JIT híbrido"],
+          ["Rendimiento", "Mayor demora y uso de CPU en runtime", "Arranque veloz y ejecución directa nativa"],
+          ["Batería & RAM", "Mayor consumo energético continuo", "Optimización notable de batería y recolector de basura (GC)"]
+        ]
+      },
+      {
+        tag: "Unidad 2 • Flujos UX",
+        q: "¿Qué es un Flujo de Pantallas (Screen Flow) y por qué se testea?",
+        isTable: false,
+        textAnswer: "Un <strong>Flujo de Pantallas (User/Screen Flow)</strong> es un diagrama visual que traza el camino paso a paso que realiza un usuario desde el punto de entrada (ej: Splash o Login) hasta alcanzar su objetivo final (ej: Responder trivia y ver puntaje). Permite identificar pantallas intermedias, estados vacíos, manejo de errores de conexión y botones de retorno. <strong>Se testea con prototipos interactivos</strong> antes del desarrollo para corregir cuellos de botella y fricción cognitiva sin desperdiciar horas de programación."
+      }
+    ];
+
+    let currentFcIdx = 0;
+    let cardIsFlipped = false;
+
+    function renderFlashcard() {
+      const item = flashcardsData[currentFcIdx];
+      document.getElementById('fc-tag-text').innerText = item.tag;
+      document.getElementById('fc-counter-front').innerText = `Tarjeta ${currentFcIdx + 1} de ${flashcardsData.length}`;
+      document.getElementById('fc-index-label').innerText = `${currentFcIdx + 1} / ${flashcardsData.length}`;
+      document.getElementById('fc-front-question').innerText = item.q;
+
+      const backContent = document.getElementById('fc-back-content');
+      if (item.isTable) {
+        let tableHtml = `<table class="fc-table-comp"><thead><tr>`;
+        item.headers.forEach(h => tableHtml += `<th>${h}</th>`);
+        tableHtml += `</tr></thead><tbody>`;
+        item.rows.forEach(r => {
+          tableHtml += `<tr>`;
+          r.forEach(cell => tableHtml += `<td>${cell}</td>`);
+          tableHtml += `</tr>`;
+        });
+        tableHtml += `</tbody></table>`;
+        backContent.innerHTML = tableHtml;
+      } else {
+        backContent.innerHTML = `<p style="font-size:0.95rem; line-height:1.7; color:var(--text-soft); padding:1rem 0;">${item.textAnswer}</p>`;
+      }
+
+      cardIsFlipped = false;
+      document.getElementById('flashcard-3d').classList.remove('flipped');
+      saveAppData();
+    }
+
+    function toggleCardFlip() {
+      cardIsFlipped = !cardIsFlipped;
+      soundManager.playFlip();
+      document.getElementById('flashcard-3d').classList.toggle('flipped', cardIsFlipped);
+    }
+
+    function navCard(direction) {
+      soundManager.playClick();
+      currentFcIdx = (currentFcIdx + direction + flashcardsData.length) % flashcardsData.length;
+      renderFlashcard();
+    }
+
+    /* ============================================================
+       JUEGO DE CAPAS LIBRE CON MEMORIA LOCAL
+       ============================================================ */
+    const initialGameItems = [
+      { id: 'item_1', text: 'Pausar audio o animación en pantalla', correctLayer: 'ui' },
+      { id: 'item_2', text: 'Retener el puntaje actual durante la rotación de pantalla', correctLayer: 'vm' },
+      { id: 'item_3', text: 'Escribir el valor booleano en SharedPreferences', correctLayer: 'data' },
+      { id: 'item_4', text: 'Mostrar un Toast o Diálogo emergente al usuario', correctLayer: 'ui' },
+      { id: 'item_5', text: 'Lanzar corrutina viewModelScope.launch para el temporizador de 20s', correctLayer: 'vm' },
+      { id: 'item_6', text: 'Leer el archivo JSON local con el banco de preguntas', correctLayer: 'data' },
+      { id: 'item_7', text: 'Vincular vistas mediante ViewBinding o Jetpack Compose', correctLayer: 'ui' },
+      { id: 'item_8', text: 'Mantener el StateFlow con la pregunta vigente', correctLayer: 'vm' }
+    ];
+
+    let gameItemLocations = {}; // itemId -> 'pool' | 'ui' | 'vm' | 'data'
+
+    function resetPoolGame(playAudio = true) {
+      if (playAudio) soundManager.playClick();
+      gameItemLocations = {};
+      initialGameItems.forEach(i => gameItemLocations[i.id] = 'pool');
+      renderGameItems();
+      document.getElementById('game-results-text').innerText = '';
+      saveAppData();
+    }
+
+    function renderGameItems() {
+      const poolTray = document.getElementById('pool-tray');
+      const zoneUi = document.getElementById('zone-ui');
+      const zoneVm = document.getElementById('zone-vm');
+      const zoneData = document.getElementById('zone-data');
+
+      poolTray.innerHTML = '';
+      zoneUi.innerHTML = '<div class="game-box-title">🖥️ 1. Capa de UI (Activity / Compose)</div>';
+      zoneVm.innerHTML = '<div class="game-box-title">🧠 2. Capa ViewModel (Estado)</div>';
+      zoneData.innerHTML = '<div class="game-box-title">💾 3. Capa de Datos (Repository)</div>';
+
+      initialGameItems.forEach(item => {
+        const loc = gameItemLocations[item.id] || 'pool';
+
+        const card = document.createElement('div');
+        card.className = 'game-item-card' + (loc !== 'pool' ? ' in-zone' : '');
+        card.id = item.id;
+        card.draggable = true;
+
+        card.ondragstart = (e) => {
+          e.dataTransfer.setData('text/plain', item.id);
+        };
+
+        card.innerHTML = `
+          <span>${item.text}</span>
+          <button class="game-item-remove-btn" onclick="returnItemToPool('${item.id}', event)" title="Regresar a la bandeja">
+            ✕ Quitar
+          </button>
+        `;
+
+        if (loc === 'pool') {
+          poolTray.appendChild(card);
+        } else if (loc === 'ui') {
+          zoneUi.appendChild(card);
+        } else if (loc === 'vm') {
+          zoneVm.appendChild(card);
+        } else if (loc === 'data') {
+          zoneData.appendChild(card);
+        }
+      });
+    }
+
+    function allowGameDrop(e) {
+      e.preventDefault();
+      e.currentTarget.classList.add('drag-over');
+    }
+
+    function handleDropToZone(e, targetLayer) {
+      e.preventDefault();
+      e.currentTarget.classList.remove('drag-over');
+      const itemId = e.dataTransfer.getData('text/plain');
+      if (itemId) {
+        gameItemLocations[itemId] = targetLayer;
+        soundManager.playDrop();
+        renderGameItems();
+        saveAppData();
+      }
+    }
+
+    function handleDropToPool(e) {
+      e.preventDefault();
+      e.currentTarget.classList.remove('drag-over');
+      const itemId = e.dataTransfer.getData('text/plain');
+      if (itemId) {
+        gameItemLocations[itemId] = 'pool';
+        soundManager.playDrop();
+        renderGameItems();
+        saveAppData();
+      }
+    }
+
+    function returnItemToPool(itemId, e) {
+      e.stopPropagation();
+      gameItemLocations[itemId] = 'pool';
+      soundManager.playClick();
+      renderGameItems();
+      saveAppData();
+    }
+
+    function checkGameAnswers() {
+      let placedCount = 0;
+      let correctCount = 0;
+
+      initialGameItems.forEach(item => {
+        const loc = gameItemLocations[item.id];
+        const el = document.getElementById(item.id);
+        if (loc && loc !== 'pool') {
+          placedCount++;
+          if (loc === item.correctLayer) {
+            correctCount++;
+            if (el) {
+              el.style.borderColor = 'var(--accent)';
+              el.style.background = 'rgba(16, 185, 129, 0.15)';
+            }
+          } else {
+            if (el) {
+              el.style.borderColor = 'var(--danger)';
+              el.style.background = 'rgba(239, 68, 68, 0.15)';
+            }
+          }
+        }
+      });
+
+      const resEl = document.getElementById('game-results-text');
+      if (placedCount < initialGameItems.length) {
+        soundManager.playError();
+        resEl.style.color = '#fbbf24';
+        resEl.innerText = `Ubicaste ${placedCount} de ${initialGameItems.length} acciones (${correctCount} correctas). Podés mover las restantes o corregir las que quedaron en rojo.`;
+      } else if (correctCount === initialGameItems.length) {
+        soundManager.playSuccess();
+        resEl.style.color = '#34d399';
+        resEl.innerText = `🎉 ¡Perfecto! Todas las 8 acciones están ubicadas en su capa correcta.`;
+      } else {
+        soundManager.playError();
+        resEl.style.color = '#f87171';
+        resEl.innerText = `Tenés ${correctCount} de ${initialGameItems.length} correctas. Las tarjetas en rojo están en la capa equivocada; podés arrastrarlas a otra zona o hacer clic en '✕ Quitar'.`;
+      }
+    }
+
+    /* ============================================================
+       MÓDULO 5: FILTRADO DE TEMAS TEÓRICOS
+       ============================================================ */
+    function filterTheoryTopics(filter, chipBtn) {
+      if (window.soundManager) soundManager.playClick();
+
+      // Actualizar botón activo
+      document.querySelectorAll('.theory-filter-chip').forEach(btn => btn.classList.remove('active'));
+      if (chipBtn) chipBtn.classList.add('active');
+
+      const cards = document.querySelectorAll('.theory-card-item');
+      cards.forEach(card => {
+        const cardUnit = card.getAttribute('data-unit');
+        if (filter === 'all' || cardUnit === filter) {
+          card.classList.remove('hidden-by-filter');
+        } else {
+          card.classList.add('hidden-by-filter');
+        }
+      });
+    }
+
+    /* ============================================================
+       STARTUP CON RESTAURACIÓN DE MEMORIA LOCAL
+       ============================================================ */
+    window.addEventListener('DOMContentLoaded', () => {
+      soundManager.init();
+
+      // Desbloqueo suave del AudioContext en la primera pulsación
+      const unlockAudio = () => {
+        soundManager.getAudioContext();
+        document.removeEventListener('pointerdown', unlockAudio);
+        document.removeEventListener('keydown', unlockAudio);
+      };
+      document.addEventListener('pointerdown', unlockAudio);
+      document.addEventListener('keydown', unlockAudio);
+
+      // 1. En CADA refresh: las preguntas van en orden oficial 1 a 10 y las opciones A, B, C, D se barajan aleatoriamente
+      shuffleAndResetQuiz(true, false);
+
+      // 2. Restaurar el estado de las otras secciones (tarjetas, juego de capas, pestaña activa)
+      const saved = getSavedData();
+      if (saved) {
+        if (saved.flashcardIndex !== undefined) {
+          currentFcIdx = saved.flashcardIndex;
+        }
+        renderFlashcard();
+
+        if (saved.gameLocations) {
+          gameItemLocations = saved.gameLocations;
+          renderGameItems();
+        } else {
+          resetPoolGame(false);
+        }
+
+        if (saved.activeTab) {
+          switchTab(saved.activeTab, false);
+        } else {
+          switchTab('simulador', false);
+        }
+      } else {
+        renderFlashcard();
+        resetPoolGame(false);
+        switchTab('simulador', false);
+      }
+
+      // Iniciar en escenario de llamada para resaltar onPause
+      setScenario('llamada', false);
+    });
+  </script>
+</body>
+</html>
