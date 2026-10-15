@@ -180,6 +180,30 @@
       color: var(--text-muted);
     }
 
+    .music-btn {
+      background: rgba(139, 92, 246, 0.15);
+      border: 1.5px solid rgba(139, 92, 246, 0.4);
+      color: #c084fc;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.48rem 0.85rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .music-btn:hover {
+      background: rgba(139, 92, 246, 0.25);
+      border-color: #a855f7;
+    }
+    .music-btn.muted {
+      background: rgba(148, 163, 184, 0.12);
+      border-color: rgba(148, 163, 184, 0.3);
+      color: var(--text-muted);
+    }
+
     /* Main Container */
     main {
       max-width: 1360px;
@@ -1335,6 +1359,9 @@
           <button class="tab-btn" id="tab-btn-minijuego" onclick="switchTab('minijuego')">🎮 Juego de Capas Libre</button>
           <button class="tab-btn" id="tab-btn-teoria" onclick="switchTab('teoria')">📖 Resumen Oficial</button>
         </nav>
+        <button class="music-btn" id="music-toggle-btn" onclick="soundManager.toggleMusic()" title="Pausar o reproducir música de fondo: end_credits_music (20% volumen)">
+          🎵 Música: ON (20%)
+        </button>
         <button class="mute-btn" id="mute-toggle-btn" onclick="soundManager.toggleMute()" title="Activar o silenciar sonidos">
           🔊 Sonido: ON
         </button>
@@ -2380,31 +2407,74 @@
     ];
 
     /* ============================================================
-       SISTEMA DE AUDIO CON WEB AUDIO API + MUTE TOGGLE
+       SISTEMA DE AUDIO CON WEB AUDIO API + MÚSICA DE FONDO (20%) + MUTE
        ============================================================ */
     const soundManager = {
       ctx: null,
       isMuted: false,
+      isMusicMuted: false,
+      musicAudio: null,
+      musicStarted: false,
 
       init() {
         try {
-          const saved = localStorage.getItem('dam_audio_muted');
-          if (saved !== null) {
-            this.isMuted = (saved === 'true');
+          const savedAudio = localStorage.getItem('dam_audio_muted');
+          if (savedAudio !== null) {
+            this.isMuted = (savedAudio === 'true');
+          }
+          const savedMusic = localStorage.getItem('dam_music_muted');
+          if (savedMusic !== null) {
+            this.isMusicMuted = (savedMusic === 'true');
           }
         } catch (e) {}
-        this.updateMuteBtnUI();
+
+        this.initMusic();
+        this.updateUI();
       },
 
-      getAudioContext() {
-        if (!this.ctx) {
-          const AudioCtx = window.AudioContext || window.webkitAudioContext;
-          if (AudioCtx) this.ctx = new AudioCtx();
+      initMusic() {
+        if (!this.musicAudio) {
+          this.musicAudio = new Audio('end_credits_music.mp3');
+          this.musicAudio.loop = true;
+          this.musicAudio.volume = 0.20; // 20% de volumen requerido
+          this.musicAudio.preload = 'auto';
         }
-        if (this.ctx && this.ctx.state === 'suspended') {
-          this.ctx.resume();
+      },
+
+      startMusicIfAllowed() {
+        this.initMusic();
+        if (this.isMusicMuted || this.isMuted) return;
+        if (!this.musicStarted) {
+          const playPromise = this.musicAudio.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              this.musicStarted = true;
+            }).catch(() => {
+              // Navegador requiere interacción directa del usuario
+            });
+          }
         }
-        return this.ctx;
+      },
+
+      toggleMusic() {
+        this.initMusic();
+        this.isMusicMuted = !this.isMusicMuted;
+        try {
+          localStorage.setItem('dam_music_muted', this.isMusicMuted);
+        } catch (e) {}
+
+        if (this.musicAudio) {
+          if (this.isMusicMuted || this.isMuted) {
+            this.musicAudio.pause();
+          } else {
+            this.musicAudio.volume = 0.20;
+            this.musicAudio.play().then(() => {
+              this.musicStarted = true;
+            }).catch(() => {});
+          }
+        }
+        this.updateMusicBtnUI();
+        if (!this.isMuted) this.playClick();
       },
 
       toggleMute() {
@@ -2412,9 +2482,39 @@
         try {
           localStorage.setItem('dam_audio_muted', this.isMuted);
         } catch (e) {}
-        this.updateMuteBtnUI();
+
+        if (this.musicAudio) {
+          if (this.isMuted) {
+            this.musicAudio.pause();
+          } else if (!this.isMusicMuted) {
+            this.musicAudio.volume = 0.20;
+            this.musicAudio.play().then(() => {
+              this.musicStarted = true;
+            }).catch(() => {});
+          }
+        }
+
+        this.updateUI();
         if (!this.isMuted) {
           this.playClick();
+        }
+      },
+
+      updateUI() {
+        this.updateMuteBtnUI();
+        this.updateMusicBtnUI();
+      },
+
+      updateMusicBtnUI() {
+        const btn = document.getElementById('music-toggle-btn');
+        if (btn) {
+          if (this.isMusicMuted || this.isMuted) {
+            btn.innerHTML = '🎵 Música: OFF';
+            btn.classList.add('muted');
+          } else {
+            btn.innerHTML = '🎵 Música: ON (20%)';
+            btn.classList.remove('muted');
+          }
         }
       },
 
@@ -3188,9 +3288,10 @@
     window.addEventListener('DOMContentLoaded', () => {
       soundManager.init();
 
-      // Desbloqueo suave del AudioContext en la primera pulsación
+      // Desbloqueo suave del AudioContext y arranque de música de fondo en la primera interacción
       const unlockAudio = () => {
         soundManager.getAudioContext();
+        soundManager.startMusicIfAllowed();
         document.removeEventListener('pointerdown', unlockAudio);
         document.removeEventListener('keydown', unlockAudio);
       };
