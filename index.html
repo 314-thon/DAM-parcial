@@ -334,13 +334,13 @@
                 </div>
 
                 <div class="active-call-right-col" style="width:100%;">
-                  <button class="active-call-hangup-btn" onclick="hangUpCall(event)" title="Colgar llamada y volver a Trivia DAM">
-                    <span>✕</span> <span>Colgar llamada (➔ onResume)</span>
+                  <button class="active-call-hangup-btn" onclick="hangUpCall(event)" title="Colgar llamada (pasa a onStop)">
+                    <span>✕</span> <span>Colgar llamada (➔ onStop)</span>
                   </button>
 
                   <div class="active-call-info-box">
                     <strong style="color:#c4b5fd;">🛑 onStop() en Trivia:</strong> La app de llamadas ocupó el 100% de la pantalla.<br>
-                    <span style="color:#86efac; font-size:0.6rem;">💾 ViewModel@9c21 intacto en RAM. Al colgar: <code>onRestart ➔ onStart ➔ onResume</code>.</span>
+                    <span style="color:#86efac; font-size:0.6rem;">💾 ViewModel@9c21 intacto en RAM. Al cortar o terminar el audio: <code>onStop</code> (Launcher).</span>
                   </div>
                 </div>
               </div>

@@ -8,6 +8,7 @@
       musicAudio: null,
       ringtoneAudio: null,
       callActiveAudio: null,
+      onCallActiveEnded: null,
       ringPending: false,
       _unlockAttached: false,
       _ringUnlockAttached: false,
@@ -390,11 +391,20 @@
           try {
             this.callActiveAudio = new Audio('assets/audio/Inspector_Morfi_mp3.mp3');
             this.callActiveAudio.preload = 'auto';
-            this.callActiveAudio.loop = true; // Sigue sonando mientras el usuario esté en la llamada
+            this.callActiveAudio.loop = false; // Sin loop: al finalizar la llamada se corta automáticamente
             this.callActiveAudio.volume = 0.25; // Nivel cómodo y audible
+            this.callActiveAudio.addEventListener('ended', () => {
+              if (typeof this.onCallActiveEnded === 'function') {
+                this.onCallActiveEnded();
+              } else if (typeof window.hangUpCall === 'function') {
+                window.hangUpCall(null, true);
+              }
+            });
           } catch (e) {
             console.warn('Call active audio initialization error:', e);
           }
+        } else {
+          this.callActiveAudio.loop = false;
         }
       },
 
@@ -404,6 +414,7 @@
         this.initCallActiveAudio();
         if (this.callActiveAudio) {
           try {
+            this.callActiveAudio.loop = false;
             this.callActiveAudio.volume = 0.25;
             this.callActiveAudio.currentTime = 0;
             const p = this.callActiveAudio.play();

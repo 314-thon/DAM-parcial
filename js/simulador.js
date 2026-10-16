@@ -235,7 +235,7 @@
       setScenario('call_active', false, true);
     }
 
-    function hangUpCall(e) {
+    function hangUpCall(e, isAutoEnd = false) {
       if (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -248,10 +248,31 @@
       }
       const activeCallPill = document.getElementById('home-active-call-pill');
       if (activeCallPill) activeCallPill.style.display = 'none';
-      setScenario('resume', false, true);
+      setScenario('home', false, true);
+
+      if (isAutoEnd) {
+        const stageIndicator = document.getElementById('app-stage-indicator');
+        if (stageIndicator) {
+          stageIndicator.innerText = '🟣 Estado: onStop() • Llamada finalizada (Audio terminado)';
+        }
+        const phoneCaption = document.getElementById('phone-caption-label');
+        if (phoneCaption) {
+          phoneCaption.innerHTML = 'Simulador de Smartphone Android • Estado actual: <strong>5. onStop() (Llamada finalizada)</strong> • Tocá 🎮 para volver a onResume';
+        }
+      }
+    }
+    window.hangUpCall = hangUpCall;
+
+    if (window.soundManager) {
+      soundManager.onCallActiveEnded = () => {
+        if (currentSimScenario === 'call_active' || currentSimScenario === 'home') {
+          hangUpCall(null, true);
+        }
+      };
     }
 
     function setScenario(scen, playAudio = true, isUserClick = false) {
+      if (scen === 'stop') scen = 'home';
       const prevScenario = currentSimScenario;
       currentSimScenario = scen;
 
@@ -514,10 +535,14 @@
         txtData.innerHTML = '<strong>Persistencia asegurada:</strong> Los datos ya se habían asegurado en disco durante <code>onPause()</code>, cumpliendo con la arquitectura recomendada.';
 
       } else if (scen === 'home') {
+        sCreate.className = 'lc-step active';
+        sStart.className = 'lc-step active';
+        sResume.className = 'lc-step active';
         sPause.className = 'lc-step active';
         sStop.className = 'lc-step active-critical';
         cardUi.classList.add('highlight');
         cardVm.classList.add('highlight');
+        cardData.classList.add('highlight');
 
         overlayHome.style.display = 'flex';
         stageIndicator.innerText = '🟣 Estado: onStop() • 100% Oculta en segundo plano';
