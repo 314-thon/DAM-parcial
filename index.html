@@ -368,10 +368,10 @@
     }
 
     /* Cuando el celular está rotado en apaisado (Landscape):
-       El teléfono MANTIENE su forma rectangular alargada (320x600 rotado 90°)
-       y las capas de la derecha SE ACHICAN en ancho y se estiran a lo alto */
+       El chasis gira a proporción horizontal (648x310) con animación física de giro
+       y el contenido interno se redistribuye derecho en diseño Landscape (2 columnas) */
     .sim-wrapper.is-rotated {
-      grid-template-columns: 640px 1fr;
+      grid-template-columns: 660px 1fr;
       gap: 2rem;
     }
 
@@ -393,7 +393,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1rem;
+      gap: 0.85rem;
       width: 100%;
       min-width: 320px;
       transition: all 0.4s ease;
@@ -401,161 +401,459 @@
     }
 
     .sim-wrapper.is-rotated .phone-container {
-      width: 640px;
-      min-width: 640px;
-      min-height: 420px;
+      width: 660px;
+      min-width: 660px;
+      min-height: 330px;
       justify-content: center;
       align-items: center;
     }
 
+    @media (max-width: 680px) {
+      .sim-wrapper.is-rotated .phone-container {
+        width: 100%;
+        min-width: 300px;
+      }
+    }
+
     .phone-frame {
-      width: 320px;
-      min-width: 320px;
-      max-width: 320px;
-      height: 600px;
-      min-height: 600px;
-      max-height: 600px;
-      flex-shrink: 0; /* IMPIDE que Flexbox lo aplaste a un cuadrado */
-      background: #000;
-      border: 8px solid #1e293b;
-      border-radius: 42px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 0 1px #334155, inset 0 0 4px rgba(255, 255, 255, 0.1);
+      width: 310px;
+      min-width: 310px;
+      max-width: 310px;
+      height: 648px;
+      min-height: 648px;
+      max-height: 648px;
+      flex-shrink: 0;
+      background: transparent;
+      border-radius: 20px;
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.08);
       transform-origin: center center;
-      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1), height 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    /* Rotación 90° pura manteniendo la forma alargada original */
-    .phone-frame.rotated {
-      transform: rotate(90deg);
-      margin: 0;
-    }
-
-    /* Notch / Dynamic Island */
-    .phone-notch {
+    /* Marco Overlay con la imagen real de Samsung Galaxy S22 Ultra 5G (bisel ultra delgado, perforación de cámara fotorealista y chasis) */
+    .phone-frame::after {
+      content: '';
       position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90px;
-      height: 20px;
-      background: #020617;
-      border-radius: 12px;
-      z-index: 20;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding-right: 12px;
-    }
-    .phone-camera-dot {
-      width: 8px;
-      height: 8px;
-      background: #1e293b;
-      border-radius: 50%;
+      inset: 0;
+      background: url('galaxy_s22_ultra_frame.png') no-repeat center center;
+      background-size: 100% 100%;
+      pointer-events: none;
+      z-index: 30;
     }
 
-    /* Barra de estado */
-    .phone-status-bar {
-      height: 38px;
-      padding: 0 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: #94a3b8;
-      z-index: 10;
+    @keyframes phoneSwingLandscape {
+      0% { transform: rotate(-90deg) scale(0.96); }
+      65% { transform: rotate(3deg) scale(1.005); }
+      85% { transform: rotate(-1deg) scale(1); }
+      100% { transform: rotate(0deg) scale(1); }
     }
 
-    /* Pantalla interna */
+    /* Rotación física a Landscape: Mantiene y gira el marco del Samsung Galaxy S22 Ultra 5G */
+    .phone-frame.rotated {
+      width: 648px;
+      min-width: 648px;
+      max-width: 648px;
+      height: 310px;
+      min-height: 310px;
+      max-height: 310px;
+      transform: rotate(0deg);
+      animation: phoneSwingLandscape 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      margin: 0;
+      border-radius: 20px;
+      background: #090d16;
+    }
+
+    .phone-frame.rotated::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('galaxy_s22_ultra_frame_landscape.png') no-repeat center center;
+      background-size: 100% 100%;
+      pointer-events: none;
+      z-index: 30;
+      display: block;
+    }
+
+    @media (max-width: 680px) {
+      .phone-frame.rotated {
+        width: 100%;
+        min-width: 300px;
+        max-width: 648px;
+        height: auto;
+        aspect-ratio: 1046 / 500;
+        min-height: 0;
+        max-height: none;
+      }
+    }
+
+    /* Pantalla interna: encastrada exactamente en el croma del Galaxy S22 Ultra (llena el chasis por debajo del marco) */
     .phone-screen {
-      flex: 1;
+      position: absolute;
+      inset: 0;
       background: #090d16;
       display: flex;
       flex-direction: column;
-      position: relative;
-      overflow: hidden;
+      overflow: hidden; /* CERO SCROLLBAR */
+      border-radius: 20px;
+      z-index: 10;
     }
 
-    /* App UI inside phone */
+    .phone-frame.rotated .phone-screen {
+      border-radius: 20px;
+    }
+
+    /* Contenido interno de la app (Strict ZERO SCROLL) */
     .app-screen-content {
       flex: 1;
-      padding: 12px 14px;
+      height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      padding: 12px 14px 14px 14px;
       background: linear-gradient(180deg, #0f172a 0%, #090d16 100%);
+      transition: filter 0.25s ease, opacity 0.25s ease;
+      overflow: hidden; /* Cero barras de scroll */
+      box-sizing: border-box;
+    }
+
+    /* Barra de estado con espacio despejado al centro para el punch-hole de la cámara S22 Ultra */
+    .phone-status-bar {
+      height: 24px;
+      padding: 0 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: #94a3b8;
+      z-index: 12;
+      flex-shrink: 0;
+      margin-bottom: 2px;
+    }
+    .phone-camera-spacer {
+      width: 32px;
+      height: 100%;
+      flex-shrink: 0;
+    }
+    .phone-status-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+    .phone-status-orient {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.52rem;
+      color: #64748b;
+      letter-spacing: 0.5px;
+    }
+    .phone-status-icons {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      font-size: 0.62rem;
     }
 
     .app-header-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 8px;
-      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      padding-bottom: 3px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+      gap: 4px;
+      flex-shrink: 0;
     }
     .app-title-text {
-      font-size: 0.85rem;
+      font-size: 0.74rem;
       font-weight: 700;
       color: #fff;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
+    }
+    .app-instance-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem;
+      padding: 1px 4px;
+      border-radius: 4px;
+      background: rgba(148, 163, 184, 0.15);
+      color: #cbd5e1;
+      border: 1px solid rgba(148, 163, 184, 0.3);
     }
     .app-score-badge {
-      font-size: 0.72rem;
+      font-size: 0.62rem;
       background: rgba(59, 130, 246, 0.2);
       border: 1px solid rgba(59, 130, 246, 0.4);
       color: #93c5fd;
-      padding: 2px 8px;
-      border-radius: 12px;
+      padding: 1px 6px;
+      border-radius: 10px;
       font-weight: 700;
     }
 
     .app-timer-bar-wrap {
       width: 100%;
-      height: 4px;
+      height: 3px;
       background: #1e293b;
       border-radius: 2px;
-      margin: 8px 0;
+      margin: 3px 0 2px 0;
       overflow: hidden;
+      flex-shrink: 0;
     }
     .app-timer-bar-inner {
       height: 100%;
       background: #10b981;
-      width: 65%;
-      transition: width 0.3s ease;
+      width: 100%;
+      transition: width 0.35s ease, background-color 0.3s ease;
+    }
+
+    .app-stage-indicator {
+      font-size: 0.64rem;
+      font-weight: 700;
+      color: #fef08a;
+      margin-bottom: 2px;
+      flex-shrink: 0;
+      line-height: 1.2;
+    }
+
+    /* Layout principal flexible: vertical (1 columna) vs horizontal (2 columnas) */
+    .app-main-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      justify-content: space-evenly;
+      min-height: 0;
+    }
+    .app-main-left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .app-main-right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .phone-frame.rotated .app-screen-content {
+      padding: 8px 30px 8px 18px; /* 30px a la derecha para dejar libre el punch-hole de la cámara S22 al rotar a la derecha */
+      overflow: hidden;
+    }
+    .phone-frame.rotated .phone-camera-spacer {
+      display: none;
+    }
+    .phone-frame.rotated .app-main-layout {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 8px;
+      align-items: center;
+      min-height: 0;
+    }
+
+    /* Banner contextual dentro de la app según el estado del Ciclo de Vida */
+    .app-lifecycle-banner {
+      border-radius: 6px;
+      padding: 4px 7px;
+      font-size: 0.64rem;
+      line-height: 1.25;
+      border: 1px solid #334155;
+      background: rgba(15, 23, 42, 0.85);
+      color: #e2e8f0;
+      margin-bottom: 2px;
+    }
+    .app-lifecycle-banner.banner-create {
+      border-color: rgba(234, 179, 8, 0.5);
+      background: rgba(234, 179, 8, 0.12);
+      color: #fef08a;
+    }
+    .app-lifecycle-banner.banner-start {
+      border-color: rgba(59, 130, 246, 0.5);
+      background: rgba(59, 130, 246, 0.14);
+      color: #bfdbfe;
+    }
+    .app-lifecycle-banner.banner-resume {
+      border-color: rgba(16, 185, 129, 0.45);
+      background: rgba(16, 185, 129, 0.12);
+      color: #a7f3d0;
+    }
+    .app-lifecycle-banner.banner-rotated {
+      border-color: rgba(168, 85, 247, 0.55);
+      background: rgba(168, 85, 247, 0.15);
+      color: #e9d5ff;
+    }
+
+    /* Blueprint de inflado para onCreate() (ultra compacto para evitar scroll) */
+    .create-inflate-checklist {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      background: rgba(2, 6, 23, 0.88);
+      border: 1px dashed rgba(250, 204, 21, 0.45);
+      border-radius: 6px;
+      padding: 3px 6px;
+      color: #fde047;
+      display: none;
+      flex-direction: column;
+      gap: 2px;
+      margin-bottom: 2px;
+    }
+    .app-screen-content.state-create .create-inflate-checklist {
+      display: flex;
     }
 
     .app-question-card {
       background: #1e293b;
       border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 12px;
-      font-size: 0.82rem;
+      border-radius: 8px;
+      padding: 7px 8px;
+      font-size: 0.72rem;
       color: #f1f5f9;
       font-weight: 600;
-      margin: 8px 0;
+      margin: 2px 0;
+      position: relative;
+      transition: all 0.25s ease;
+      line-height: 1.3;
+    }
+
+    /* En onCreate() la tarjeta y botones se ven como wireframe inflándose */
+    .app-screen-content.state-create .app-question-card {
+      background: rgba(15, 23, 42, 0.45);
+      border: 1.5px dashed #38bdf8;
+      color: #93c5fd;
+    }
+    .xml-wireframe-tag {
+      display: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.54rem;
+      color: #38bdf8;
+      margin-bottom: 2px;
+      font-weight: 500;
+    }
+    .app-screen-content.state-create .xml-wireframe-tag {
+      display: block;
     }
 
     .app-mock-options {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
     }
     .app-mock-opt {
-      background: rgba(15, 23, 42, 0.7);
+      background: rgba(15, 23, 42, 0.75);
       border: 1px solid #334155;
-      padding: 7px 10px;
-      border-radius: 8px;
-      font-size: 0.75rem;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 0.69rem;
       color: #cbd5e1;
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      gap: 5px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .app-mock-opt-left {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .app-mock-opt-status {
+      font-size: 0.58rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: #64748b;
+    }
+
+    /* Estado de opciones en onCreate (wireframe) */
+    .app-screen-content.state-create .app-mock-opt {
+      border: 1px dashed rgba(56, 189, 248, 0.55);
+      background: rgba(15, 23, 42, 0.35);
+      color: #94a3b8;
+    }
+
+    /* Estado de opciones en onStart (visible pero sin foco táctil) */
+    .app-screen-content.state-start .app-mock-opt {
+      opacity: 0.62;
+      cursor: not-allowed;
+      border-color: #1e293b;
+    }
+
+    /* Estado de opciones en onResume y Rotación (interactivas con foco) */
+    .app-screen-content.state-resume .app-mock-opt:hover,
+    .app-screen-content.state-rotated .app-mock-opt:hover {
+      border-color: #3b82f6;
+      background: rgba(37, 99, 235, 0.2);
+      color: #fff;
+      transform: translateX(2px);
+    }
+
+    .app-mock-opt.opt-answered-correct {
+      border-color: #10b981 !important;
+      background: rgba(16, 185, 129, 0.22) !important;
+      color: #d1fae5 !important;
+    }
+    .app-mock-opt.opt-answered-wrong {
+      border-color: #ef4444 !important;
+      background: rgba(239, 68, 68, 0.2) !important;
+      color: #fecaca !important;
+    }
+
+    .app-footer-bar {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+      padding: 4px 7px;
+      border-radius: 6px;
+      font-size: 0.62rem;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 5px;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+    .app-next-step-btn {
+      background: rgba(59, 130, 246, 0.22);
+      border: 1px solid rgba(96, 165, 250, 0.5);
+      color: #93c5fd;
+      border-radius: 5px;
+      padding: 2px 6px;
+      font-size: 0.62rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+    .app-next-step-btn:hover {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    /* Píldora del detector de actividad de 4 segundos */
+    .auto-pause-detector-pill {
+      display: inline-flex;
+      align-items: center;
       gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid #334155;
+      color: #cbd5e1;
+    }
+    .auto-pause-detector-pill.counting {
+      border-color: #f59e0b;
+      background: rgba(245, 158, 11, 0.15);
+      color: #fde68a;
+    }
+    .auto-pause-detector-pill.done {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.12);
+      color: #a7f3d0;
     }
 
     /* Overlays de estado en el teléfono */
@@ -565,78 +863,288 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 20px;
+      justify-content: space-between;
+      padding: 24px 16px 20px 16px;
       text-align: center;
       z-index: 15;
       animation: fadeIn 0.25s ease;
+      box-sizing: border-box;
+      background: rgba(9, 13, 22, 0.94);
     }
 
-    /* 1. Overlay Llamada Entrante */
-    .overlay-call {
-      background: rgba(10, 15, 26, 0.94);
-      backdrop-filter: blur(10px);
+    .phone-frame.rotated .phone-overlay {
+      padding: 10px 30px 10px 18px; /* Despejado del punch-hole de la cámara a la derecha */
+      overflow: hidden;
     }
-    .call-avatar {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background: #1e293b;
-      border: 3px solid #3b82f6;
+    .phone-frame.rotated .destroy-card-box,
+    .phone-frame.rotated .vm-survive-box {
+      padding: 6px 12px;
+      max-width: 520px;
+    }
+
+    /* 1. Overlay Llamada Entrante (onPause):
+       Muestra un Heads-Up Banner arriba y deja ver la Trivia pausada detrás */
+    .overlay-call {
+      background: rgba(9, 13, 22, 0.72);
+      backdrop-filter: blur(2px);
+      justify-content: space-between;
+      padding: 24px 16px 18px 16px;
+    }
+    .call-heads-up-card {
+      width: 100%;
+      background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+      border: 1.5px solid #3b82f6;
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.75), 0 0 18px rgba(59, 130, 246, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .call-top-row {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      margin-bottom: 10px;
-      box-shadow: 0 0 25px var(--primary-glow);
+      gap: 10px;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 8px;
     }
     .call-pulse-animation {
-      width: 80px;
-      height: 80px;
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 10px;
     }
     .call-actions {
       display: flex;
-      gap: 30px;
-      margin-top: 35px;
+      justify-content: center;
+      gap: 14px;
+      width: 100%;
+      margin-top: 6px;
     }
     .call-btn {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
+      flex: 1;
+      height: 34px;
+      border-radius: 8px;
       border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 700;
       color: white;
       transition: var(--transition);
     }
     .call-btn-reject {
       background: #ef4444;
-      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
     }
     .call-btn-accept {
       background: #10b981;
-      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
     }
 
-    /* 2. Overlay Launcher Home (onStop) */
+    /* 1.5 Overlay Llamada Atendida / En Curso a Pantalla Completa (onStop) */
+    .overlay-active-call {
+      background: radial-gradient(circle at 50% 30%, #1e293b 0%, #090d16 100%);
+      justify-content: space-between;
+      padding: 24px 14px 18px 14px;
+      color: #fff;
+    }
+    .active-call-header {
+      width: 100%;
+      text-align: center;
+    }
+    .active-call-tag {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #86efac;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .active-call-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .active-call-timer {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #4ade80;
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
+    .active-call-audio-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(34, 197, 94, 0.16);
+      border: 1px solid rgba(74, 222, 128, 0.4);
+      color: #86efac;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 0.64rem;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .active-call-avatar-wrapper {
+      position: relative;
+      width: 58px;
+      height: 58px;
+      margin: 4px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .active-call-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f59e0b 0%, #dc2626 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      box-shadow: 0 0 18px rgba(239, 68, 68, 0.45);
+      z-index: 2;
+    }
+    .active-call-pulse {
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      border: 2px solid rgba(74, 222, 128, 0.6);
+      animation: pulseRing 1.5s ease-out infinite;
+      z-index: 1;
+    }
+    .active-call-grid-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      width: 100%;
+      max-width: 220px;
+      margin: 4px auto;
+    }
+    .active-call-action-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 6px 3px;
+      font-size: 0.6rem;
+      color: #cbd5e1;
+      cursor: pointer;
+      user-select: none;
+    }
+    .active-call-action-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .active-call-hangup-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      margin-top: 4px;
+    }
+    .active-call-hangup-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(239, 68, 68, 0.6);
+    }
+    .active-call-info-box {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid #a855f7;
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 0.64rem;
+      color: #e2e8f0;
+      text-align: left;
+      line-height: 1.35;
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 4px;
+    }
+
+    .phone-frame.rotated .overlay-active-call {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-evenly;
+      padding: 10px 30px 10px 18px;
+    }
+    .phone-frame.rotated .overlay-active-call .active-call-header {
+      width: 45%;
+      text-align: left;
+    }
+    .phone-frame.rotated .overlay-active-call .active-call-avatar-wrapper {
+      display: none;
+    }
+    .phone-frame.rotated .overlay-active-call .active-call-grid-actions {
+      display: none;
+    }
+    .phone-frame.rotated .overlay-active-call .active-call-right-col {
+      width: 48%;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* 2. Overlay Destrucción por Rotación (onDestroy -> onCreate) */
+    .overlay-destroy {
+      background: rgba(9, 13, 22, 0.94);
+      backdrop-filter: blur(6px);
+      justify-content: center;
+      gap: 10px;
+      padding: 18px;
+    }
+    .destroy-card-box {
+      background: rgba(127, 29, 29, 0.25);
+      border: 1.5px solid #ef4444;
+      border-radius: 12px;
+      padding: 10px 14px;
+      width: 100%;
+      max-width: 460px;
+      text-align: left;
+    }
+    .vm-survive-box {
+      background: rgba(6, 78, 59, 0.35);
+      border: 1.5px solid #10b981;
+      border-radius: 12px;
+      padding: 10px 14px;
+      width: 100%;
+      max-width: 460px;
+      text-align: left;
+    }
+
+    /* 3. Overlay Launcher Home (onStop) */
     .overlay-home {
       background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
       justify-content: space-between;
-      padding: 30px 16px 20px 16px;
+      padding: 24px 16px 16px 16px;
     }
     .launcher-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
       width: 100%;
-      margin-top: 20px;
+      margin-top: 10px;
     }
     .launcher-app-icon {
       display: flex;
@@ -645,6 +1153,7 @@
       gap: 4px;
       font-size: 0.65rem;
       color: #94a3b8;
+      cursor: pointer;
     }
     .launcher-icon-box {
       width: 44px;
@@ -656,28 +1165,33 @@
       align-items: center;
       justify-content: center;
       font-size: 1.3rem;
+      transition: transform 0.2s ease;
+    }
+    .launcher-app-icon:hover .launcher-icon-box {
+      transform: scale(1.08);
     }
 
-    /* 3. Overlay ANR */
+    /* 4. Overlay ANR */
     .overlay-anr {
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(0, 0, 0, 0.82);
     }
     .anr-dialog {
       background: #1e293b;
-      border: 1px solid #475569;
+      border: 1.5px solid #ef4444;
       border-radius: 14px;
       padding: 16px;
       text-align: left;
       box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      max-width: 280px;
     }
     .anr-title {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 700;
       color: #f87171;
       margin-bottom: 6px;
     }
     .anr-msg {
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       color: #cbd5e1;
       line-height: 1.4;
       margin-bottom: 12px;
@@ -1864,7 +2378,10 @@
 
       .phone-frame {
         width: 100% !important;
-        max-width: 320px !important;
+        max-width: 310px !important;
+        height: 648px !important;
+        min-height: 648px !important;
+        max-height: 648px !important;
         min-width: 0 !important;
         margin: 0 auto;
       }
@@ -1877,8 +2394,14 @@
         padding-bottom: 1rem;
       }
 
-      .sim-wrapper.is-rotated .phone-frame {
-        transform: none !important;
+      .sim-wrapper.is-rotated .phone-frame,
+      .phone-frame.rotated {
+        width: 100% !important;
+        max-width: 648px !important;
+        height: auto !important;
+        aspect-ratio: 1046 / 500 !important;
+        min-height: 0 !important;
+        max-height: none !important;
         margin: 0 auto !important;
       }
 
@@ -2030,67 +2553,72 @@
 
       <!-- Pipeline de Estados -->
       <div class="lifecycle-stepper">
-        <div class="lc-step" id="step-create" onclick="setScenario('create')">
+        <div class="lc-step active" id="step-create" onclick="setScenario('create', true, true)">
           <div class="lc-dot">1</div>
           <div class="lc-name">onCreate()<br><small>Creación/Inflado</small></div>
         </div>
         <div style="color:var(--border);">➔</div>
-        <div class="lc-step" id="step-start" onclick="setScenario('start')">
+        <div class="lc-step" id="step-start" onclick="setScenario('start', true, true)">
           <div class="lc-dot">2</div>
-          <div class="lc-name">onStart()<br><small>Visible</small></div>
+          <div class="lc-name">onStart()<br><small>Visible sin foco</small></div>
         </div>
         <div style="color:var(--border);">➔</div>
-        <div class="lc-step active" id="step-resume" onclick="setScenario('resume')">
+        <div class="lc-step" id="step-resume" onclick="setScenario('resume', true, true)">
           <div class="lc-dot">3</div>
           <div class="lc-name">onResume()<br><small style="color:#34d399;">Interactiva con foco</small></div>
         </div>
         <div style="color:var(--border);">➔</div>
-        <div class="lc-step active-critical" id="step-pause" onclick="setScenario('llamada')">
+        <div class="lc-step" id="step-pause" onclick="setScenario('llamada', true, true)">
           <div class="lc-dot">4</div>
-          <div class="lc-name">onPause()<br><small style="color:#fca5a5;">¡Llamada / Salida!</small></div>
+          <div class="lc-name">onPause()<br><small style="color:#fca5a5;">¡Llamada / Sin foco!</small></div>
         </div>
         <div style="color:var(--border);">➔</div>
-        <div class="lc-step" id="step-stop" onclick="setScenario('home')">
+        <div class="lc-step" id="step-stop" onclick="setScenario('home', true, true)">
           <div class="lc-dot">5</div>
-          <div class="lc-name">onStop()<br><small>Oculta al usuario</small></div>
+          <div class="lc-name">onStop()<br><small>100% Oculta</small></div>
         </div>
         <div style="color:var(--border);">➔</div>
-        <div class="lc-step" id="step-destroy" onclick="setScenario('rotacion')">
+        <div class="lc-step" id="step-destroy" onclick="setScenario('rotacion', true, true)">
           <div class="lc-dot">6</div>
-          <div class="lc-name">onDestroy()<br><small>Destrucción</small></div>
+          <div class="lc-name">onDestroy()<br><small>Destrucción/Giro</small></div>
         </div>
       </div>
 
       <!-- Disparadores del Sistema (Arriba del Teléfono - Estables y Fijos) -->
       <div class="sim-triggers-panel">
         <div class="sim-triggers-header">
-          <div class="sim-triggers-title">
-            <span>⚡ DISPARAR EVENTOS DEL SISTEMA:</span>
+          <div>
+            <div class="sim-triggers-title">
+              <span>⚡ DISPARAR EVENTOS DEL SISTEMA:</span>
+            </div>
+            <div class="sim-triggers-desc">
+              Tocá cualquier evento o interactuá con el teléfono para observar qué muestra la pantalla y qué ejecuta cada capa:
+            </div>
           </div>
-          <div class="sim-triggers-desc">
-            Tocá cualquier evento para interactuar con el smartphone y observar en tiempo real la acción de cada capa:
+          <div class="auto-pause-detector-pill" id="auto-pause-pill" title="Secuencia temporizada: onCreate -> 3s -> onStart -> 4s -> onPause (sin loop)">
+            <span id="auto-pause-pill-text">⏳ Secuencia activa: onCreate ➔ (3s) ➔ onStart ➔ (4s) ➔ onPause</span>
           </div>
         </div>
         <div class="events-picker-grid">
-          <button class="sim-event-chip" id="chip-create" onclick="setScenario('create')">
+          <button class="sim-event-chip active" id="chip-create" onclick="setScenario('create', true, true)">
             <span>🚀</span> <span>1. onCreate()</span>
           </button>
-          <button class="sim-event-chip" id="chip-start" onclick="setScenario('start')">
+          <button class="sim-event-chip" id="chip-start" onclick="setScenario('start', true, true)">
             <span>👁️</span> <span>2. onStart()</span>
           </button>
-          <button class="sim-event-chip" id="chip-resume" onclick="setScenario('resume')">
+          <button class="sim-event-chip" id="chip-resume" onclick="setScenario('resume', true, true)">
             <span>▶️</span> <span>3. onResume()</span>
           </button>
-          <button class="sim-event-chip active" id="chip-llamada" onclick="setScenario('llamada')">
+          <button class="sim-event-chip" id="chip-llamada" onclick="setScenario('llamada', true, true)">
             <span>📞</span> <span>4. onPause() [Llamada]</span>
           </button>
-          <button class="sim-event-chip" id="chip-home" onclick="setScenario('home')">
+          <button class="sim-event-chip" id="chip-home" onclick="setScenario('home', true, true)">
             <span>🏠</span> <span>5. onStop() [Home]</span>
           </button>
-          <button class="sim-event-chip" id="chip-rotacion" onclick="setScenario('rotacion')">
+          <button class="sim-event-chip" id="chip-rotacion" onclick="setScenario('rotacion', true, true)">
             <span>🔄</span> <span>Rotación (Giro)</span>
           </button>
-          <button class="sim-event-chip" id="chip-anr" onclick="setScenario('anr')">
+          <button class="sim-event-chip" id="chip-anr" onclick="setScenario('anr', true, true)">
             <span>⛔</span> <span>Peligro ANR</span>
           </button>
         </div>
@@ -2102,90 +2630,234 @@
         <!-- Columna Izquierda: Smartphone Mockup -->
         <div class="phone-container">
           <div class="phone-frame" id="phone-mockup">
-            <!-- Notch -->
-            <div class="phone-notch">
-              <div class="phone-camera-dot"></div>
-            </div>
-
-            <!-- Status Bar -->
-            <div class="phone-status-bar">
-              <span>18:30</span>
-              <div style="display:flex; gap:5px; align-items:center;">
-                <span>5G</span>
-                <span>📶</span>
-                <span>🔋 85%</span>
-              </div>
-            </div>
-
-            <!-- Screen Content -->
-            <div class="phone-screen">
+            <!-- Screen Content (inset: 0, covered by phone-frame::after) -->
+            <div class="phone-screen" id="phone-screen-area">
               
-              <!-- App Principal de Trivia -->
-              <div class="app-screen-content" id="app-trivia-ui">
-                <div>
-                  <div class="app-header-bar">
-                    <span class="app-title-text">🎮 Trivia DAM Móvil</span>
-                    <span class="app-score-badge" id="app-score-display">Puntos: 150</span>
-                  </div>
-
-                  <div class="app-timer-bar-wrap">
-                    <div class="app-timer-bar-inner" id="app-timer-bar"></div>
-                  </div>
-
-                  <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:4px;" id="app-stage-indicator">
-                    🟢 Estado: onResume() • Ejecución Activa
-                  </div>
-
-                  <div class="app-question-card" id="app-question-text">
-                    ¿Por qué en Kotlin una clase debe ser 'open' para heredar?
-                  </div>
-
-                  <div class="app-mock-options">
-                    <div class="app-mock-opt"><span>A.</span> Por defecto son final</div>
-                    <div class="app-mock-opt"><span>B.</span> Para sobrecargar memoria</div>
-                    <div class="app-mock-opt"><span>C.</span> Es obligatorio en Java</div>
+              <!-- App Principal de Trivia (Samsung Galaxy S22 Ultra) -->
+              <div class="app-screen-content state-create" id="app-trivia-ui">
+                
+                <!-- Status Bar con espacio central para el punch-hole de la cámara -->
+                <div class="phone-status-bar">
+                  <span class="phone-status-time">18:30</span>
+                  <div class="phone-camera-spacer"></div>
+                  <div class="phone-status-icons">
+                    <span>5G</span>
+                    <span>📶</span>
+                    <span>🔋 85%</span>
                   </div>
                 </div>
 
-                <div style="background:rgba(15, 23, 42, 0.9); padding:8px; border-radius:8px; font-size:0.68rem; color:#94a3b8; text-align:center;">
-                  ViewModel conectado • Conservando estado
+                <!-- App Header Bar -->
+                <div class="app-header-bar">
+                  <div style="display:flex; align-items:center; gap:4px; flex-wrap:wrap;">
+                    <span class="app-title-text">🎮 Trivia DAM</span>
+                    <span class="app-instance-tag" id="app-instance-badge">MainActivity@4f8a</span>
+                    <span class="app-instance-tag" id="phone-orientation-tag" style="font-size:0.52rem; color:#94a3b8;">VERTICAL</span>
+                  </div>
+                  <span class="app-score-badge" id="app-score-display">Puntos: 150</span>
                 </div>
+
+                <!-- Timer Bar Wrap -->
+                <div class="app-timer-bar-wrap">
+                  <div class="app-timer-bar-inner" id="app-timer-bar"></div>
+                </div>
+
+                <!-- Stage Indicator -->
+                <div class="app-stage-indicator" id="app-stage-indicator">
+                  🟡 Estado: onCreate() • Inflando Layout y enlazando ViewModel
+                </div>
+
+                <!-- Cuerpo principal de contenido (1 col vertical, 2 cols en landscape) -->
+                <div class="app-main-layout">
+                  <div class="app-main-left-col">
+                    <!-- Banner explicativo en vivo dentro de la pantalla -->
+                    <div class="app-lifecycle-banner banner-create" id="app-lifecycle-banner">
+                      <strong>🛠️ onCreate():</strong> Ejecutando <code>setContentView()</code> / Compose <code>setContent</code>. Construyendo jerarquía de vistas en memoria (aún sin foco).
+                    </div>
+
+                    <!-- Checklist de inflado exclusivo de onCreate() -->
+                    <div class="create-inflate-checklist" id="create-inflate-checklist">
+                      <span>✓ 1. Inflando XML / Compose UI tree...</span>
+                      <span>✓ 2. ViewBinding: tvQuestion, btnOptA..C</span>
+                      <span>✓ 3. by viewModels() ➔ TriviaViewModel@9c21</span>
+                    </div>
+
+                    <!-- Question Card -->
+                    <div class="app-question-card" id="app-question-card">
+                      <span class="xml-wireframe-tag">&lt;TextView android:id="@+id/tvQuestion" /&gt;</span>
+                      <div id="app-question-text">¿Por qué en Kotlin una clase debe ser 'open' para heredar?</div>
+                    </div>
+                  </div>
+
+                  <div class="app-main-right-col">
+                    <!-- Opciones de respuesta -->
+                    <div class="app-mock-options" id="app-options-container">
+                      <div class="app-mock-opt" id="phone-opt-0" onclick="handlePhoneOptionClick(0)">
+                        <div class="app-mock-opt-left">
+                          <strong>A.</strong> <span>Por defecto son final</span>
+                        </div>
+                        <span class="app-mock-opt-status" id="phone-opt-status-0">&lt;Button&gt;</span>
+                      </div>
+                      <div class="app-mock-opt" id="phone-opt-1" onclick="handlePhoneOptionClick(1)">
+                        <div class="app-mock-opt-left">
+                          <strong>B.</strong> <span>Para sobrecargar memoria</span>
+                        </div>
+                        <span class="app-mock-opt-status" id="phone-opt-status-1">&lt;Button&gt;</span>
+                      </div>
+                      <div class="app-mock-opt" id="phone-opt-2" onclick="handlePhoneOptionClick(2)">
+                        <div class="app-mock-opt-left">
+                          <strong>C.</strong> <span>Es obligatorio en Java</span>
+                        </div>
+                        <span class="app-mock-opt-status" id="phone-opt-status-2">&lt;Button&gt;</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Footer Bar -->
+                <div class="app-footer-bar">
+                  <span id="app-vm-status-text">🧠 ViewModel@9c21 conectado (150 pts)</span>
+                  <button class="app-next-step-btn" id="app-next-step-btn" onclick="handlePhoneNextStepClick(event)">
+                    ▶ Pasar a onStart()
+                  </button>
+                </div>
+
               </div>
 
-              <!-- Overlay 1: Llamada Entrante con Animación (onPause) -->
+              <!-- Overlay 1: Llamada Entrante con Heads-Up Banner y Trivia visible detrás (onPause) -->
               <div class="phone-overlay overlay-call" id="overlay-call">
-                <div class="call-pulse-animation" id="call-anim-box">
-                  <!-- Lottie or Fallback Ring SVG -->
-                  <svg width="70" height="70" viewBox="0 0 100 100" class="pulse-ring-circle">
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="#3b82f6" stroke-width="4" opacity="0.6"/>
-                    <circle cx="50" cy="50" r="32" fill="#1e293b" stroke="#60a5fa" stroke-width="3"/>
-                    <text x="50" y="58" font-size="28" text-anchor="middle" fill="#fff">📞</text>
-                  </svg>
+                <!-- Banner superior de llamada entrante -->
+                <div class="call-heads-up-card">
+                  <div class="call-top-row">
+                    <div class="call-pulse-animation" id="call-anim-box">
+                      <svg width="44" height="44" viewBox="0 0 100 100" class="pulse-ring-circle">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#3b82f6" stroke-width="5" opacity="0.6"/>
+                        <circle cx="50" cy="50" r="34" fill="#1e293b" stroke="#60a5fa" stroke-width="3"/>
+                        <text x="50" y="60" font-size="30" text-anchor="middle" fill="#fff">📞</text>
+                      </svg>
+                    </div>
+                    <div style="flex:1;">
+                      <div style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.5px; color:#93c5fd; font-weight:700;">Llamada Entrante • Superposición Parcial</div>
+                      <div style="font-size:1rem; font-weight:800; color:#fff;">Mc Donald's</div>
+                    </div>
+                  </div>
+                  <div class="call-actions">
+                    <button class="call-btn call-btn-reject" onclick="handleRejectCall(event)" title="Rechazar llamada y devolver foco a la Activity (onResume)">
+                      ✕ Rechazar (➔ onResume)
+                    </button>
+                    <button class="call-btn call-btn-accept" onclick="handleAnswerCall(event)" title="Atender llamada y reproducir Inspector Morfi (onStop)">
+                      ✓ Atender (➔ onStop)
+                    </button>
+                  </div>
                 </div>
-                <div style="font-size:1.1rem; font-weight:700; color:#fff; margin-bottom:2px;">Mamá</div>
-                <div style="font-size:0.75rem; color:#60a5fa; margin-bottom:12px;">Llamada entrante...</div>
 
-                <div style="background:rgba(239, 68, 68, 0.2); border:1px solid rgba(239, 68, 68, 0.4); padding:6px 10px; border-radius:8px; font-size:0.72rem; color:#fca5a5; max-width:240px; margin-bottom:10px;">
-                  ⚠️ onPause(): La app de Trivia perdió el foco. Guardando borrador en hilo secundario.
+                <!-- Indicador central que deja ver la app pausada de fondo -->
+                <div style="background:rgba(15, 23, 42, 0.85); border:1px dashed #f59e0b; padding:5px 10px; border-radius:999px; font-size:0.66rem; color:#fde68a; font-weight:700;">
+                  ⏸️ Trivia visible detrás pero SIN FOCO • Timer pausado
                 </div>
 
-                <div class="call-actions">
-                  <button class="call-btn call-btn-reject" onclick="setScenario('resume')" title="Rechazar y volver">✕</button>
-                  <button class="call-btn call-btn-accept" onclick="setScenario('home')" title="Atender y minimizar">✓</button>
+                <!-- Tarjeta inferior de persistencia garantizada en onPause -->
+                <div style="width:100%; background:rgba(127, 29, 29, 0.88); border:1.5px solid #f87171; padding:8px 10px; border-radius:10px; font-size:0.69rem; color:#fee2e2; text-align:left; line-height:1.35;">
+                  <strong>⚠️ onPause() ejecutándose:</strong> Último punto seguro garantizado.<br>
+                  <span style="color:#86efac; font-family:'JetBrains Mono',monospace; font-size:0.63rem;">💾 Dispatchers.IO ➔ Guardando borrador (150 pts) en SharedPreferences... ✓</span>
                 </div>
               </div>
 
-              <!-- Overlay 2: Launcher Home de Android (onStop) -->
+              <!-- Overlay 1.5: Llamada Atendida / En Curso a Pantalla Completa (onStop) -->
+              <div class="phone-overlay overlay-active-call" id="overlay-active-call">
+                <div class="active-call-header">
+                  <div class="active-call-tag">📞 Llamada en curso • Pantalla Completa</div>
+                  <div class="active-call-name">Mc Donald's</div>
+                  <div class="active-call-timer" id="active-call-timer">00:00</div>
+                  <div class="active-call-audio-badge">
+                    <span>🎵</span> <span>Inspector Morfi</span>
+                    <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#4ade80; animation:pulse 1s infinite;"></span>
+                  </div>
+                </div>
+
+                <div class="active-call-avatar-wrapper">
+                  <div class="active-call-pulse"></div>
+                  <div class="active-call-avatar">🍔</div>
+                </div>
+
+                <div class="active-call-grid-actions">
+                  <div class="active-call-action-btn">
+                    <span>🔇</span>
+                    <span>Silenciar</span>
+                  </div>
+                  <div class="active-call-action-btn">
+                    <span>🔢</span>
+                    <span>Teclado</span>
+                  </div>
+                  <div class="active-call-action-btn">
+                    <span>🔊</span>
+                    <span>Altavoz</span>
+                  </div>
+                </div>
+
+                <div class="active-call-right-col" style="width:100%;">
+                  <button class="active-call-hangup-btn" onclick="hangUpCall(event)" title="Colgar llamada y volver a Trivia DAM">
+                    <span>✕</span> <span>Colgar llamada (➔ onResume)</span>
+                  </button>
+
+                  <div class="active-call-info-box">
+                    <strong style="color:#c4b5fd;">🛑 onStop() en Trivia:</strong> La app de llamadas ocupó el 100% de la pantalla.<br>
+                    <span style="color:#86efac; font-size:0.6rem;">💾 ViewModel@9c21 intacto en RAM. Al colgar: <code>onRestart ➔ onStart ➔ onResume</code>.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Overlay 2: Transición de Destrucción y Recreación al Rotar (onDestroy ➔ onCreate) -->
+              <div class="phone-overlay overlay-destroy" id="overlay-destroy">
+                <div style="font-size:0.85rem; font-weight:800; color:#f87171; letter-spacing:0.4px;">
+                  🔄 CAMBIO DE CONFIGURACIÓN (ROTACIÓN DE PANTALLA)
+                </div>
+                <div class="destroy-card-box">
+                  <div style="font-size:0.75rem; font-weight:800; color:#fca5a5; margin-bottom:3px;">
+                    💥 1. onDestroy() — Destruyendo MainActivity@4f8a (Vertical)
+                  </div>
+                  <div style="font-size:0.68rem; color:#fecaca; line-height:1.35;">
+                    Android desmonta y recolecta la Activity vertical anterior porque cambió la configuración física de la pantalla.
+                  </div>
+                </div>
+                <div class="vm-survive-box">
+                  <div style="font-size:0.75rem; font-weight:800; color:#6ee7b7; margin-bottom:3px;">
+                    🛡️ 2. TriviaViewModel@9c21 ¡NO SE DESTRUYE!
+                  </div>
+                  <div style="font-size:0.68rem; color:#d1fae5; line-height:1.35;">
+                    Permanece intacto en memoria RAM conservando <strong>Puntos: 150</strong> y la pregunta actual.
+                  </div>
+                </div>
+                <div style="font-size:0.7rem; color:#93c5fd; font-family:'JetBrains Mono',monospace;">
+                  ⏳ 3. Invocando onCreate() para inflar nueva MainActivity@b71e (Landscape)...
+                </div>
+              </div>
+
+              <!-- Overlay 3: Launcher Home de Android (onStop) -->
               <div class="phone-overlay overlay-home" id="overlay-home">
-                <div style="text-align:center; margin-top:20px;">
-                  <div style="font-size:2.4rem; font-weight:300; color:#fff;">18:30</div>
-                  <div style="font-size:0.8rem; color:#cbd5e1;">Miércoles, 15 de Octubre</div>
+                <div style="text-align:center; margin-top:10px;">
+                  <div style="font-size:2.2rem; font-weight:300; color:#fff;">18:30</div>
+                  <div style="font-size:0.76rem; color:#cbd5e1;">Pantalla de Inicio (Launcher Android)</div>
+                </div>
+
+                <!-- Banner de llamada atendida en curso con Mc Donald's (Inspector Morfi) -->
+                <div id="home-active-call-pill" style="display:none; align-items:center; justify-content:space-between; background:rgba(22, 101, 52, 0.92); border:1px solid #4ade80; padding:6px 12px; border-radius:12px; width:100%; box-shadow:0 4px 14px rgba(34,197,94,0.35); margin:6px 0; box-sizing:border-box;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:1.1rem; animation:pulse 1.2s infinite;">📞</span>
+                    <div style="text-align:left;">
+                      <div style="font-size:0.6rem; color:#86efac; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Llamada en curso (Morfi)</div>
+                      <div style="font-size:0.82rem; font-weight:800; color:#fff;">Mc Donald's</div>
+                    </div>
+                  </div>
+                  <button onclick="hangUpCall(event)" style="background:#ef4444; color:#fff; border:none; padding:4px 9px; border-radius:6px; font-size:0.62rem; font-weight:700; cursor:pointer;" title="Cortar llamada">
+                    ✕ Colgar
+                  </button>
                 </div>
 
                 <div class="launcher-grid">
-                  <div class="launcher-app-icon" onclick="setScenario('resume')">
-                    <div class="launcher-icon-box" style="border-color:#3b82f6; background:#1e3a8a;">🎮</div>
-                    <span>Trivia DAM</span>
+                  <div class="launcher-app-icon" onclick="setScenario('resume', true, true)" title="Reabrir Trivia DAM (onRestart ➔ onStart ➔ onResume)">
+                    <div class="launcher-icon-box" style="border-color:#3b82f6; background:#1e3a8a; box-shadow:0 0 14px rgba(59,130,246,0.5);">🎮</div>
+                    <span style="color:#93c5fd; font-weight:700;">Trivia DAM</span>
                   </div>
                   <div class="launcher-app-icon">
                     <div class="launcher-icon-box">💬</div>
@@ -2201,29 +2873,33 @@
                   </div>
                 </div>
 
-                <div style="background:rgba(15, 23, 42, 0.9); padding:8px 12px; border-radius:10px; font-size:0.72rem; color:#cbd5e1; border:1px solid #334155; margin-bottom:10px;">
-                  🏠 onStop(): La Trivia está oculta en segundo plano. Tocá el ícono 🎮 para volver a primer plano.
+                <div style="background:rgba(15, 23, 42, 0.92); padding:9px 12px; border-radius:10px; font-size:0.7rem; color:#cbd5e1; border:1px solid #3b82f6; text-align:left; line-height:1.4;">
+                  <strong>🏠 onStop(): Activity 100% oculta en segundo plano.</strong><br>
+                  Se liberaron recursos gráficos pesados, pero el <code>ViewModel</code> conserva la partida en RAM. <strong>Tocá el ícono 🎮 Trivia DAM</strong> para volver (<code>onRestart ➔ onStart ➔ onResume</code>).
                 </div>
               </div>
 
-              <!-- Overlay 3: Diálogo ANR (Error Main Thread) -->
+              <!-- Overlay 4: Diálogo ANR (Error Main Thread) -->
               <div class="phone-overlay overlay-anr" id="overlay-anr">
+                <div style="background:rgba(127, 29, 29, 0.9); border:1px solid #ef4444; color:#fecaca; font-family:'JetBrains Mono',monospace; font-size:0.63rem; padding:4px 10px; border-radius:999px; margin-bottom:10px;">
+                  ❄️ HILO PRINCIPAL (UI THREAD) BLOQUEADO &gt; 5 SEGUNDOS
+                </div>
                 <div class="anr-dialog">
-                  <div class="anr-title">⚠️ Error ANR en el dispositivo</div>
+                  <div class="anr-title">⚠️ Trivia DAM no responde</div>
                   <div class="anr-msg">
-                    La aplicación <strong>Trivia DAM</strong> no responde porque intentó acceder a la base de datos dentro del Hilo Principal (Main Thread).
+                    La aplicación intentó ejecutar una consulta pesada de SQLite/disco directamente en el <strong>Main Thread</strong> sin usar corrutinas (<code>Dispatchers.IO</code>), congelando el dibujo de la interfaz.
                   </div>
                   <div class="anr-btns">
-                    <button class="anr-btn" style="background:#334155; color:#cbd5e1;" onclick="setScenario('resume')">Esperar</button>
-                    <button class="anr-btn" style="background:#ef4444; color:#fff;" onclick="setScenario('resume')">Cerrar App</button>
+                    <button class="anr-btn" style="background:#334155; color:#cbd5e1;" onclick="setScenario('resume', true, true)">Esperar</button>
+                    <button class="anr-btn" style="background:#ef4444; color:#fff;" onclick="setScenario('create', true, true)">Cerrar App</button>
                   </div>
                 </div>
               </div>
 
             </div>
           </div>
-          <div style="font-size:0.78rem; color:var(--text-muted); text-align:center;">
-            Simulador de Smartphone Android • Interactivo
+          <div style="font-size:0.78rem; color:var(--text-muted); text-align:center;" id="phone-caption-label">
+            Simulador de Smartphone Android • Iniciado en <strong>onCreate()</strong>
           </div>
         </div>
 
@@ -2241,7 +2917,7 @@
               <span class="layer-thread-badge" style="color:#60a5fa; border-color:#2563eb;">Main / UI Thread</span>
             </div>
             <div class="layer-text-box" id="sim-text-ui">
-              <strong>Acción en Pantalla:</strong> La llamada entrante toma el foco. La Activity entra en <code>onPause()</code>, pausa animaciones, cámara y audio, y le avisa de inmediato al ViewModel.
+              <strong>onCreate() en la UI:</strong> Se ejecuta una sola vez al nacer la Activity. Se infla el diseño (<code>setContentView(R.layout...)</code> o Compose <code>setContent</code>) y se enlazan vistas con ViewBinding.
             </div>
           </div>
 
@@ -2251,17 +2927,17 @@
               <span class="layer-thread-badge" style="color:#34d399; border-color:#059669;">Independiente de la UI • Vive en Memoria</span>
             </div>
             <div class="layer-text-box" id="sim-text-vm">
-              <strong>Acción de negocio:</strong> Toma el estado actual de la partida en memoria (puntaje 150) y despacha una corrutina en segundo plano (<code>viewModelScope.launch</code>) para delegar la persistencia sin frenar la vista.
+              <strong>Inicialización del ViewModel:</strong> Se obtiene la instancia del ViewModel asociada a este Scope (<code>by viewModels()</code>) y se preparan los flujos de datos reactivos.
             </div>
           </div>
 
-          <div class="layer-card highlight" id="sim-layer-data">
+          <div class="layer-card" id="sim-layer-data">
             <div class="layer-header-row">
               <span class="layer-name">💾 3. Capa de Datos (Repository + SharedPreferences / JSON)</span>
               <span class="layer-thread-badge" style="color:#fbbf24; border-color:#d97706;">Segundo Plano (Dispatchers.IO)</span>
             </div>
             <div class="layer-text-box" id="sim-text-data">
-              <strong>Acción física:</strong> Escribe el borrador en <code>SharedPreferences</code> o archivo JSON en segundo plano (hilo IO) antes de que el proceso pueda ser cerrado por falta de memoria.
+              <strong>Capa de Datos lista:</strong> El Repository queda instanciado a la espera de peticiones de lectura o escritura.
             </div>
           </div>
 
@@ -2862,6 +3538,11 @@
       if (playAudio && currentActiveTab !== tabId) {
         soundManager.playClick();
       }
+      if (tabId !== 'simulador' && window.soundManager) {
+        soundManager.stopRing(); // Para de sonar si sale de la pantalla
+        soundManager.stopCallActive(); // Para el audio de llamada si sale de la pantalla
+        if (typeof stopActiveCallTimer === 'function') stopActiveCallTimer();
+      }
       currentActiveTab = tabId;
       document.querySelectorAll('.header-menu-panel .tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
@@ -2884,10 +3565,294 @@
     /* ============================================================
        SIMULADOR EN TELÉFONO Y PIPELINE DEL CICLO DE VIDA
        ============================================================ */
-    function setScenario(scen, playAudio = true) {
-      if (playAudio) {
+    /* ============================================================
+       SIMULADOR EN TELÉFONO Y PIPELINE DEL CICLO DE VIDA
+       ============================================================ */
+    let currentSimScenario = 'create';
+    let phoneTriviaScore = 150;
+    let rotationDestroyTimeout = null;
+
+    // Control de la secuencia temporizada: onCreate -> (3s) -> onStart -> (4s) -> onPause (SIN LOOP)
+    let hasAutoSequenceFinished = false;
+    let autoStepTimerId = null;
+    let autoStepIntervalId = null;
+    let autoSequencePhase = 'idle'; // 'idle' | 'create_to_start' | 'start_to_pause' | 'done'
+    let autoSecondsLeft = 3;
+
+    function clearAutoLifecycleTimers() {
+      if (autoStepTimerId) {
+        clearTimeout(autoStepTimerId);
+        autoStepTimerId = null;
+      }
+      if (autoStepIntervalId) {
+        clearInterval(autoStepIntervalId);
+        autoStepIntervalId = null;
+      }
+    }
+
+    function updateAutoPausePillUI(state, text) {
+      const pill = document.getElementById('auto-pause-pill');
+      const pillText = document.getElementById('auto-pause-pill-text');
+      if (!pill || !pillText) return;
+      pill.classList.remove('counting', 'done');
+      if (state === 'counting') pill.classList.add('counting');
+      if (state === 'done') pill.classList.add('done');
+      pillText.innerHTML = text;
+    }
+
+    function startAutoLifecycleSequence() {
+      if (hasAutoSequenceFinished) return;
+      if (currentActiveTab !== 'simulador') return;
+      if (autoStepTimerId !== null) return; // Ya en marcha
+
+      // Fase 1: onCreate -> onStart en 3 segundos
+      autoSequencePhase = 'create_to_start';
+      autoSecondsLeft = 3;
+      updateAutoPausePillUI(
+        'counting',
+        `⏳ 1. onCreate() inflando vistas... pasando a <strong>onStart()</strong> en <strong>${autoSecondsLeft}s</strong>`
+      );
+
+      autoStepIntervalId = setInterval(() => {
+        autoSecondsLeft--;
+        if (autoSequencePhase === 'create_to_start' && autoSecondsLeft > 0) {
+          updateAutoPausePillUI(
+            'counting',
+            `⏳ 1. onCreate() inflando vistas... pasando a <strong>onStart()</strong> en <strong>${autoSecondsLeft}s</strong>`
+          );
+        }
+      }, 1000);
+
+      autoStepTimerId = setTimeout(() => {
+        clearAutoLifecycleTimers();
+        if (hasAutoSequenceFinished) return;
+
+        // Pasar a onStart()
+        setScenario('start', true, false);
+
+        // Fase 2: onStart -> onPause en 4 segundos
+        autoSequencePhase = 'start_to_pause';
+        autoSecondsLeft = 4;
+        updateAutoPausePillUI(
+          'counting',
+          `⏱️ 2. onStart() visible... llamada entrante (<strong>onPause</strong>) en <strong>${autoSecondsLeft}s</strong>`
+        );
+
+        autoStepIntervalId = setInterval(() => {
+          autoSecondsLeft--;
+          if (autoSequencePhase === 'start_to_pause' && autoSecondsLeft > 0) {
+            updateAutoPausePillUI(
+              'counting',
+              `⏱️ 2. onStart() visible... llamada entrante (<strong>onPause</strong>) en <strong>${autoSecondsLeft}s</strong>`
+            );
+          }
+        }, 1000);
+
+        autoStepTimerId = setTimeout(() => {
+          clearAutoLifecycleTimers();
+          if (hasAutoSequenceFinished) return;
+          hasAutoSequenceFinished = true;
+          autoSequencePhase = 'done';
+          updateAutoPausePillUI(
+            'done',
+            '✅ Secuencia completada: <strong>onCreate</strong> ➔ (3s) ➔ <strong>onStart</strong> ➔ (4s) ➔ <strong>onPause</strong> (sin loop)'
+          );
+          setScenario('llamada', true, false);
+        }, 4000);
+
+      }, 3000);
+    }
+
+    function notifySimulatorUserActivity() {
+      // Si el usuario interactúa y la secuencia aún no corrió, la arranca
+      if (!hasAutoSequenceFinished && autoStepTimerId === null && currentSimScenario === 'create') {
+        startAutoLifecycleSequence();
+      }
+    }
+
+    function resetPhoneOptionsVisuals(statusLabelText) {
+      for (let i = 0; i < 3; i++) {
+        const optEl = document.getElementById('phone-opt-' + i);
+        const stEl = document.getElementById('phone-opt-status-' + i);
+        if (optEl) {
+          optEl.classList.remove('opt-answered-correct', 'opt-answered-wrong');
+        }
+        if (stEl && statusLabelText !== undefined) {
+          stEl.innerHTML = statusLabelText;
+        }
+      }
+    }
+
+    function handlePhoneOptionClick(optIdx) {
+      notifySimulatorUserActivity();
+
+      const banner = document.getElementById('app-lifecycle-banner');
+      if (currentSimScenario === 'create') {
+        if (window.soundManager) soundManager.playError();
+        if (banner) {
+          banner.innerHTML = '<strong>⚠️ En <code>onCreate()</code>:</strong> El layout recién se está inflando en memoria y no recibe eventos táctiles. Pasando a <code>onStart()</code>...';
+        }
+        return;
+      }
+
+      if (currentSimScenario === 'start') {
+        if (window.soundManager) soundManager.playError();
+        if (banner) {
+          banner.innerHTML = '<strong>🔒 Sin foco en <code>onStart()</code>:</strong> La Activity es visible en pantalla pero todavía <strong>no tiene el foco interactivo</strong>. Esperá el paso a <code>onResume()</code> o toques.';
+        }
+        return;
+      }
+
+      if (currentSimScenario !== 'resume' && currentSimScenario !== 'rotacion') {
+        return;
+      }
+
+      resetPhoneOptionsVisuals('👆 Tocá');
+      const clickedOpt = document.getElementById('phone-opt-' + optIdx);
+      const clickedStatus = document.getElementById('phone-opt-status-' + optIdx);
+      const scoreBadge = document.getElementById('app-score-display');
+      const vmStatusText = document.getElementById('app-vm-status-text');
+
+      if (optIdx === 0) {
+        if (window.soundManager) soundManager.playSuccess();
+        if (clickedOpt) clickedOpt.classList.add('opt-answered-correct');
+        if (clickedStatus) clickedStatus.innerText = '✓ ¡Correcta! (+50)';
+        phoneTriviaScore = 200;
+        if (scoreBadge) scoreBadge.innerText = 'Puntos: ' + phoneTriviaScore;
+        if (vmStatusText) vmStatusText.innerText = '🟢 ViewModel@9c21 actualizó estado: ' + phoneTriviaScore + ' pts';
+        if (banner) {
+          banner.innerHTML = '<strong>✅ ¡Interacción procesada en <code>onResume()</code>!</strong> La UI tiene foco activo y notificó el evento al <code>ViewModel</code> (Puntaje: ' + phoneTriviaScore + ' pts).';
+        }
+      } else {
+        if (window.soundManager) soundManager.playError();
+        if (clickedOpt) clickedOpt.classList.add('opt-answered-wrong');
+        if (clickedStatus) clickedStatus.innerText = '✕ Incorrecta';
+        const correctOpt = document.getElementById('phone-opt-0');
+        const correctStatus = document.getElementById('phone-opt-status-0');
+        if (correctOpt) correctOpt.classList.add('opt-answered-correct');
+        if (correctStatus) correctStatus.innerText = '✓ Era la A';
+        if (banner) {
+          banner.innerHTML = '<strong>👆 Toque recibido en <code>onResume()</code>:</strong> En Kotlin las clases son <code>final</code> por defecto y requieren <code>open</code> para heredarse.';
+        }
+      }
+    }
+
+    function handlePhoneNextStepClick(e) {
+      if (e) e.stopPropagation();
+      notifySimulatorUserActivity();
+
+      if (currentSimScenario === 'create') {
+        setScenario('start', true, true);
+      } else if (currentSimScenario === 'start') {
+        setScenario('resume', true, true);
+      } else if (currentSimScenario === 'resume') {
+        setScenario('llamada', true, true);
+      } else if (currentSimScenario === 'rotacion') {
+        setScenario('rotacion', true, true);
+      }
+    }
+
+    let activeCallTimerInterval = null;
+    let activeCallSeconds = 0;
+
+    function startActiveCallTimer() {
+      stopActiveCallTimer();
+      activeCallSeconds = 0;
+      const timerEl = document.getElementById('active-call-timer');
+      if (timerEl) timerEl.innerText = '00:00';
+      activeCallTimerInterval = setInterval(() => {
+        activeCallSeconds++;
+        const mins = String(Math.floor(activeCallSeconds / 60)).padStart(2, '0');
+        const secs = String(activeCallSeconds % 60).padStart(2, '0');
+        if (timerEl) timerEl.innerText = mins + ':' + secs;
+      }, 1000);
+    }
+
+    function stopActiveCallTimer() {
+      if (activeCallTimerInterval) {
+        clearInterval(activeCallTimerInterval);
+        activeCallTimerInterval = null;
+      }
+    }
+
+    function handleRejectCall(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      notifySimulatorUserActivity();
+      if (window.soundManager) {
+        soundManager.stopRing();
+        soundManager.stopCallActive();
+        soundManager.playClick();
+      }
+      setScenario('resume', false, true);
+    }
+
+    function handleAnswerCall(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      notifySimulatorUserActivity();
+      if (window.soundManager) {
+        soundManager.stopRing();
+        soundManager.playCallActive();
+      }
+      setScenario('call_active', false, true);
+    }
+
+    function hangUpCall(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      notifySimulatorUserActivity();
+      stopActiveCallTimer();
+      if (window.soundManager) {
+        soundManager.stopCallActive();
+        soundManager.playClick();
+      }
+      const activeCallPill = document.getElementById('home-active-call-pill');
+      if (activeCallPill) activeCallPill.style.display = 'none';
+      setScenario('resume', false, true);
+    }
+
+    function setScenario(scen, playAudio = true, isUserClick = false) {
+      const prevScenario = currentSimScenario;
+      currentSimScenario = scen;
+
+      // Si salimos de 'llamada' (onPause), DETENER inmediatamente el ringtone de Eminem
+      if (prevScenario === 'llamada' && scen !== 'llamada') {
+        if (window.soundManager) soundManager.stopRing();
+      }
+
+      // Si salimos de 'call_active' o 'home', DETENER el audio de llamada Inspector Morfi y timer
+      if ((prevScenario === 'call_active' || prevScenario === 'home') && scen !== 'call_active' && scen !== 'home') {
+        stopActiveCallTimer();
+        if (window.soundManager) soundManager.stopCallActive();
+        const activeCallPill = document.getElementById('home-active-call-pill');
+        if (activeCallPill) activeCallPill.style.display = 'none';
+      }
+
+      if (isUserClick) {
+        // Si el usuario interactúa manualmente con botones de estado, detenemos cualquier timer automático pendiente para respetar su navegación manual
+        clearAutoLifecycleTimers();
+        hasAutoSequenceFinished = true;
+        updateAutoPausePillUI(
+          'done',
+          '🎮 Control manual activado (secuencia automática completada)'
+        );
+      }
+
+      if (rotationDestroyTimeout) {
+        clearTimeout(rotationDestroyTimeout);
+        rotationDestroyTimeout = null;
+      }
+
+      if (playAudio && window.soundManager) {
         if (scen === 'llamada') {
-          soundManager.playRing();
+          soundManager.playRing(); // Reproduce Eminem The Real Slim Shady en loop continuo
         } else if (scen === 'anr') {
           soundManager.playError();
         } else {
@@ -2897,7 +3862,7 @@
 
       // Highlight button
       document.querySelectorAll('.sim-event-chip').forEach(b => b.classList.remove('active', 'active-alert'));
-      const activeChip = document.getElementById('chip-' + scen);
+      const activeChip = document.getElementById('chip-' + scen) || (scen === 'call_active' ? document.getElementById('chip-home') : null);
       if (activeChip) {
         activeChip.classList.add(scen === 'anr' ? 'active-alert' : 'active');
       }
@@ -2921,7 +3886,18 @@
 
       // Phone elements
       const phoneMockup = document.getElementById('phone-mockup');
+      const appTriviaUi = document.getElementById('app-trivia-ui');
+      const instanceBadge = document.getElementById('app-instance-badge');
+      const orientationTag = document.getElementById('phone-orientation-tag');
+      const scoreBadge = document.getElementById('app-score-display');
+      const lifecycleBanner = document.getElementById('app-lifecycle-banner');
+      const vmStatusText = document.getElementById('app-vm-status-text');
+      const nextStepBtn = document.getElementById('app-next-step-btn');
+      const phoneCaption = document.getElementById('phone-caption-label');
+
       const overlayCall = document.getElementById('overlay-call');
+      const overlayActiveCall = document.getElementById('overlay-active-call');
+      const overlayDestroy = document.getElementById('overlay-destroy');
       const overlayHome = document.getElementById('overlay-home');
       const overlayAnr = document.getElementById('overlay-anr');
       const stageIndicator = document.getElementById('app-stage-indicator');
@@ -2931,24 +3907,56 @@
       const simWrapper = document.getElementById('sim-wrapper-box');
       if (simWrapper) simWrapper.classList.remove('is-rotated');
       phoneMockup.classList.remove('rotated');
-      overlayCall.style.display = 'none';
-      overlayHome.style.display = 'none';
-      overlayAnr.style.display = 'none';
+      if (overlayCall) overlayCall.style.display = 'none';
+      if (overlayActiveCall) overlayActiveCall.style.display = 'none';
+      if (overlayDestroy) overlayDestroy.style.display = 'none';
+      if (overlayHome) overlayHome.style.display = 'none';
+      if (overlayAnr) overlayAnr.style.display = 'none';
+
+      if (scoreBadge) scoreBadge.innerText = 'Puntos: ' + phoneTriviaScore;
+      if (orientationTag) orientationTag.innerText = 'VERTICAL';
+      if (instanceBadge) {
+        instanceBadge.innerText = 'MainActivity@4f8a';
+        instanceBadge.style.borderColor = 'rgba(148, 163, 184, 0.3)';
+        instanceBadge.style.color = '#cbd5e1';
+      }
 
       // Reset steps & layer styles
-      [sCreate, sStart, sResume, sPause, sStop, sDestroy].forEach(el => el.className = 'lc-step');
-      [cardUi, cardVm, cardData].forEach(el => el.className = 'layer-card');
+      [sCreate, sStart, sResume, sPause, sStop, sDestroy].forEach(el => {
+        if (el) el.className = 'lc-step';
+      });
+      [cardUi, cardVm, cardData].forEach(el => {
+        if (el) el.className = 'layer-card';
+      });
 
       if (scen === 'create') {
         sCreate.className = 'lc-step active';
         cardUi.classList.add('highlight');
         cardVm.classList.add('highlight');
 
-        stageIndicator.innerText = '🟡 Estado: onCreate() • Creando Activity';
-        timerBar.style.width = '100%';
+        if (appTriviaUi) appTriviaUi.className = 'app-screen-content state-create';
+        resetPhoneOptionsVisuals('&lt;Button&gt;');
 
-        txtUi.innerHTML = '<strong>onCreate() en la UI:</strong> Se ejecuta una sola vez al nacer la Activity. Se infla el diseño (<code>setContentView(R.layout...)</code> o Compose <code>setContent</code>) y se enlazan vistas con ViewBinding.';
-        txtVm.innerHTML = '<strong>Inicialización del ViewModel:</strong> Se obtiene la instancia del ViewModel asociada a este Scope (<code>by viewModels()</code>) y se preparan los flujos de datos reactivos.';
+        stageIndicator.innerText = '🟡 Estado: onCreate() • Inflando Layout y enlazando ViewModel';
+        stageIndicator.style.color = '#fef08a';
+        timerBar.style.width = '100%';
+        timerBar.style.background = '#eab308';
+
+        if (lifecycleBanner) {
+          lifecycleBanner.className = 'app-lifecycle-banner banner-create';
+          lifecycleBanner.innerHTML = '<strong>🛠️ onCreate():</strong> Ejecutando <code>setContentView(R.layout.activity_trivia)</code> / Compose <code>setContent</code>. Construyendo jerarquía de vistas en memoria (aún sin foco).';
+        }
+        if (vmStatusText) vmStatusText.innerText = '🧠 by viewModels() ➔ TriviaViewModel@9c21';
+        if (nextStepBtn) {
+          nextStepBtn.style.display = 'inline-block';
+          nextStepBtn.innerText = '▶ Pasar a onStart()';
+        }
+        if (phoneCaption) {
+          phoneCaption.innerHTML = 'Simulador de Smartphone Android • Estado actual: <strong>1. onCreate() (Inflado de UI)</strong>';
+        }
+
+        txtUi.innerHTML = '<strong>onCreate() en la UI:</strong> Se ejecuta una sola vez al nacer la Activity (<code>MainActivity@4f8a</code>). Se infla el diseño (<code>setContentView(R.layout...)</code> o Compose <code>setContent</code>) y se enlazan vistas con ViewBinding.';
+        txtVm.innerHTML = '<strong>Inicialización del ViewModel:</strong> Se obtiene la instancia del ViewModel asociada a este Scope (<code>by viewModels()</code> ➔ <code>TriviaViewModel@9c21</code>) y se preparan los flujos de datos reactivos.';
         txtData.innerHTML = '<strong>Capa de Datos lista:</strong> El Repository queda instanciado a la espera de peticiones de lectura o escritura.';
 
       } else if (scen === 'start') {
@@ -2956,23 +3964,61 @@
         sStart.className = 'lc-step active';
         cardUi.classList.add('highlight');
 
-        stageIndicator.innerText = '🔵 Estado: onStart() • Pantalla visible sin foco';
-        timerBar.style.width = '90%';
+        if (appTriviaUi) appTriviaUi.className = 'app-screen-content state-start';
+        resetPhoneOptionsVisuals('🔒 Sin foco');
 
-        txtUi.innerHTML = '<strong>onStart() en la UI:</strong> La aplicación se vuelve visible para el usuario en pantalla, pero <em>aún no tiene el foco</em> para responder toques. Se inician componentes que solo deben mostrarse cuando la app es visible.';
-        txtVm.innerHTML = '<strong>Observadores en espera:</strong> El ViewModel ya tiene los datos cargados en memoria listos para dibujar.';
+        stageIndicator.innerText = '🔵 Estado: onStart() • Pantalla VISIBLE (Sin foco táctil aún)';
+        stageIndicator.style.color = '#93c5fd';
+        timerBar.style.width = '90%';
+        timerBar.style.background = '#3b82f6';
+
+        if (lifecycleBanner) {
+          lifecycleBanner.className = 'app-lifecycle-banner banner-start';
+          lifecycleBanner.innerHTML = '<strong>👁️ onStart():</strong> La interfaz ya es <strong>visible</strong> en pantalla para el usuario, pero <em>aún no tiene el foco interactivo</em> (botones bloqueados hasta <code>onResume</code>).';
+        }
+        if (vmStatusText) vmStatusText.innerText = '🧠 ViewModel@9c21 • Suscribiendo observadores UI';
+        if (nextStepBtn) {
+          nextStepBtn.style.display = 'inline-block';
+          nextStepBtn.innerText = '▶ Dar foco (onResume)';
+        }
+        if (phoneCaption) {
+          phoneCaption.innerHTML = 'Simulador de Smartphone Android • Estado actual: <strong>2. onStart() (Visible sin foco)</strong>';
+        }
+
+        txtUi.innerHTML = '<strong>onStart() en la UI:</strong> La aplicación se vuelve visible para el usuario en pantalla, pero <em>aún no tiene el foco</em> para responder toques. Se inician componentes visuales y observadores de UI.';
+        txtVm.innerHTML = '<strong>Observadores en espera:</strong> El ViewModel ya tiene los datos cargados en memoria (' + phoneTriviaScore + ' pts) listos para ser observados por la vista.';
         txtData.innerHTML = '<strong>Datos listos:</strong> El repositorio provee los datos iniciales al ViewModel.';
 
       } else if (scen === 'resume') {
+        sCreate.className = 'lc-step active';
+        sStart.className = 'lc-step active';
         sResume.className = 'lc-step active';
         cardUi.classList.add('highlight');
         cardVm.classList.add('highlight');
 
-        stageIndicator.innerText = '🟢 Estado: onResume() • En ejecución con foco total';
-        timerBar.style.width = '65%';
+        if (appTriviaUi) appTriviaUi.className = 'app-screen-content state-resume';
+        resetPhoneOptionsVisuals('👆 Tocá');
 
-        txtUi.innerHTML = '<strong>onResume() en la UI:</strong> La aplicación pasa a primer plano absoluto y obtiene el foco interactivo. El usuario puede tocar botones y responder la trivia.';
-        txtVm.innerHTML = '<strong>Lógica activa:</strong> El ViewModel reanuda o lanza la corrutina del temporizador de 20 segundos y expone los cambios de estado a la UI.';
+        stageIndicator.innerText = '🟢 Estado: onResume() • En ejecución con FOCO INTERACTIVO';
+        stageIndicator.style.color = '#34d399';
+        timerBar.style.width = '68%';
+        timerBar.style.background = '#10b981';
+
+        if (lifecycleBanner) {
+          lifecycleBanner.className = 'app-lifecycle-banner banner-resume';
+          lifecycleBanner.innerHTML = '<strong>▶️ onResume():</strong> La aplicación está en primer plano absoluto y tiene <strong>foco táctil</strong>. ¡Tocá una opción (A, B o C) en la pantalla para responder!';
+        }
+        if (vmStatusText) vmStatusText.innerText = '🟢 ViewModel@9c21 activo • Recibiendo toques';
+        if (nextStepBtn) {
+          nextStepBtn.style.display = 'inline-block';
+          nextStepBtn.innerText = '📞 Simular Llamada (onPause)';
+        }
+        if (phoneCaption) {
+          phoneCaption.innerHTML = 'Simulador de Smartphone Android • Estado actual: <strong>3. onResume() (Interactiva con foco)</strong>';
+        }
+
+        txtUi.innerHTML = '<strong>onResume() en la UI:</strong> La aplicación pasa a primer plano absoluto y obtiene el foco interactivo. El usuario puede tocar las opciones A, B y C en pantalla y responder la trivia.';
+        txtVm.innerHTML = '<strong>Lógica activa:</strong> El ViewModel ejecuta la corrutina del temporizador y procesa las respuestas del usuario actualizando el puntaje en RAM (' + phoneTriviaScore + ' pts).';
         txtData.innerHTML = '<strong>Operación normal:</strong> La capa de datos permanece en espera de eventos de guardado o actualización.';
 
       } else if (scen === 'llamada') {
@@ -2981,13 +4027,58 @@
         cardVm.classList.add('highlight');
         cardData.classList.add('highlight');
 
+        if (appTriviaUi) appTriviaUi.className = 'app-screen-content state-pause';
         overlayCall.style.display = 'flex';
-        stageIndicator.innerText = '🔴 Estado: onPause() • Pausa obligatoria';
+        stageIndicator.innerText = '🔴 Estado: onPause() • Pausa obligatoria (Foco perdido)';
+        stageIndicator.style.color = '#fca5a5';
         timerBar.style.width = '40%';
+        timerBar.style.background = '#f59e0b';
 
-        txtUi.innerHTML = '<strong>onPause() por llamada entrante:</strong> La pantalla pierde el foco. La Activity detiene de inmediato animaciones, sonido y el temporizador, y <strong>avisa al ViewModel</strong> para persistir.';
-        txtVm.innerHTML = '<strong>Salvar estado en memoria:</strong> El ViewModel toma el puntaje y la pregunta vigente, y despacha una corrutina (<code>viewModelScope.launch</code>) al Repository.';
-        txtData.innerHTML = '<strong>Persistencia Garantizada:</strong> El Repository guarda el borrador en <code>SharedPreferences</code> o JSON en segundo plano (hilo IO), porque si hay escasez de RAM, Android puede matar el proceso sin previo aviso.';
+        if (lifecycleBanner) {
+          lifecycleBanner.className = 'app-lifecycle-banner';
+          lifecycleBanner.innerHTML = '<strong>⏸️ Activity en Pausa:</strong> Sin foco interactivo por superposición de llamada.';
+        }
+        if (vmStatusText) vmStatusText.innerText = '💾 Guardando borrador en hilo IO...';
+        if (nextStepBtn) nextStepBtn.style.display = 'none';
+        if (phoneCaption) {
+          phoneCaption.innerHTML = 'Simulador de Smartphone Android • Estado actual: <strong>4. onPause() (Llamada entrante / Persistencia segura)</strong>';
+        }
+
+        txtUi.innerHTML = '<strong>onPause() por llamada entrante:</strong> La pantalla pierde el foco (queda parcialmente visible detrás del banner de llamada). La Activity detiene animaciones, sonido y temporizador, y <strong>avisa al ViewModel</strong> para persistir.';
+        txtVm.innerHTML = '<strong>Salvar estado en memoria:</strong> El ViewModel toma el puntaje (' + phoneTriviaScore + ' pts) y la pregunta vigente, y despacha una corrutina (<code>viewModelScope.launch</code>) al Repository.';
+        txtData.innerHTML = '<strong>Persistencia Garantizada:</strong> El Repository guarda el borrador en <code>SharedPreferences</code> o JSON en segundo plano (hilo IO), porque <code>onPause()</code> es el último método garantizado antes de que Android pueda matar el proceso si falta RAM.';
+
+      } else if (scen === 'call_active') {
+        sCreate.className = 'lc-step active';
+        sStart.className = 'lc-step active';
+        sResume.className = 'lc-step active';
+        sPause.className = 'lc-step active';
+        sStop.className = 'lc-step active-critical';
+        cardUi.classList.add('highlight');
+        cardVm.classList.add('highlight');
+        cardData.classList.add('highlight');
+
+        if (overlayActiveCall) overlayActiveCall.style.display = 'flex';
+        startActiveCallTimer();
+
+        stageIndicator.innerText = '🟣 Estado: onStop() • Llamada activa en pantalla completa';
+        stageIndicator.style.color = '#c4b5fd';
+        timerBar.style.width = '20%';
+        timerBar.style.background = '#8b5cf6';
+
+        if (lifecycleBanner) {
+          lifecycleBanner.className = 'app-lifecycle-banner';
+          lifecycleBanner.innerHTML = '<strong>🛑 onStop():</strong> La llamada con Mc Donald\'s tomó el 100% de la pantalla. La Activity de Trivia ya <strong>no es visible</strong>. Tocá <strong>Colgar llamada</strong> para volver (<code>onRestart ➔ onStart ➔ onResume</code>).';
+        }
+        if (vmStatusText) vmStatusText.innerText = '🛡️ ViewModel@9c21 preservado en RAM (' + phoneTriviaScore + ' pts)';
+        if (nextStepBtn) nextStepBtn.style.display = 'none';
+        if (phoneCaption) {
+          phoneCaption.innerHTML = 'Simulador de Smartphone Android • Estado actual: <strong>5. onStop() (Llamada activa a pantalla completa con Inspector Morfi)</strong>';
+        }
+
+        txtUi.innerHTML = '<strong>onStop() por llamada atendida:</strong> Al contestar la llamada, la pantalla completa pasa a la aplicación de Teléfono. Trivia pasó de <code>onPause()</code> (parcialmente visible) a <code>onStop()</code> (100% invisible en segundo plano).';
+        txtVm.innerHTML = '<strong>El ViewModel sigue vivo en RAM:</strong> <code>TriviaViewModel@9c21</code> preserva el puntaje (' + phoneTriviaScore + ' pts) y el estado intacto en memoria durante la conversación telefónica.';
+        txtData.innerHTML = '<strong>Persistencia asegurada:</strong> Los datos ya se habían asegurado en disco durante <code>onPause()</code>, cumpliendo con la arquitectura recomendada.';
 
       } else if (scen === 'home') {
         sPause.className = 'lc-step active';
@@ -2996,9 +4087,14 @@
         cardVm.classList.add('highlight');
 
         overlayHome.style.display = 'flex';
+        stageIndicator.innerText = '🟣 Estado: onStop() • 100% Oculta en segundo plano';
+        stageIndicator.style.color = '#c4b5fd';
+        if (phoneCaption) {
+          phoneCaption.innerHTML = 'Simulador de Smartphone Android • Estado actual: <strong>5. onStop() (100% Oculta en Home)</strong>';
+        }
 
-        txtUi.innerHTML = '<strong>onStop() al presionar Home:</strong> La aplicación pasa a estar <strong>completamente oculta</strong> (segundo plano). Se liberan recursos visuales pesados que no se necesitan mientras el usuario no vea la app.';
-        txtVm.innerHTML = '<strong>Estado en espera:</strong> El ViewModel conserva todo en RAM por si el usuario vuelve a abrir la app desde la lista de recientes.';
+        txtUi.innerHTML = '<strong>onStop() al presionar Home / Atender:</strong> La aplicación pasa a estar <strong>100% oculta</strong> (segundo plano). Se liberan recursos visuales pesados mientras el usuario no ve la app.';
+        txtVm.innerHTML = '<strong>Estado en espera:</strong> El ViewModel conserva todo en RAM (' + phoneTriviaScore + ' pts) por si el usuario vuelve a abrir la app desde el ícono 🎮 o Recientes.';
         txtData.innerHTML = '<strong>Almacenamiento cerrado:</strong> Se terminan de confirmar las escrituras pendientes en disco local.';
 
       } else if (scen === 'rotacion') {
@@ -3011,11 +4107,58 @@
         cardUi.classList.add('danger');
         cardVm.classList.add('highlight');
 
-        stageIndicator.innerText = '🔄 Rotación: Destrucción ➔ Recreación';
+        if (orientationTag) orientationTag.innerText = 'HORIZONTAL';
 
-        txtUi.innerHTML = '<strong>Destrucción de la Activity:</strong> Al girar el celular, Android destruye por completo la Activity actual (<code>onDestroy</code>) y crea una nueva (<code>onCreate</code>) para inflar el nuevo diseño horizontal.';
-        txtVm.innerHTML = '<strong>🛡️ ¡El ViewModel NO se destruye!</strong> El ViewModel tiene un ciclo de vida independiente y sobrevive en memoria RAM. Cuando la nueva Activity se levanta, se reconecta al mismo ViewModel y recupera los 150 puntos intactos.';
-        txtData.innerHTML = '<strong>Sin escrituras innecesarias:</strong> No hizo falta escribir en disco porque los datos siguieron seguros en el ViewModel en memoria RAM.';
+        // FASE 1 (0s - 1.35s): Mostrar explícitamente la DESTRUCCIÓN de la Activity vertical (onDestroy)
+        if (overlayDestroy) overlayDestroy.style.display = 'flex';
+        stageIndicator.innerText = '💥 Fase 1/2: onDestroy() • Destruyendo MainActivity@4f8a (Vertical)...';
+        stageIndicator.style.color = '#fca5a5';
+        if (phoneCaption) {
+          phoneCaption.innerHTML = '🔄 Girando móvil: <strong>1° onDestroy()</strong> destruye la Activity vertical mientras el <strong>ViewModel sobrevive</strong>...';
+        }
+
+        txtUi.innerHTML = '<strong>1° Destrucción (onDestroy) y 2° Recreación (onCreate):</strong> Al girar el celular a horizontal, Android <strong>destruye por completo</strong> la Activity vertical (<code>MainActivity@4f8a</code>) y crea una nueva instancia (<code>MainActivity@b71e</code>) para inflar el diseño apaisado (Landscape) con el contenido derecho.';
+        txtVm.innerHTML = '<strong>🛡️ ¡El ViewModel NO se destruye!</strong> <code>TriviaViewModel@9c21</code> tiene un ciclo de vida desacoplado y sobrevive en memoria RAM. Cuando la nueva Activity horizontal nace, se reconecta al mismo ViewModel y recupera los <strong>' + phoneTriviaScore + ' puntos intactos</strong>.';
+        txtData.innerHTML = '<strong>Sin lecturas de disco innecesarias:</strong> No hizo falta volver a consultar SQLite ni SharedPreferences porque el estado siguió vivo en el ViewModel en RAM.';
+
+        // FASE 2 (tras 1.35s): Ocultar overlay de destrucción y mostrar la nueva Activity recreada en Landscape con contenido girado
+        rotationDestroyTimeout = setTimeout(() => {
+          if (currentSimScenario !== 'rotacion') return;
+          if (overlayDestroy) overlayDestroy.style.display = 'none';
+          if (appTriviaUi) appTriviaUi.className = 'app-screen-content state-rotated';
+          resetPhoneOptionsVisuals('👆 Tocá');
+
+          sDestroy.className = 'lc-step active-critical';
+          sCreate.className = 'lc-step active';
+          sStart.className = 'lc-step active';
+          sResume.className = 'lc-step active';
+
+          if (instanceBadge) {
+            instanceBadge.innerText = 'MainActivity@b71e (Nueva)';
+            instanceBadge.style.borderColor = '#a855f7';
+            instanceBadge.style.color = '#e9d5ff';
+          }
+
+          stageIndicator.innerText = '🔄 Fase 2/2: Recreada en Horizontal (onDestroy ➔ onCreate ➔ onResume)';
+          stageIndicator.style.color = '#e9d5ff';
+          timerBar.style.width = '68%';
+          timerBar.style.background = '#a855f7';
+
+          if (lifecycleBanner) {
+            lifecycleBanner.className = 'app-lifecycle-banner banner-rotated';
+            lifecycleBanner.innerHTML = '<strong>🔄 Activity Recreada en Landscape:</strong> Se destruyó <code>@4f8a</code> y nació <code>MainActivity@b71e</code> con diseño horizontal de 2 columnas, recuperando los <strong>' + phoneTriviaScore + ' pts</strong> del mismo <code>ViewModel@9c21</code>.';
+          }
+          if (vmStatusText) {
+            vmStatusText.innerText = '🛡️ Mismo ViewModel@9c21 en RAM (' + phoneTriviaScore + ' pts intactos)';
+          }
+          if (nextStepBtn) {
+            nextStepBtn.style.display = 'inline-block';
+            nextStepBtn.innerText = '🔁 Ver destrucción de nuevo';
+          }
+          if (phoneCaption) {
+            phoneCaption.innerHTML = 'Smartphone en <strong>Modo Horizontal (Landscape)</strong> • Contenido girado y nueva Activity conectada al mismo ViewModel';
+          }
+        }, 1350);
 
       } else if (scen === 'anr') {
         sPause.className = 'lc-step active-critical';
@@ -3023,10 +4166,15 @@
         cardData.classList.add('danger');
 
         overlayAnr.style.display = 'flex';
+        stageIndicator.innerText = '⛔ ERROR ANR • Main Thread bloqueado (> 5s)';
+        stageIndicator.style.color = '#f87171';
+        if (phoneCaption) {
+          phoneCaption.innerHTML = '⛔ <strong>Application Not Responding (ANR)</strong> • Bloqueo del Hilo Principal (UI Thread)';
+        }
 
-        txtUi.innerHTML = '<strong>⛔ ERROR GRAVE (ANR):</strong> Se intentó escribir en SQLite/disco adentro del método de ciclo de vida en el Hilo Principal. La pantalla se congela y Android muestra el cartel de "Cerrar app".';
-        txtVm.innerHTML = '<strong>Solución Arquitectónica:</strong> El ViewModel debe usar <code>viewModelScope.launch(Dispatchers.IO)</code> para que la persistencia corra en segundo plano.';
-        txtData.innerHTML = '<strong>Regla de Oro:</strong> La persistencia SIEMPRE debe ser asíncrona mediante corrutinas o hilos secundarios.';
+        txtUi.innerHTML = '<strong>⛔ ERROR GRAVE (ANR):</strong> Se intentó escribir en SQLite/disco adentro del método de ciclo de vida directamente en el Hilo Principal. La interfaz se congela más de 5 segundos y Android muestra el cartel de "Cerrar app".';
+        txtVm.innerHTML = '<strong>Solución Arquitectónica:</strong> El ViewModel debe usar <code>viewModelScope.launch(Dispatchers.IO)</code> para delegar la persistencia en segundo plano sin bloquear el Main Thread.';
+        txtData.innerHTML = '<strong>Regla de Oro:</strong> La persistencia y llamadas de red SIEMPRE deben ser asíncronas mediante corrutinas o hilos secundarios.';
       }
     }
 
@@ -3154,7 +4302,11 @@
       isMuted: false,
       isMusicMuted: false,
       musicAudio: null,
+      ringtoneAudio: null,
+      callActiveAudio: null,
+      ringPending: false,
       _unlockAttached: false,
+      _ringUnlockAttached: false,
 
       init() {
         try {
@@ -3169,6 +4321,8 @@
         } catch (e) {}
 
         this.initMusic();
+        this.initRingtone(); // Pre-cargar el ringtone de Eminem
+        this.initCallActiveAudio(); // Pre-cargar audio de Inspector Morfi al atender
         this.updateUI();
 
         // Si no está muteada, intentar reproducción inmediata
@@ -3273,6 +4427,11 @@
         try {
           localStorage.setItem('dam_audio_muted', this.isMuted);
         } catch (e) {}
+
+        if (this.isMuted) {
+          this.stopRing();
+          this.stopCallActive();
+        }
 
         if (this.musicAudio) {
           if (this.isMuted) {
@@ -3437,8 +4596,132 @@
         osc.stop(ctx.currentTime + 0.08);
       },
 
+      initRingtone() {
+        if (!this.ringtoneAudio) {
+          try {
+            this.ringtoneAudio = new Audio('Eminem - The Real Slim Shady (Marimba Ringtone).mp3');
+            this.ringtoneAudio.preload = 'auto';
+            this.ringtoneAudio.loop = true; // No para de sonar en loop continuo
+            this.ringtoneAudio.volume = 0.05; // 5% de volumen
+          } catch (e) {
+            console.warn('Ringtone audio initialization error:', e);
+          }
+        } else {
+          this.ringtoneAudio.volume = 0.05;
+        }
+      },
+
       playRing() {
         if (this.isMuted) return;
+        this.initRingtone();
+        this.ringPending = true;
+        if (this.ringtoneAudio) {
+          try {
+            this.ringtoneAudio.volume = 0.05; // Asegurar 5% de volumen
+            this.ringtoneAudio.currentTime = 0;
+            const p = this.ringtoneAudio.play();
+            if (p !== undefined) {
+              p.then(() => {
+                this.ringPending = false;
+              }).catch(e => {
+                console.warn('Ringtone autoplay blocked by browser policy, queuing for user gesture:', e);
+                this.setupRingtoneAutoplayUnlock();
+                this._playSynthRing();
+              });
+            }
+          } catch (e) {
+            this.setupRingtoneAutoplayUnlock();
+            this._playSynthRing();
+          }
+        } else {
+          this._playSynthRing();
+        }
+      },
+
+      setupRingtoneAutoplayUnlock() {
+        if (this._ringUnlockAttached) return;
+        this._ringUnlockAttached = true;
+        const cleanup = () => {
+          window.removeEventListener('pointerdown', unlockRing);
+          window.removeEventListener('click', unlockRing);
+          window.removeEventListener('touchstart', unlockRing);
+          window.removeEventListener('keydown', unlockRing);
+          this._ringUnlockAttached = false;
+        };
+        const unlockRing = (e) => {
+          if (!this.ringPending || currentSimScenario !== 'llamada' || this.isMuted) {
+            this.ringPending = false;
+            cleanup();
+            return;
+          }
+          if (e && e.target && (e.target.closest('.call-btn') || e.target.closest('.active-call-hangup-btn'))) {
+            return;
+          }
+          this.initRingtone();
+          if (this.ringtoneAudio) {
+            this.ringtoneAudio.play().then(() => {
+              this.ringPending = false;
+            }).catch(() => {});
+          }
+          cleanup();
+        };
+        window.addEventListener('pointerdown', unlockRing);
+        window.addEventListener('click', unlockRing);
+        window.addEventListener('touchstart', unlockRing);
+        window.addEventListener('keydown', unlockRing);
+      },
+
+      stopRing() {
+        this.ringPending = false;
+        if (this.ringtoneAudio) {
+          try {
+            this.ringtoneAudio.pause();
+            this.ringtoneAudio.currentTime = 0;
+          } catch (e) {}
+        }
+      },
+
+      initCallActiveAudio() {
+        if (!this.callActiveAudio) {
+          try {
+            this.callActiveAudio = new Audio('Inspector_Morfi_mp3.mp3');
+            this.callActiveAudio.preload = 'auto';
+            this.callActiveAudio.loop = true; // Sigue sonando mientras el usuario esté en la llamada
+            this.callActiveAudio.volume = 0.25; // Nivel cómodo y audible
+          } catch (e) {
+            console.warn('Call active audio initialization error:', e);
+          }
+        }
+      },
+
+      playCallActive() {
+        if (this.isMuted) return;
+        this.stopRing(); // Asegurar corte del ringtone previo
+        this.initCallActiveAudio();
+        if (this.callActiveAudio) {
+          try {
+            this.callActiveAudio.volume = 0.25;
+            this.callActiveAudio.currentTime = 0;
+            const p = this.callActiveAudio.play();
+            if (p !== undefined) {
+              p.catch(e => {
+                console.warn('Call active audio autoplay blocked:', e);
+              });
+            }
+          } catch (e) {}
+        }
+      },
+
+      stopCallActive() {
+        if (this.callActiveAudio) {
+          try {
+            this.callActiveAudio.pause();
+            this.callActiveAudio.currentTime = 0;
+          } catch (e) {}
+        }
+      },
+
+      _playSynthRing() {
         const ctx = this.getAudioContext();
         if (!ctx) return;
         const now = ctx.currentTime;
@@ -3462,6 +4745,7 @@
         });
       }
     };
+    window.soundManager = soundManager;
 
     let currentQuizList = [];
     let userSelectedAnswers = {};
@@ -4626,8 +5910,24 @@
         switchTab('simulador', false);
       }
 
-      // Iniciar en escenario de llamada para resaltar onPause
-      setScenario('llamada', false);
+      // Iniciar en onCreate() como primer estado natural del Ciclo de Vida
+      setScenario('create', false, false);
+
+      // Iniciar automáticamente la secuencia temporizada: onCreate -> (3s) -> onStart -> (4s) -> onPause
+      setTimeout(() => {
+        startAutoLifecycleSequence();
+      }, 300);
+
+      // Registrar detector de actividad en el simulador por si el usuario interactúa antes
+      const simSection = document.getElementById('view-simulador');
+      if (simSection) {
+        const onUserActivity = () => {
+          notifySimulatorUserActivity();
+        };
+        simSection.addEventListener('pointerdown', onUserActivity, { passive: true });
+        simSection.addEventListener('click', onUserActivity, { passive: true });
+        simSection.addEventListener('touchstart', onUserActivity, { passive: true });
+      }
     });
   </script>
 </body>
