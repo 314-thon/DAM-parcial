@@ -1,0 +1,13 @@
+/* ============================================================
+   DAM Tutor Interactivo - Hoja de Estilos Principal (Manifest)
+   ============================================================ */
+
+@import url('variables.css');
+@import url('base.css');
+@import url('header.css');
+@import url('simulador.css');
+@import url('quiz.css');
+@import url('flashcards.css');
+@import url('minijuego.css');
+@import url('teoria.css');
+@import url('responsive.css');

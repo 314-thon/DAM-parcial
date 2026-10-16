@@ -1,0 +1,145 @@
+﻿    /* ============================================================
+       MÓDULO 5: ESTILOS DE TARJETAS TEÓRICAS Y FILTRO
+       ============================================================ */
+    .theory-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+      align-items: center;
+    }
+
+    .theory-filter-chip {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+      padding: 0.5rem 0.95rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .theory-filter-chip:hover {
+      background: var(--surface-hover);
+      color: var(--text-main);
+      border-color: var(--border-focus);
+    }
+
+    .theory-filter-chip.active {
+      background: rgba(59, 130, 246, 0.18);
+      color: #93c5fd;
+      border-color: var(--primary);
+      box-shadow: 0 0 16px rgba(59, 130, 246, 0.25);
+    }
+
+    .theory-count-pill {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.1rem 0.45rem;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      color: var(--text-main);
+    }
+
+    .theory-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .theory-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .theory-card-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      padding: 1.5rem 1.6rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .theory-card-item:hover {
+      border-color: rgba(96, 165, 250, 0.45);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .theory-card-item.hidden-by-filter {
+      display: none !important;
+    }
+
+    .theory-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.85rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .theory-card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0;
+    }
+
+    .theory-card-body {
+      font-size: 0.86rem;
+      color: var(--text-soft);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .theory-card-body ul {
+      margin-left: 1.25rem;
+      margin-top: 0.35rem;
+    }
+
+    .theory-card-body li {
+      margin-bottom: 0.5rem;
+    }
+
+    .theory-card-body li:last-child {
+      margin-bottom: 0;
+    }
+
+    .theory-card-body li strong {
+      color: var(--text-main);
+    }
+
+    .theory-card-footer {
+      margin-top: 1.15rem;
+      padding-top: 0.75rem;
+      border-top: 1px dashed rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .theory-tag {
+      font-size: 0.72rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      font-family: 'JetBrains Mono', monospace;
+    }
+

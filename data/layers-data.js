@@ -1,0 +1,18 @@
+/* ============================================================
+   DATA: COMPONENTES Y ACCIONES PARA JUEGO DE CAPAS
+   ============================================================ */
+    const initialGameItems = [
+      { id: 'item_1', text: 'Pausar audio o animación en pantalla', correctLayer: 'ui' },
+      { id: 'item_2', text: 'Retener el puntaje actual durante la rotación de pantalla', correctLayer: 'vm' },
+      { id: 'item_3', text: 'Escribir el valor booleano en SharedPreferences', correctLayer: 'data' },
+      { id: 'item_4', text: 'Mostrar un Toast o Diálogo emergente al usuario', correctLayer: 'ui' },
+      { id: 'item_5', text: 'Lanzar corrutina viewModelScope.launch para el temporizador de 20s', correctLayer: 'vm' },
+      { id: 'item_6', text: 'Leer el archivo JSON local con el banco de preguntas', correctLayer: 'data' },
+      { id: 'item_7', text: 'Vincular vistas mediante ViewBinding o Jetpack Compose', correctLayer: 'ui' },
+      { id: 'item_8', text: 'Mantener el StateFlow con la pregunta vigente', correctLayer: 'vm' }
+    ];
+
+
+if (typeof window !== "undefined") {
+  window.initialGameItems = initialGameItems;
+}

@@ -1,0 +1,207 @@
+﻿    /* ============================================================
+       RESPONSIVE & MOBILE ADAPTATION (Smartphones & Tablets)
+       ============================================================ */
+    @media (max-width: 768px) {
+      header {
+        padding: 0.55rem 0.85rem;
+      }
+
+      .brand {
+        gap: 0.55rem;
+      }
+
+      .brand-badge {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.72rem;
+      }
+
+      .brand h1 {
+        font-size: 0.92rem;
+        line-height: 1.2;
+      }
+
+      .brand p {
+        display: none;
+      }
+
+      .active-module-pill {
+        font-size: 0.74rem;
+        padding: 0.35rem 0.65rem;
+      }
+
+      .hamburger-btn {
+        padding: 0.42rem 0.65rem;
+        font-size: 0.78rem;
+      }
+
+      .hamburger-label {
+        display: none;
+      }
+
+      .header-menu-panel {
+        width: 100%;
+        left: 0;
+        right: 0;
+      }
+
+      main {
+        margin: 0.85rem auto;
+        padding: 0 0.75rem;
+      }
+
+      .card {
+        padding: 1.1rem 0.95rem;
+        margin-bottom: 1rem;
+        border-radius: 14px;
+      }
+
+      .card h2 {
+        font-size: 1.15rem;
+      }
+
+      /* Lifecycle Stepper Scrollable */
+      .lifecycle-stepper {
+        padding: 0.85rem 0.6rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        justify-content: flex-start;
+        scrollbar-width: thin;
+      }
+
+      .lc-step {
+        min-width: 78px;
+        flex-shrink: 0;
+      }
+
+      /* Sim Triggers Panel */
+      .sim-triggers-panel {
+        padding: 0.95rem;
+        margin-bottom: 1.15rem;
+      }
+
+      .events-picker-grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+
+      .sim-event-chip {
+        width: 100%;
+        height: auto;
+        min-height: 44px;
+        padding: 0.6rem 0.75rem;
+        font-size: 0.82rem;
+        white-space: normal;
+      }
+
+      /* Responsive Phone Mockup */
+      .sim-wrapper {
+        grid-template-columns: 1fr !important;
+        gap: 1.25rem;
+      }
+
+      .phone-container {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        overflow: hidden;
+      }
+
+      .phone-frame {
+        width: 100% !important;
+        max-width: 310px !important;
+        height: 648px !important;
+        min-height: 648px !important;
+        max-height: 648px !important;
+        min-width: 0 !important;
+        margin: 0 auto;
+      }
+
+      .sim-wrapper.is-rotated .phone-container {
+        width: 100% !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        overflow-x: auto;
+        padding-bottom: 1rem;
+      }
+
+      .sim-wrapper.is-rotated .phone-frame,
+      .phone-frame.rotated {
+        width: 100% !important;
+        max-width: 648px !important;
+        height: auto !important;
+        aspect-ratio: 1046 / 500 !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        margin: 0 auto !important;
+      }
+
+      /* Quiz View */
+      .quiz-top-progress-panel {
+        padding: 0.95rem;
+      }
+
+      .quiz-card {
+        padding: 1.15rem 0.95rem;
+      }
+
+      .quiz-question-centered {
+        font-size: 1.02rem;
+        margin-bottom: 1.15rem;
+        padding: 0 0.25rem;
+      }
+
+      .quiz-option-btn {
+        padding: 0.85rem 0.95rem;
+        font-size: 0.86rem;
+      }
+
+      .quiz-nav-footer {
+        gap: 0.5rem;
+      }
+
+      .quiz-nav-btn {
+        padding: 0.6rem 0.85rem;
+        font-size: 0.8rem;
+      }
+
+      /* Flashcards 3D */
+      .fc-scene {
+        perspective: 800px;
+      }
+
+      .fc-card-3d {
+        min-height: 420px;
+      }
+
+      .fc-face {
+        padding: 1.4rem 1.15rem;
+        border-radius: 18px;
+      }
+
+      .fc-front-title {
+        font-size: 1.2rem;
+      }
+
+      .fc-answer-text {
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      .fc-table-comp th,
+      .fc-table-comp td {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.8rem;
+      }
+
+      /* Minijuego Drag & Drop en Mobile */
+      .game-drop-box {
+        min-height: 140px;
+        padding: 0.85rem;
+      }
+
+      .game-item-card {
+        padding: 0.75rem 0.85rem;
+        font-size: 0.84rem;
+        touch-action: manipulation;
+      }
+    }

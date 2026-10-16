@@ -1,0 +1,127 @@
+﻿    /* ============================================================
+       MÓDULO 4: JUEGO DE CAPAS DINÁMICO (MOVER Y SACAR LIBREMENTE)
+       ============================================================ */
+    .game-zone-wrapper {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 850px) {
+      .game-zone-wrapper { grid-template-columns: 1fr; }
+    }
+
+    .game-drop-box {
+      background: var(--surface-elevated);
+      border: 2px dashed var(--border);
+      border-radius: 14px;
+      padding: 1.25rem;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: var(--transition);
+    }
+
+    .game-drop-box.drag-over {
+      border-color: var(--primary);
+      background: rgba(59, 130, 246, 0.08);
+    }
+
+    .game-box-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+      color: var(--primary-light);
+    }
+
+    .game-item-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 0.9rem;
+      font-size: 0.84rem;
+      cursor: grab;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      transition: var(--transition);
+    }
+
+    .game-item-card:hover {
+      border-color: var(--primary-light);
+      transform: translateY(-2px);
+    }
+
+    .game-item-card:active {
+      cursor: grabbing;
+      opacity: 0.6;
+    }
+
+    .game-item-remove-btn {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      border-radius: 6px;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: none;
+    }
+    .game-item-card.in-zone .game-item-remove-btn {
+      display: inline-block;
+    }
+    .game-item-remove-btn:hover {
+      background: rgba(239, 68, 68, 0.3);
+    }
+
+    .pool-box {
+      background: var(--surface-elevated);
+      border: 2px dashed #475569;
+      border-radius: 14px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .pool-items-tray {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+      min-height: 50px;
+    }
+
+
+    /* Botones rápidos para el Juego de Capas (Desktop y Mobile) */
+    .game-actions-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.35rem;
+      width: 100%;
+    }
+
+    .game-action-move-btn {
+      background: var(--surface-hover);
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+      padding: 0.3rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    .game-action-move-btn:hover,
+    .game-action-move-btn:active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary-light);
+    }
+

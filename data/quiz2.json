@@ -1,0 +1,232 @@
+[
+  {
+    "id": 1,
+    "question": "En el archivo AndroidManifest.xml, ¿qué configuración específica dentro del &lt;intent-filter&gt; determina cuál de todas las Activities se ejecutará como punto de entrada principal cuando el usuario toca el ícono de la app en el launcher del dispositivo?",
+    "options": [
+      {
+        "text": "action: android.intent.action.MAIN y category: android.intent.category.LAUNCHER",
+        "correct": true
+      },
+      {
+        "text": "action: android.intent.action.VIEW y category: android.intent.category.DEFAULT",
+        "correct": false
+      },
+      {
+        "text": "category: android.intent.category.BROWSABLE y permiso: android.permission.INTERNET",
+        "correct": false
+      },
+      {
+        "text": "action: android.intent.action.BOOT_COMPLETED y category: android.intent.category.HOME",
+        "correct": false
+      }
+    ],
+    "explanation": "Para declarar el punto de inicio de la aplicación en el menú principal del sistema, la Activity debe registrar el intent-filter con action android.intent.action.MAIN y category android.intent.category.LAUNCHER."
+  },
+  {
+    "id": 2,
+    "question": "En Kotlin, disponés de una variable 'val usuario: String?' obtenida de una API que puede devolver null. Querés asignar su valor a una variable no nula 'nombreFinal', y en caso de que sea null asignar 'Invitado' por defecto sin generar excepción. ¿Cuál es la sintaxis idiomática correcta?",
+    "options": [
+      {
+        "text": "val nombreFinal: String = usuario ?: \"Invitado\"",
+        "correct": true
+      },
+      {
+        "text": "val nombreFinal: String = usuario!! ?: \"Invitado\"",
+        "correct": false
+      },
+      {
+        "text": "val nombreFinal: String = usuario?.let { \"Invitado\" }",
+        "correct": false
+      },
+      {
+        "text": "val nombreFinal: String = if (usuario.isNull()) \"Invitado\"",
+        "correct": false
+      }
+    ],
+    "explanation": "El operador Elvis (?:) evalúa la expresión de la izquierda; si no es nula retorna su valor, y si es nula evalúa y devuelve la expresión de la derecha ('Invitado')."
+  },
+  {
+    "id": 3,
+    "question": "En un proyecto Android estructurado en múltiples módulos de Gradle, ¿qué modificador de visibilidad de Kotlin debés aplicar a una clase o función si deseás que sea accesible desde cualquier archivo dentro del mismo módulo, pero completamente invisible para el resto de los módulos?",
+    "options": [
+      {
+        "text": "internal",
+        "correct": true
+      },
+      {
+        "text": "protected",
+        "correct": false
+      },
+      {
+        "text": "private",
+        "correct": false
+      },
+      {
+        "text": "public",
+        "correct": false
+      }
+    ],
+    "explanation": "El modificador 'internal' en Kotlin restringe la visibilidad estrictamente a las declaraciones que pertenecen al mismo módulo compilado de Gradle, ocultándolo hacia afuera."
+  },
+  {
+    "id": 4,
+    "question": "En la arquitectura MVVM con Jetpack Compose o ViewBinding, se recomienda modelar el estado de la pantalla (UiState: Loading, Success con datos, Error con mensaje) mediante una jerarquía restringida para que las ramas del 'when' sean exhaustivas en tiempo de compilación sin requerir rama 'else'. ¿Qué tipo de clase de Kotlin es el indicado?",
+    "options": [
+      {
+        "text": "sealed class o sealed interface",
+        "correct": true
+      },
+      {
+        "text": "data class tradicional",
+        "correct": false
+      },
+      {
+        "text": "enum class simple",
+        "correct": false
+      },
+      {
+        "text": "abstract class abierta",
+        "correct": false
+      }
+    ],
+    "explanation": "Una 'sealed class' o 'sealed interface' restringe la herencia a un conjunto conocido en tiempo de compilación. Esto permite que el compilador verifique que todas las subclases estén cubiertas en expresiones 'when' sin requerir la rama 'else'."
+  },
+  {
+    "id": 5,
+    "question": "Dentro de la arquitectura en capas del sistema operativo Android, ¿cuál es la función primordial de la capa HAL (Hardware Abstraction Layer)?",
+    "options": [
+      {
+        "text": "Proveer interfaces estándar en C/C++ que exponen las capacidades del hardware (cámara, bluetooth, audio) al Java API Framework sin importar el fabricante del chip.",
+        "correct": true
+      },
+      {
+        "text": "Compilar el código Kotlin a bytecode DEX Ahead-Of-Time durante la instalación.",
+        "correct": false
+      },
+      {
+        "text": "Gestionar los permisos en tiempo de ejecución solicitados al usuario final.",
+        "correct": false
+      },
+      {
+        "text": "Administrar el ciclo de vida de las Activities y los Fragments en la capa de interfaz.",
+        "correct": false
+      }
+    ],
+    "explanation": "HAL (Hardware Abstraction Layer) define interfaces estándar para que los fabricantes de silicio (SoC) implementen drivers que el Java API Framework de Android puede consumir de forma homogénea y transparente."
+  },
+  {
+    "id": 6,
+    "question": "Durante la etapa de diseño de una aplicación móvil, el equipo decide elaborar un 'Wireframe' antes de pasar a la etapa de desarrollo. ¿Cuál es el rasgo definitorio de este artefacto?",
+    "options": [
+      {
+        "text": "Es un esquema estructural de baja fidelidad en escala de grises enfocado en la distribución, orden y jerarquía de contenidos sin tipografías ni colores definitivos.",
+        "correct": true
+      },
+      {
+        "text": "Es una aplicación compilada e interactiva lista para publicarse en Google Play Store.",
+        "correct": false
+      },
+      {
+        "text": "Es una maqueta estética estática con la paleta de colores y branding comercial al 100% de detalle visual.",
+        "correct": false
+      },
+      {
+        "text": "Es un diagrama de clases UML que describe las relaciones de herencia y métodos del código fuente.",
+        "correct": false
+      }
+    ],
+    "explanation": "Un Wireframe es un esquema funcional y estructural de baja fidelidad, generalmente monocromático o en escala de grises, cuyo fin es consensuar la arquitectura y distribución visual sin la distracción de colores o acabados finales."
+  },
+  {
+    "id": 7,
+    "question": "Un usuario presiona el botón 'Confirmar Pago' en una app bancaria. La pantalla no muestra ningún indicador de carga ni cambia el estado del botón durante 8 segundos, lo que provoca que el usuario toque el botón varias veces generando cargos duplicados. ¿Qué heurística de usabilidad de Jakob Nielsen se vulneró principalmente?",
+    "options": [
+      {
+        "text": "Visibilidad del estado del sistema (el sistema debe mantener informado al usuario de lo que ocurre mediante retroalimentación adecuada y a tiempo).",
+        "correct": true
+      },
+      {
+        "text": "Flexibilidad y eficiencia de uso.",
+        "correct": false
+      },
+      {
+        "text": "Correspondencia entre el sistema y el mundo real.",
+        "correct": false
+      },
+      {
+        "text": "Diseño estético y minimalista.",
+        "correct": false
+      }
+    ],
+    "explanation": "La heurística 1 de Jakob Nielsen ('Visibilidad del estado del sistema') establece que el sistema siempre debe informar al usuario sobre lo que está ocurriendo en tiempo real con feedback visual oportuno (como spinners, barras de progreso o botones en estado loading)."
+  },
+  {
+    "id": 8,
+    "question": "Al rotar la pantalla de vertical a horizontal, la Activity se destruye y se vuelve a crear. Si la aplicación NO cuenta aún con arquitectura MVVM/ViewModel, ¿cuál es el mecanismo estándar provisto por el sistema para persistir pequeñas cantidades de estado transitorio de la UI (ej. texto ingresado o posición de scroll)?",
+    "options": [
+      {
+        "text": "Guardar los datos en el objeto Bundle mediante el método onSaveInstanceState(outState: Bundle) y recuperarlos en onCreate(savedInstanceState).",
+        "correct": true
+      },
+      {
+        "text": "Escribir los valores inmediatamente en una base de datos SQLite en el hilo principal dentro de onDestroy().",
+        "correct": false
+      },
+      {
+        "text": "Declarar las variables de la Activity como 'static' o dentro de un 'companion object'.",
+        "correct": false
+      },
+      {
+        "text": "Bloquear la rotación forzando orientación vertical fija en el código fuente de Kotlin.",
+        "correct": false
+      }
+    ],
+    "explanation": "El callback onSaveInstanceState(Bundle) se invoca antes de que la Activity sea destruida por cambios de configuración o presión de memoria del SO, permitiendo guardar pares clave-valor que luego se restauran en onCreate() o onRestoreInstanceState()."
+  },
+  {
+    "id": 9,
+    "question": "En una aplicación de trivial académica, necesitás guardar de forma persistente entre sesiones si el usuario tiene el sonido activado (booleano) y su apodo (String). ¿Cuál es el mecanismo más liviano, nativo y adecuado provisto por el SDK de Android?",
+    "options": [
+      {
+        "text": "SharedPreferences, guardando pares clave-valor en un archivo XML privado dentro de /data/data/<paquete>/shared_prefs/.",
+        "correct": true
+      },
+      {
+        "text": "Room Database con entidades relacionales, DAOs y migraciones SQLite.",
+        "correct": false
+      },
+      {
+        "text": "Un archivo de texto plano creado en el almacenamiento externo compartido sin permisos.",
+        "correct": false
+      },
+      {
+        "text": "Variables locales en memoria RAM definidas dentro del ViewModel.",
+        "correct": false
+      }
+    ],
+    "explanation": "SharedPreferences es el framework nativo ideal para guardar colecciones pequeñas de pares clave-valor de tipos primitivos (booleanos, strings, floats, ints) de manera privada y persistente en formato XML."
+  },
+  {
+    "id": 10,
+    "question": "¿Cuáles son las restricciones de hardware y entorno fundamentales que diferencian el desarrollo de aplicaciones móviles del desarrollo de escritorio tradicional y obligan a optimizar recursos continuamente?",
+    "options": [
+      {
+        "text": "Autonomía de batería finita, pantallas táctiles reducidas, conectividad intermitente y riesgo de liquidación de procesos por memoria limitada.",
+        "correct": true
+      },
+      {
+        "text": "Ausencia total de sistema operativo multitarea y procesadores que no soportan ejecución en segundo plano.",
+        "correct": false
+      },
+      {
+        "text": "Imposibilidad de persistir archivos de forma local en el almacenamiento del dispositivo.",
+        "correct": false
+      },
+      {
+        "text": "Obligación de compilar el código fuente únicamente en modo interpretado línea por línea.",
+        "correct": false
+      }
+    ],
+    "explanation": "La computación móvil se caracteriza por operar en dispositivos con batería limitada, pantallas pequeñas manipuladas por toques, redes celulares cambiantes o inestables, y gestión agresiva de memoria RAM por parte del SO que puede liquidar procesos en segundo plano."
+  }
+]

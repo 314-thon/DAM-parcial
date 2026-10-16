@@ -1,0 +1,1103 @@
+﻿    /* ============================================================
+       MÓDULO 1: CICLO DE VIDA CON TELÉFONO INTERACTIVO
+       ============================================================ */
+    .lifecycle-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem 0.85rem;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+    }
+
+    .lc-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      flex: 1;
+      min-width: 85px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .lc-step:hover {
+      transform: translateY(-2px);
+    }
+
+    .lc-dot {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      transition: var(--transition);
+      z-index: 2;
+    }
+
+    .lc-step.active .lc-dot {
+      background: var(--primary);
+      border-color: #93c5fd;
+      color: #fff;
+      box-shadow: 0 0 16px var(--primary-glow);
+      transform: scale(1.1);
+    }
+
+    .lc-step.active-critical .lc-dot {
+      background: #dc2626;
+      border-color: #fca5a5;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+      transform: scale(1.15);
+      animation: pulseAlert 1.5s infinite;
+    }
+
+    @keyframes pulseAlert {
+      0%, 100% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.4); }
+      50% { box-shadow: 0 0 22px rgba(239, 68, 68, 0.8); }
+    }
+
+    .lc-name {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .lc-step.active .lc-name {
+      color: var(--primary-light);
+      font-weight: 700;
+    }
+    .lc-step.active-critical .lc-name {
+      color: #fca5a5;
+      font-weight: 800;
+    }
+
+    /* Simulador Main Layout: Teléfono + Controles y Capas */
+    .sim-wrapper {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 1.75rem;
+      align-items: start;
+      transition: grid-template-columns 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Cuando el celular está rotado en apaisado (Landscape):
+       El chasis gira a proporción horizontal (648x310) con animación física de giro
+       y el contenido interno se redistribuye derecho en diseño Landscape (2 columnas) */
+    .sim-wrapper.is-rotated {
+      grid-template-columns: 660px 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 1220px) {
+      .sim-wrapper.is-rotated {
+        grid-template-columns: 1fr;
+      }
+      .sim-wrapper.is-rotated .phone-container {
+        margin: 0 auto 2rem auto;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .sim-wrapper { grid-template-columns: 1fr; }
+    }
+
+    /* Mockup de Teléfono Smartphone */
+    .phone-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.85rem;
+      width: 100%;
+      min-width: 320px;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+
+    .sim-wrapper.is-rotated .phone-container {
+      width: 660px;
+      min-width: 660px;
+      min-height: 330px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @media (max-width: 680px) {
+      .sim-wrapper.is-rotated .phone-container {
+        width: 100%;
+        min-width: 300px;
+      }
+    }
+
+    .phone-frame {
+      width: 310px;
+      min-width: 310px;
+      max-width: 310px;
+      height: 648px;
+      min-height: 648px;
+      max-height: 648px;
+      flex-shrink: 0;
+      background: transparent;
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      transform-origin: center center;
+      transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1), height 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Marco Overlay con la imagen real de Samsung Galaxy S22 Ultra 5G (bisel ultra delgado, perforación de cámara fotorealista y chasis) */
+    .phone-frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('../assets/img/galaxy_s22_ultra_frame.png') no-repeat center center;
+      background-size: 100% 100%;
+      pointer-events: none;
+      z-index: 30;
+    }
+
+    @keyframes phoneSwingLandscape {
+      0% { transform: rotate(-90deg) scale(0.96); }
+      65% { transform: rotate(3deg) scale(1.005); }
+      85% { transform: rotate(-1deg) scale(1); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+
+    /* Rotación física a Landscape: Mantiene y gira el marco del Samsung Galaxy S22 Ultra 5G */
+    .phone-frame.rotated {
+      width: 648px;
+      min-width: 648px;
+      max-width: 648px;
+      height: 310px;
+      min-height: 310px;
+      max-height: 310px;
+      transform: rotate(0deg);
+      animation: phoneSwingLandscape 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      margin: 0;
+      border-radius: 20px;
+      background: #090d16;
+    }
+
+    .phone-frame.rotated::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('../assets/img/galaxy_s22_ultra_frame_landscape.png') no-repeat center center;
+      background-size: 100% 100%;
+      pointer-events: none;
+      z-index: 30;
+      display: block;
+    }
+
+    @media (max-width: 680px) {
+      .phone-frame.rotated {
+        width: 100%;
+        min-width: 300px;
+        max-width: 648px;
+        height: auto;
+        aspect-ratio: 1046 / 500;
+        min-height: 0;
+        max-height: none;
+      }
+    }
+
+    /* Pantalla interna: encastrada exactamente en el croma del Galaxy S22 Ultra (llena el chasis por debajo del marco) */
+    .phone-screen {
+      position: absolute;
+      inset: 0;
+      background: #090d16;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden; /* CERO SCROLLBAR */
+      border-radius: 20px;
+      z-index: 10;
+    }
+
+    .phone-frame.rotated .phone-screen {
+      border-radius: 20px;
+    }
+
+    /* Contenido interno de la app (Strict ZERO SCROLL) */
+    .app-screen-content {
+      flex: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px 14px 14px 14px;
+      background: linear-gradient(180deg, #0f172a 0%, #090d16 100%);
+      transition: filter 0.25s ease, opacity 0.25s ease;
+      overflow: hidden; /* Cero barras de scroll */
+      box-sizing: border-box;
+    }
+
+    /* Barra de estado con espacio despejado al centro para el punch-hole de la cámara S22 Ultra */
+    .phone-status-bar {
+      height: 24px;
+      padding: 0 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: #94a3b8;
+      z-index: 12;
+      flex-shrink: 0;
+      margin-bottom: 2px;
+    }
+    .phone-camera-spacer {
+      width: 32px;
+      height: 100%;
+      flex-shrink: 0;
+    }
+    .phone-status-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+    .phone-status-orient {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.52rem;
+      color: #64748b;
+      letter-spacing: 0.5px;
+    }
+    .phone-status-icons {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      font-size: 0.62rem;
+    }
+
+    .app-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 3px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .app-title-text {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .app-instance-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem;
+      padding: 1px 4px;
+      border-radius: 4px;
+      background: rgba(148, 163, 184, 0.15);
+      color: #cbd5e1;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+    .app-score-badge {
+      font-size: 0.62rem;
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: #93c5fd;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    .app-timer-bar-wrap {
+      width: 100%;
+      height: 3px;
+      background: #1e293b;
+      border-radius: 2px;
+      margin: 3px 0 2px 0;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .app-timer-bar-inner {
+      height: 100%;
+      background: #10b981;
+      width: 100%;
+      transition: width 0.35s ease, background-color 0.3s ease;
+    }
+
+    .app-stage-indicator {
+      font-size: 0.64rem;
+      font-weight: 700;
+      color: #fef08a;
+      margin-bottom: 2px;
+      flex-shrink: 0;
+      line-height: 1.2;
+    }
+
+    /* Layout principal flexible: vertical (1 columna) vs horizontal (2 columnas) */
+    .app-main-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      justify-content: space-evenly;
+      min-height: 0;
+    }
+    .app-main-left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .app-main-right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .phone-frame.rotated .app-screen-content {
+      padding: 8px 30px 8px 18px; /* 30px a la derecha para dejar libre el punch-hole de la cámara S22 al rotar a la derecha */
+      overflow: hidden;
+    }
+    .phone-frame.rotated .phone-camera-spacer {
+      display: none;
+    }
+    .phone-frame.rotated .app-main-layout {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 8px;
+      align-items: center;
+      min-height: 0;
+    }
+
+    /* Banner contextual dentro de la app según el estado del Ciclo de Vida */
+    .app-lifecycle-banner {
+      border-radius: 6px;
+      padding: 4px 7px;
+      font-size: 0.64rem;
+      line-height: 1.25;
+      border: 1px solid #334155;
+      background: rgba(15, 23, 42, 0.85);
+      color: #e2e8f0;
+      margin-bottom: 2px;
+    }
+    .app-lifecycle-banner.banner-create {
+      border-color: rgba(234, 179, 8, 0.5);
+      background: rgba(234, 179, 8, 0.12);
+      color: #fef08a;
+    }
+    .app-lifecycle-banner.banner-start {
+      border-color: rgba(59, 130, 246, 0.5);
+      background: rgba(59, 130, 246, 0.14);
+      color: #bfdbfe;
+    }
+    .app-lifecycle-banner.banner-resume {
+      border-color: rgba(16, 185, 129, 0.45);
+      background: rgba(16, 185, 129, 0.12);
+      color: #a7f3d0;
+    }
+    .app-lifecycle-banner.banner-rotated {
+      border-color: rgba(168, 85, 247, 0.55);
+      background: rgba(168, 85, 247, 0.15);
+      color: #e9d5ff;
+    }
+
+    /* Blueprint de inflado para onCreate() (ultra compacto para evitar scroll) */
+    .create-inflate-checklist {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      background: rgba(2, 6, 23, 0.88);
+      border: 1px dashed rgba(250, 204, 21, 0.45);
+      border-radius: 6px;
+      padding: 3px 6px;
+      color: #fde047;
+      display: none;
+      flex-direction: column;
+      gap: 2px;
+      margin-bottom: 2px;
+    }
+    .app-screen-content.state-create .create-inflate-checklist {
+      display: flex;
+    }
+
+    .app-question-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 7px 8px;
+      font-size: 0.72rem;
+      color: #f1f5f9;
+      font-weight: 600;
+      margin: 2px 0;
+      position: relative;
+      transition: all 0.25s ease;
+      line-height: 1.3;
+    }
+
+    /* En onCreate() la tarjeta y botones se ven como wireframe inflándose */
+    .app-screen-content.state-create .app-question-card {
+      background: rgba(15, 23, 42, 0.45);
+      border: 1.5px dashed #38bdf8;
+      color: #93c5fd;
+    }
+    .xml-wireframe-tag {
+      display: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.54rem;
+      color: #38bdf8;
+      margin-bottom: 2px;
+      font-weight: 500;
+    }
+    .app-screen-content.state-create .xml-wireframe-tag {
+      display: block;
+    }
+
+    .app-mock-options {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .app-mock-opt {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid #334155;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 0.69rem;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 5px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .app-mock-opt-left {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .app-mock-opt-status {
+      font-size: 0.58rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: #64748b;
+    }
+
+    /* Estado de opciones en onCreate (wireframe) */
+    .app-screen-content.state-create .app-mock-opt {
+      border: 1px dashed rgba(56, 189, 248, 0.55);
+      background: rgba(15, 23, 42, 0.35);
+      color: #94a3b8;
+    }
+
+    /* Estado de opciones en onStart (visible pero sin foco táctil) */
+    .app-screen-content.state-start .app-mock-opt {
+      opacity: 0.62;
+      cursor: not-allowed;
+      border-color: #1e293b;
+    }
+
+    /* Estado de opciones en onResume y Rotación (interactivas con foco) */
+    .app-screen-content.state-resume .app-mock-opt:hover,
+    .app-screen-content.state-rotated .app-mock-opt:hover {
+      border-color: #3b82f6;
+      background: rgba(37, 99, 235, 0.2);
+      color: #fff;
+      transform: translateX(2px);
+    }
+
+    .app-mock-opt.opt-answered-correct {
+      border-color: #10b981 !important;
+      background: rgba(16, 185, 129, 0.22) !important;
+      color: #d1fae5 !important;
+    }
+    .app-mock-opt.opt-answered-wrong {
+      border-color: #ef4444 !important;
+      background: rgba(239, 68, 68, 0.2) !important;
+      color: #fecaca !important;
+    }
+
+    .app-footer-bar {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+      padding: 4px 7px;
+      border-radius: 6px;
+      font-size: 0.62rem;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 5px;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+    .app-next-step-btn {
+      background: rgba(59, 130, 246, 0.22);
+      border: 1px solid rgba(96, 165, 250, 0.5);
+      color: #93c5fd;
+      border-radius: 5px;
+      padding: 2px 6px;
+      font-size: 0.62rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+    .app-next-step-btn:hover {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    /* Píldora del detector de actividad de 4 segundos */
+    .auto-pause-detector-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid #334155;
+      color: #cbd5e1;
+    }
+    .auto-pause-detector-pill.counting {
+      border-color: #f59e0b;
+      background: rgba(245, 158, 11, 0.15);
+      color: #fde68a;
+    }
+    .auto-pause-detector-pill.done {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.12);
+      color: #a7f3d0;
+    }
+
+    /* Overlays de estado en el teléfono */
+    .phone-overlay {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 16px 20px 16px;
+      text-align: center;
+      z-index: 15;
+      animation: fadeIn 0.25s ease;
+      box-sizing: border-box;
+      background: rgba(9, 13, 22, 0.94);
+    }
+
+    .phone-frame.rotated .phone-overlay {
+      padding: 10px 30px 10px 18px; /* Despejado del punch-hole de la cámara a la derecha */
+      overflow: hidden;
+    }
+    .phone-frame.rotated .destroy-card-box,
+    .phone-frame.rotated .vm-survive-box {
+      padding: 6px 12px;
+      max-width: 520px;
+    }
+
+    /* 1. Overlay Llamada Entrante (onPause):
+       Muestra un Heads-Up Banner arriba y deja ver la Trivia pausada detrás */
+    .overlay-call {
+      background: rgba(9, 13, 22, 0.72);
+      backdrop-filter: blur(2px);
+      justify-content: space-between;
+      padding: 24px 16px 18px 16px;
+    }
+    .call-heads-up-card {
+      width: 100%;
+      background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+      border: 1.5px solid #3b82f6;
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.75), 0 0 18px rgba(59, 130, 246, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .call-top-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 8px;
+    }
+    .call-pulse-animation {
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .call-actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      width: 100%;
+      margin-top: 6px;
+    }
+    .call-btn {
+      flex: 1;
+      height: 34px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: white;
+      transition: var(--transition);
+    }
+    .call-btn-reject {
+      background: #ef4444;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+    }
+    .call-btn-accept {
+      background: #10b981;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+    }
+
+    /* 1.5 Overlay Llamada Atendida / En Curso a Pantalla Completa (onStop) */
+    .overlay-active-call {
+      background: radial-gradient(circle at 50% 30%, #1e293b 0%, #090d16 100%);
+      justify-content: space-between;
+      padding: 24px 14px 18px 14px;
+      color: #fff;
+    }
+    .active-call-header {
+      width: 100%;
+      text-align: center;
+    }
+    .active-call-tag {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #86efac;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .active-call-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .active-call-timer {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #4ade80;
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
+    .active-call-audio-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(34, 197, 94, 0.16);
+      border: 1px solid rgba(74, 222, 128, 0.4);
+      color: #86efac;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 0.64rem;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .active-call-avatar-wrapper {
+      position: relative;
+      width: 58px;
+      height: 58px;
+      margin: 4px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .active-call-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f59e0b 0%, #dc2626 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      box-shadow: 0 0 18px rgba(239, 68, 68, 0.45);
+      z-index: 2;
+    }
+    .active-call-pulse {
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      border: 2px solid rgba(74, 222, 128, 0.6);
+      animation: pulseRing 1.5s ease-out infinite;
+      z-index: 1;
+    }
+    .active-call-grid-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      width: 100%;
+      max-width: 220px;
+      margin: 4px auto;
+    }
+    .active-call-action-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 6px 3px;
+      font-size: 0.6rem;
+      color: #cbd5e1;
+      cursor: pointer;
+      user-select: none;
+    }
+    .active-call-action-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .active-call-hangup-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      margin-top: 4px;
+    }
+    .active-call-hangup-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(239, 68, 68, 0.6);
+    }
+    .active-call-info-box {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid #a855f7;
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 0.64rem;
+      color: #e2e8f0;
+      text-align: left;
+      line-height: 1.35;
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 4px;
+    }
+
+    .phone-frame.rotated .overlay-active-call {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-evenly;
+      padding: 10px 30px 10px 18px;
+    }
+    .phone-frame.rotated .overlay-active-call .active-call-header {
+      width: 45%;
+      text-align: left;
+    }
+    .phone-frame.rotated .overlay-active-call .active-call-avatar-wrapper {
+      display: none;
+    }
+    .phone-frame.rotated .overlay-active-call .active-call-grid-actions {
+      display: none;
+    }
+    .phone-frame.rotated .overlay-active-call .active-call-right-col {
+      width: 48%;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* 2. Overlay Destrucción por Rotación (onDestroy -> onCreate) */
+    .overlay-destroy {
+      background: rgba(9, 13, 22, 0.94);
+      backdrop-filter: blur(6px);
+      justify-content: center;
+      gap: 10px;
+      padding: 18px;
+    }
+    .destroy-card-box {
+      background: rgba(127, 29, 29, 0.25);
+      border: 1.5px solid #ef4444;
+      border-radius: 12px;
+      padding: 10px 14px;
+      width: 100%;
+      max-width: 460px;
+      text-align: left;
+    }
+    .vm-survive-box {
+      background: rgba(6, 78, 59, 0.35);
+      border: 1.5px solid #10b981;
+      border-radius: 12px;
+      padding: 10px 14px;
+      width: 100%;
+      max-width: 460px;
+      text-align: left;
+    }
+
+    /* 3. Overlay Launcher Home (onStop) */
+    .overlay-home {
+      background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+      justify-content: space-between;
+      padding: 24px 16px 16px 16px;
+    }
+    .launcher-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      width: 100%;
+      margin-top: 10px;
+    }
+    .launcher-app-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.65rem;
+      color: #94a3b8;
+      cursor: pointer;
+    }
+    .launcher-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      transition: transform 0.2s ease;
+    }
+    .launcher-app-icon:hover .launcher-icon-box {
+      transform: scale(1.08);
+    }
+
+    /* 4. Overlay ANR */
+    .overlay-anr {
+      background: rgba(0, 0, 0, 0.82);
+    }
+    .anr-dialog {
+      background: #1e293b;
+      border: 1.5px solid #ef4444;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: left;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      max-width: 280px;
+    }
+    .anr-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #f87171;
+      margin-bottom: 6px;
+    }
+    .anr-msg {
+      font-size: 0.74rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+    .anr-btns {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .anr-btn {
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Right Column: Layers Breakdown */
+    .sim-events-and-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* Panel de Disparadores del Sistema (Fijo y Estable arriba del Teléfono) */
+    .sim-triggers-panel {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.1rem 1.35rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .sim-triggers-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .sim-triggers-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #93c5fd;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .sim-triggers-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .events-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.65rem;
+    }
+
+    @media (max-width: 1240px) {
+      .events-picker-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .events-picker-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .sim-event-chip {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      color: var(--text-soft);
+      padding: 0.75rem 0.65rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 700;
+      transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      text-align: center;
+      white-space: nowrap;
+      height: 48px;
+      box-sizing: border-box;
+    }
+
+    .sim-event-chip:hover {
+      border-color: var(--primary);
+      background: var(--surface-hover);
+      color: #fff;
+    }
+
+    .sim-event-chip.active {
+      border-color: var(--primary);
+      background: rgba(59, 130, 246, 0.2);
+      color: #93c5fd;
+      box-shadow: 0 0 14px var(--primary-glow);
+    }
+
+    .sim-event-chip.active-alert {
+      border-color: var(--danger);
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);
+    }
+
+    .layer-card {
+      background: var(--surface-elevated);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem 1.4rem;
+      transition: var(--transition);
+    }
+
+    .layer-card.highlight {
+      border-color: var(--primary);
+      box-shadow: 0 0 18px var(--primary-glow);
+    }
+
+    .layer-card.danger {
+      border-color: var(--danger);
+      box-shadow: 0 0 18px rgba(239, 68, 68, 0.3);
+    }
+
+    .layer-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.65rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .layer-name {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .layer-thread-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      background: #020617;
+      border: 1px solid var(--border);
+    }
+
+    .layer-text-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 1.15rem;
+      line-height: 1.6;
+      font-size: 0.88rem;
+      color: var(--text-soft);
+      min-height: 54px;
+    }
+    .layer-text-box strong { color: #fff; }
+
+
+    /* Animación fallback de ondas para la llamada */
+    @keyframes pulseRing {
+      0% { transform: scale(0.9); opacity: 1; }
+      50% { transform: scale(1.15); opacity: 0.5; }
+      100% { transform: scale(0.9); opacity: 1; }
+    }
+    .pulse-ring-circle {
+      animation: pulseRing 1.4s ease-in-out infinite;
+    }
+

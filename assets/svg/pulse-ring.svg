@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 100 100" class="pulse-ring-circle">
+  <circle cx="50" cy="50" r="45" fill="none" stroke="#3b82f6" stroke-width="5" opacity="0.6"/>
+  <circle cx="50" cy="50" r="34" fill="#1e293b" stroke="#60a5fa" stroke-width="3"/>
+  <text x="50" y="60" font-size="30" text-anchor="middle" fill="#fff">📞</text>
+</svg>

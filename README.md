@@ -27,11 +27,29 @@
 
 ---
 
+## 🏛️ Arquitectura Modular
+
+El proyecto implementa una arquitectura modular desacoplada sin bundlers pesados, compatible al 100% tanto con despliegues en GitHub Pages como con ejecución local autónoma:
+
+```text
+DAM-parcial/
+├── index.html          # Punto de entrada limpio (<1.000 líneas HTML)
+├── styles/             # Hojas de estilo modulares (variables, base, header, simulador, quiz, etc.)
+│   └── main.css        # Manifiesto maestro de estilos
+├── js/                 # Módulos de lógica desacoplados (state, audio, navigation, simulador, etc.)
+│   └── app.js          # Orquestador principal y punto de arranque
+├── data/               # Bancos de preguntas y datasets (JS y JSON)
+└── assets/             # Recursos estáticos organizados (/img, /audio, /svg)
+```
+
+---
+
 ## 🚀 Despliegue en GitHub Pages
 
-Esta aplicación es 100% estática (HTML5, CSS3 moderno, JavaScript vanilla y síntesis Web Audio API integrada, sin dependencias de servidor ni bundlers).
+Esta aplicación es 100% estática (HTML5, CSS3 modular, JavaScript vanilla y síntesis Web Audio API integrada, sin dependencias de servidor ni bundlers).
 
 Para publicarla:
 1. Subir a la rama `main`.
 2. En GitHub: **Settings > Pages > Source: Deploy from a branch > Branch: main / (root)**.
 3. ¡Listo! Accesible para cualquier dispositivo o compañero de cursada.
+

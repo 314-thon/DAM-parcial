@@ -1,0 +1,132 @@
+﻿    /* ============================================================
+       MÓDULO 3: FLASHCARDS 3D (ESPACIOSAS Y LEGIBLES)
+       ============================================================ */
+    .fc-scene {
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+      perspective: 1200px;
+    }
+
+    .fc-card-3d {
+      width: 100%;
+      min-height: 480px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .fc-card-3d.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .fc-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      backface-visibility: hidden;
+      border-radius: 24px;
+      padding: 2.25rem 2rem;
+      background: var(--surface-elevated);
+      border: 1.5px solid var(--border);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+    }
+
+    .fc-front {
+      z-index: 2;
+      transform: rotateY(0deg);
+    }
+
+    .fc-front-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 0.5rem;
+      text-align: center;
+    }
+
+    .fc-front-title {
+      font-size: clamp(1.45rem, 3.2vw, 1.95rem);
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.42;
+      letter-spacing: -0.015em;
+      text-wrap: balance;
+    }
+
+    .fc-back {
+      transform: rotateY(180deg);
+      background: #111a2e;
+      border-color: #3b82f6;
+      overflow-y: auto;
+      padding: 2rem 1.85rem;
+    }
+
+    .fc-back-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0.75rem 0;
+    }
+
+    .fc-answer-text {
+      font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+      line-height: 1.75;
+      color: var(--text-main);
+    }
+
+    .fc-answer-text strong {
+      color: #60a5fa;
+      font-weight: 700;
+    }
+
+    .fc-answer-text code {
+      background: rgba(30, 41, 59, 0.85);
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+      color: #34d399;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9em;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .fc-table-comp {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.75rem 0;
+      font-size: clamp(0.85rem, 1.8vw, 0.98rem);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .fc-table-comp th {
+      background: #1e293b;
+      color: var(--primary-light);
+      padding: 0.8rem 1rem;
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.95em;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .fc-table-comp td {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    .fc-table-comp tr:nth-child(even) {
+      background: rgba(15, 23, 42, 0.45);
+    }
+

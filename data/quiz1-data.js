@@ -1,0 +1,120 @@
+/* ============================================================
+   DATA: SIMULACRO OFICIAL 1 (20 PREGUNTAS)
+   ============================================================ */
+    const originalQuizData = [
+      {
+        id: 1,
+        question: "Un desarrollador trabaja en una computadora portátil con 8 GB de RAM y experimenta lentitud general al intentar ejecutar su aplicación en Android Studio. Según las recomendaciones técnicas del curso, ¿cuál es la opción preferible para optimizar el rendimiento y realizar las pruebas de forma fluida?",
+        options: [
+          { text: "Asignar 4096 MB de memoria RAM adicionales al emulador para forzar la aceleración por hardware.", correct: false },
+          { text: "Ejecutar y probar la aplicación directamente en un dispositivo físico con depuración por USB activa.", correct: true },
+          { text: "Abrir el navegador Google Chrome con múltiples pestañas para consultar la documentación durante la emulación.", correct: false },
+          { text: "Crear un nuevo dispositivo virtual con la versión más reciente de Android sin importar el tamaño de la imagen.", correct: false }
+        ],
+        explanation: "En computadoras con 8 GB de RAM, levantar un emulador (AVD) compite severamente con el IDE. La recomendación técnica del curso es conectar el celular por USB con depuración habilitada."
+      },
+      {
+        id: 2,
+        question: "En el diseño de un formulario de registro para una aplicación móvil se detecta que los usuarios se sienten abrumados por la presencia de 20 campos consecutivos en una sola pantalla. ¿Qué principio de usabilidad explica esta situación y qué solución propone?",
+        options: [
+          { text: "El concepto de invisibilidad tecnológica, que requiere reemplazar todos los formularios por interacción de voz.", correct: false },
+          { text: "La Ley de Hick, la cual indica que el tiempo de decisión aumenta con el número de opciones; recomendando dividir el formulario en etapas cortas.", correct: true },
+          { text: "El ciclo de vida de la Activity, indicando que demasiados campos destruyen la vista en tiempo de ejecución.", correct: false },
+          { text: "La Ley de Fitts, la cual exige situar los campos de entrada obligatoriamente en las esquinas superiores de la pantalla.", correct: false }
+        ],
+        explanation: "La Ley de Hick demuestra que a mayor cantidad de opciones simultáneas, mayor es la carga mental y el tiempo de decisión. En móviles se soluciona dividiendo procesos largos en pasos progresivos."
+      },
+      {
+        id: 3,
+        question: "Se desea definir una clase base 'Planta' en Kotlin para que la clase 'Suculenta' pueda heredar sus atributos. Sin embargo, el compilador marca un error en la declaración 'class Suculenta : Planta()'. ¿Qué modificación es necesaria en la clase padre?",
+        options: [
+          { text: "Utilizar la palabra clave 'extends' en la clase hija como se hace tradicionalmente en Java.", correct: false },
+          { text: "Cambiar la visibilidad de la clase padre a 'private class Planta'.", correct: false },
+          { text: "Declarar la clase hija con la palabra reservada 'internal class Suculenta'.", correct: false },
+          { text: "Agregar el modificador 'open' en la declaración de la clase padre: 'open class Planta'.", correct: true }
+        ],
+        explanation: "En Kotlin todas las clases son 'final' (cerradas) por defecto. Para que otra clase pueda heredar de ella, es obligatorio anteponer la palabra 'open' a la clase padre."
+      },
+      {
+        id: 4,
+        question: "¿Cuál es la diferencia fundamental entre la construcción de interfaces en Android tradicional mediante XML (imperativa) y el paradigma utilizado en Jetpack Compose?",
+        options: [
+          { text: "El enfoque de Jetpack Compose es imperativo, obligando a indicarle a la pantalla paso a paso cómo modificar el texto de un botón mediante findViewById.", correct: false },
+          { text: "Jetpack Compose solo permite crear interfaces estáticas que no pueden reaccionar a flujos de datos.", correct: false },
+          { text: "Jetpack Compose es declarativo, lo que significa que la interfaz se define como un reflejo exacto del estado actual de los datos sin manipular vistas manualmente.", correct: true },
+          { text: "Jetpack Compose requiere definir los diseños en archivos XML e interpretarlos en Kotlin con ViewBinding.", correct: false }
+        ],
+        explanation: "Jetpack Compose es declarativo: describes cómo debe verse la UI según el estado. Cuando el estado cambia, Compose recalcula y recompone la pantalla automáticamente sin manipular vistas a mano."
+      },
+      {
+        id: 5,
+        question: "Un usuario está jugando una trivia en su teléfono móvil y decide rotar la pantalla de modo vertical a apaisado. ¿Por qué el patrón ViewModel evita que el puntaje y la pregunta actual se pierdan durante este cambio?",
+        options: [
+          { text: "Porque el ViewModel permanece en memoria y no se destruye durante la recreación de la Activity por cambios de configuración.", correct: true },
+          { text: "Porque el ViewModel desactiva el ciclo de vida del teléfono mientras la aplicación está en uso.", correct: false },
+          { text: "Porque el ViewModel escribe automáticamente el estado en la base de datos física del teléfono antes de girar la pantalla.", correct: false },
+          { text: "Porque la Activity nunca se destruye ni se vuelve a crear durante la rotación del dispositivo.", correct: false }
+        ],
+        explanation: "La rotación de pantalla destruye y recrea la Activity. El ViewModel posee un ciclo de vida independiente y sobrevive en la memoria RAM, conservando intactos el puntaje y el estado."
+      },
+      {
+        id: 6,
+        question: "Una aplicación de notas necesita guardar el borrador de texto redactado cuando el usuario recibe una llamada entrante que interrumpe la aplicación. ¿Por qué el método onPause() del ciclo de vida es el lugar recomendado para esta tarea?",
+        options: [
+          { text: "Porque onPause() bloquea la llamada entrante hasta que la base de datos confirme la escritura de los datos.", correct: false },
+          { text: "Porque onPause() se ejecuta cuando la actividad pierde el foco y es el último momento seguro antes de que el proceso pueda ser finalizado por el sistema si escasea la memoria.", correct: true },
+          { text: "Porque en onPause() se vuelven a cargar las configuraciones leídas desde la base de datos local.", correct: false },
+          { text: "Porque onStop() siempre se ejecuta de forma obligatoria y garantizada antes de cualquier cierre repentino de la aplicación.", correct: false }
+        ],
+        explanation: "onPause() es el último punto garantizado. Si hay escasez crítica de RAM, el sistema operativo puede liquidar el proceso sin pasar jamás por onStop() ni onDestroy()."
+      },
+      {
+        id: 7,
+        question: "Se requiere guardar de forma persistente la preferencia de un usuario sobre si prefiere utilizar la aplicación con tema oscuro activado o desactivado. ¿Cuál es la herramienta adecuada para este propósito según el temario?",
+        options: [
+          { text: "Una base de datos SQLite integrada mediante el ORM Room.", correct: false },
+          { text: "Un archivo PDF almacenado en la memoria pública del dispositivo.", correct: false },
+          { text: "Una variable global estática definida en la clase MainActivity.", correct: false },
+          { text: "SharedPreferences, por ser un almacenamiento liviano de clave-valor ideal para configuraciones y estados simples.", correct: true }
+        ],
+        explanation: "SharedPreferences es la herramienta nativa óptima para configuraciones simples de clave-valor (guarda internamente un XML privado muy liviano)."
+      },
+      {
+        id: 8,
+        question: "Durante el desarrollo de una interfaz móvil para su uso con una sola mano, ¿por qué es fundamental tener en cuenta el concepto de 'Zona del Pulgar' (Thumb Zone)?",
+        options: [
+          { text: "Porque permite ubicar las acciones de mayor interacción en las áreas de alcance natural, reduciendo la tensión muscular.", correct: true },
+          { text: "Porque la pantalla táctil solo detecta pulsaciones realizadas estrictamente con el dedo pulgar.", correct: false },
+          { text: "Porque exige situar los botones principales en la esquina superior opuesta al pulgar para evitar toques accidentales.", correct: false },
+          { text: "Porque obliga a que la interfaz funcione de manera idéntica en televisores y pantallas fijas.", correct: false }
+        ],
+        explanation: "La ergonomía de la zona del pulgar asegura que los controles frecuentes estén accesibles sin posturas forzadas ni riesgo de que el teléfono se caiga."
+      },
+      {
+        id: 9,
+        question: "En Kotlin, ¿cuál es la diferencia de visibilidad entre los modificadores 'private' y 'protected' aplicados a miembros de una clase?",
+        options: [
+          { text: "El miembro protected se ejecuta únicamente para variables dentro de funciones composables de Jetpack Compose.", correct: false },
+          { text: "No existe ninguna diferencia en Kotlin, ya que ambos términos funcionan exactamente igual que el valor por defecto public.", correct: false },
+          { text: "El miembro private es visible desde cualquier parte del proyecto, mientras que protected se limita a su archivo.", correct: false },
+          { text: "El miembro private es accesible solo en la clase que lo declara, mientras que protected también es visible dentro de sus subclases (clases hijas).", correct: true }
+        ],
+        explanation: "'private' limita la visibilidad estrictamente a la clase o archivo donde se declara. 'protected' la extiende a las clases hijas derivadas mediante herencia."
+      },
+      {
+        id: 10,
+        question: "Según las clasificaciones de movilidad analizadas en la asignatura, ¿cómo se clasifica el sistema Android Auto en un automóvil y qué justifica dicha clasificación?",
+        options: [
+          { text: "Dispositivo fijo tradicional, porque únicamente puede funcionar conectado a redes telefónicas cableadas de un edificio.", correct: false },
+          { text: "Dispositivo portátil acompañado, porque posee ruedas y movimiento físico propio de forma independiente a las personas.", correct: false },
+          { text: "Dispositivo embebido, porque forma parte inamovible e interna de los microcontroladores del motor o los frenos ABS.", correct: false },
+          { text: "Dispositivo montado, porque se integra parcialmente en un sistema anfitrión (el vehículo) y depende de él para operar.", correct: true }
+        ],
+        explanation: "Android Auto es un dispositivo montado porque se acopla a un anfitrión (el coche) del que depende para alimentación, pantalla o altavoces."
+      }
+    ];
+
+
+if (typeof window !== "undefined") {
+  window.originalQuizData = originalQuizData;
+}
